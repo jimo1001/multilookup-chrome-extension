@@ -1,0 +1,166 @@
+@CHARSET "UTF-8";
+
+*, html {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    border-radius: 5px;
+    font-size: 90%;
+    width: 480px;
+    color: #666
+}
+
+h1 {
+    padding: 5px 10px;
+    font-size: 90%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom: 5px solid #ccc; 
+    color: #333;
+    background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#eee))
+}
+
+div#lookup-option {
+    margin-bottom: 10px
+}
+
+form#lookup {
+    padding: 10px
+}
+
+select#lookup-lang {
+    padding-left: 3px;
+    height: 24px;
+    width: auto
+}
+
+#lookup-lang option {
+    color: #666
+}
+
+select#lookup-type {
+    padding-left: 3px;
+    height: 24px;
+    width: auto
+}
+
+#lookup-type option {
+    color: #666
+}
+
+select#lookup-site {
+    padding-left: 3px;
+    height: 24px;
+    width: auto;
+    max-width: 150px
+}
+
+#lookup-site option {
+    color: #666
+}
+
+#lookup-suboption {
+    margin-top: 3px;
+    z-index: 1;
+    text-align: right
+}
+
+#lookup-suboption * {
+    vertical-align: middle
+}
+
+input[type='search'] {
+    height: 28px;
+    width: 340px
+}
+
+input[type='submit'], input[type='reset'] {
+    cursor: pointer;
+    display: inline-block;
+    height: 28px;
+    width: 50px;
+    border-width: 1px;
+    border-style: solid;
+    border-top-color: #ccc;
+    border-right-color: #999;
+    border-bottom-color:#999;
+    border-left-color: #ccc;
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd))
+}
+
+#history {
+    margin-top: 5px
+}
+
+.history-title {
+    padding: 3px 0 3px 5px;
+    font-size: 110%;
+    color: #FFF;
+    background-color: #999
+}
+
+#history-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.history-item {
+    font-size: 95%;
+    cursor: pointer;
+    padding: 3px 0 3px 5px;
+    border-top-width: 1px;
+    border-right-width: 1px;
+    border-left-width: 1px;
+    border-bottom-width: 0px;
+    border-style: solid;
+    border-color: #999
+}
+
+.history-item:last-child {
+    border: 1px solid #999;
+}
+
+.history-item:hover {
+    background-color: #DDD
+}
+
+.ui-auto-complete {
+    display: none
+}
+
+.ui-widget-content {
+    border: 1px solid #aaa
+}
+
+.ui-menu {
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 2px
+}
+
+.ui-menu .ui-menu-item {
+    clear: left;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    background: #fff;
+    zoom: 1
+}
+
+.ui-menu .ui-menu-item a {
+    display: block;
+    line-height: 1.5;
+    padding: 0.2em 0.4em;
+    text-decoration: none;
+    zoom: 1
+}
+
+.ui-menu-item a.ui-state-hover {
+    background: #eee
+}

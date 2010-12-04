@@ -1,0 +1,23 @@
+{
+  "extName": {
+    "message": "MultiLookup"
+  },
+  "extDescription": {
+    "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
+  },
+  "all": {
+    "message": "すべて"
+  },
+  "autoDetect": {
+    "message": "自動判別(選択済みサイト)"
+  },
+  "dictionary": {
+    "message": "辞書引き"
+  },
+  "search": {
+    "message": "ウェブ検索"
+  },
+  "translation": {
+    "message": "翻訳"
+  }
+}

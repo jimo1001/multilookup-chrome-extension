@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MultiLookup - ブラウザアクション</title>
+<script src="/js/lib/jquery-1.4.2.min.js"></script>
+<script src="/js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="/js/keybind.js"></script>
+<script async>
+var Lookup = {
+    currentTab: null,
+    background: null,
+    siteinfo: null,
+    entries: null,
+    context: null,
+    langs: [],
+    types: [],
+    sites: [],
+    timeoutID: null,
+    suggest: {
+        delay: 300,
+        minLength: 3,
+        list: []
+    },
+    selector: {
+        submit: "#lookup",
+        lang: "#lookup-lang",
+        type: "#lookup-type",
+        site: "#lookup-site",
+        context: "#lookup-context",
+        enable_suggest: "#enable-suggest"
+    },
+    
+    init: function() {
+        var self = this;
+        background = chrome.extension.getBackgroundPage(),
+        this.siteinfo = background.SiteinfoManager.getSiteinfo();
+        this.entries = background.ConfigManager.getConfigByName("entries");
+        this.background = background;
+        KeybindFactory.init();
+        $.each(this.entries, function(i, id) {
+            var v = self.siteinfo[id];
+            var langs = v["src-lang"].split(" ");
+            $.each(langs, function(i, v) {
+                if ($.inArray(v, self.langs) === -1)
+                    self.langs.push(v);
+            });
+            if ($.inArray(v["type"], self.types) === -1)
+                if (v["type"])
+                    self.types.push(v["type"]);
+            self.sites.push(v);
+        });
+        
+        $.each(self.langs, function(i, v) {
+            var node = $("<option />").val(v).text(v);
+            $(self.selector.lang).append(node);
+        });
+        
+        $.each(self.types, function(i, v) {
+            var node = $("<option />").val(v).text(v);
+            $(self.selector.type).append(node);
+        });
+        
+        $.each(self.sites, function(i, v) {
+            var node = $("<option />").val(v["id"]).text(v["name"]);
+            $(self.selector.site).append(node)
+        });
+        
+        $(self.selector.submit).bind("submit", self.onSubmit);
+        $(self.selector.lang+", "+self.selector.type).bind("change", self.onChange);
+        $(self.selector.context).bind("keyup", self.onKeyup).focus();
+
+        $("input, select").bind("change", function() {
+            self.saveFormData();
+        });
+        
+        this.showHistories();
+        this.setCachedDataToForm();
+    },
+
+    getLangValue: function() {
+        return $(this.selector.lang).val();
+    },
+
+    setLangValue: function(value) {
+        if (value) {
+            $(this.selector.lang).val(value);
+        }
+    },
+
+    getTypeValue: function() {
+        return $(this.selector.type).val();
+    },
+
+    setTypeValue: function(value) {
+        if (value) {
+            $(this.selector.type).val(value);
+        }
+    },
+
+    getSiteIdValue: function() {
+        return $(this.selector.site).val();
+    },
+
+    setSiteIdValue: function(value) {
+        if (value) {
+            $(this.selector.site).val(value);
+        }
+    },
+
+    getContext: function() {
+        return $(this.selector.context).val();
+    },
+
+    setContext: function(value) {
+        if (value) {
+            $(this.selector.context).val(value);
+        }
+    },
+
+    enableSuggest: function() {
+        return $(this.selector.enable_suggest).is(":checked");
+    },
+
+    checkEnableSuggest: function(bool) {
+        var node = $(this.selector.enable_suggest);
+        if (bool) {
+            node.attr("checked", "checked");
+        } else {
+            node.removeAttr("checked");
+        }
+    },
+
+    onSubmit: function() {
+        var self = Lookup;
+        var lang = self.getLangValue();
+        var type = self.getTypeValue();
+        var id = self.getSiteIdValue();
+        var text = self.getContext();
+        if (!$.trim(text)) { return false; } 
+        self.background.MLuManager.lookupShowResult(text, id, self.currentTab);
+        return false;
+    },
+
+    onChange: function() {
+        var self = Lookup;
+        var lang = self.getLangValue();
+        var type = self.getTypeValue();
+        self.setSiteList(lang, type);
+    },
+
+    onKeyup: function() {
+        var self = Lookup;
+        var context = $(this).val();
+        if ((context.length <= 3) || (context == self.context) || (!self.enableSuggest())) return;
+        self.context = context;
+        if (self.timeoutID != null) {
+            window.clearTimeout(self.timeoutID);
+            self.timeoutID = null;
+        }
+        self.timeoutID = window.setTimeout(function() {
+            self.getSuggestList(context, function(list) {
+                $(self.selector.context).unbind("autocomplete");
+                self.showSuggest(list);
+                $(self.selector.context).keydown();
+            });
+        }, self.suggest.delay);
+    },
+
+    getSuggestList: function(context, callback) {
+        var self = Lookup;
+        self.background.Suggest.getList(context, function(list) {
+            self.suggest.list = [];
+            $.each(list[1], function(i, v) {
+                self.suggest.list.push(v[0]);
+            });
+            if (callback) {
+                callback.call(this, self.suggest.list);
+            }
+        });
+    },
+
+    showSuggest: function(list) {
+        var self = Lookup;
+        $(self.selector.context).autocomplete({
+            delay: 200,
+            minLength: self.suggest.minLength,
+            source: list,
+            search: function(evt, ui) {
+                KeybindFactory.removeByKeyname("RET");
+                KeybindFactory.add(this, "RET", function(evt, keybind) {
+                    $(this).autocomplete("close");
+                    KeybindFactory.remove(keybind);
+                }, true);
+            }
+        });
+    },
+
+    setSiteList: function(lang, type) {
+        var self = this;
+        lang = lang || "";
+        type = type || "";
+        var sites = [];
+        $("option:not([value=''])", $(self.selector.site)).remove();
+        $.each(this.entries, function(i, id) {
+            var v = self.siteinfo[id];
+            if ((v["src-lang"].match(lang) !== null) && (v["type"].match(type) !== null))
+                sites.push(v);
+        });
+        $.each(sites, function(i, v) {
+            var node = $("<option />").val(v["id"]).text(v["name"]);
+            $(self.selector.site).append(node);
+        });
+        this.sites = sites;
+    },
+
+    showHistories: function() {
+        if (!this.background.History.enabled()) return;
+        var self = this;
+        var list = $("<ul></ul>");
+        var histories = this.background.History.get();
+        for (var i=0; i<histories.length; i++) {
+            var li = $("<li></li>");
+            var history = histories[i];
+            li.text(history).addClass("history-item");
+            li.bind("click", function() {
+                $(self.selector.context).val($(this).text());
+                $(this).submit();
+            });
+            list.append(li);
+        }
+        $("#history-list").append(list);
+        $("#history").show();
+    },
+
+    getCachedData: function() {
+        var data = {};
+        var cache = localStorage["popup"];
+        if (cache) {
+            data = JSON.parse(cache);
+        }
+        return data;
+    },
+
+    setCachedDataToForm: function() {
+        var cache = this.getCachedData();
+        if (cache && cache["form"]) {
+            var form = cache["form"];
+            this.setLangValue(form["lang"]);
+            this.setTypeValue(form["type"]);
+            this.setContext(form["context"]);
+            this.checkEnableSuggest(form["enable_suggest"]);
+            this.onChange();
+            this.setSiteIdValue(form["site_id"]);
+        }
+    },
+
+    saveFormData: function () {
+        var data = this.getCachedData() || {};
+        if (!data["form"]) { data["form"] = {}; }
+        var form = data["form"];
+        form["lang"] = this.getLangValue();
+        form["type"] = this.getTypeValue();
+        form["site_id"] = this.getSiteIdValue();
+        form["context"] = this.getContext();
+        form["enable_suggest"] = this.enableSuggest();
+        localStorage["popup"] = JSON.stringify(data);
+    }
+};
+$(document).ready(function() {
+    Lookup.init();
+});
+</script>
+<link rel="stylesheet" href="/css/popup.css" type="text/css" />
+</head>
+<body>
+<h1>
+    <span>MultiLookup - クイック検索</span>
+</h1>
+<form id="lookup" onsubmit="return false;">
+    <div id="lookup-option">
+        <label for="lookup-lang">言語</label>
+        <select id="lookup-lang" name="lang">
+            <option value="">--</option>
+        </select>
+        <label for="lookup-type">種別</label>
+        <select id="lookup-type" name="lookup-type">
+            <option value="">--</option>
+        </select>
+        <label for="lookup-site">サイト</label>
+        <select id="lookup-site" name="lookup-site">
+            <option value="">--</option>
+        </select>
+    </div>
+    <input id="lookup-context" type="search" name="search" placeholder="入力してください" />
+    <input type="submit" value="検索" />
+    <input type="reset" value="リセット" />
+    <div id="lookup-suboption">
+        <input id="enable-suggest" type="checkbox" checked />
+        <label for="enable-suggest">サジェストを有効にする</label>
+    </div>
+    <div id="history" style="display: none">
+        <h2 class="history-title">履歴</h2>
+        <div id="history-list"></div>
+    </div>
+</form>
+</body>
+</html>

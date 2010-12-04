@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>MultiLookup - 設定</title>
+<script src="/js/lib/jquery-1.4.2.min.js"></script>
+<script src="/js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="/js/keybind.js"></script>
+<script src="/js/options.js" async></script>
+<link rel="stylesheet" href="/css/options.css" type="text/css" />
+</head>
+<body>
+<div id="wrapper">
+<form id="option-form" onsubmit="return false;">
+
+<h1>MultiLookup - 設定</h1>
+<div class="preferences">
+<h2>基本設定<span class="notice">(クリックで表示/非表示)</span></h2>
+<div class="notice">
+    表示やショートカットキーなどの設定です<br>
+</div>
+<div class="content">
+<div class="notice">※設定は自動で保存されます</div>
+<table id="basic_preferences" class="options">
+    <tr>
+        <th class="option_th">テーマ<br>
+            <span class="default_value">(デフォルト:black)</span>
+        </th>
+        <td class="option_td">
+            <div style="display: table">
+                <div style="display: table-cell; padding-right: 20px">
+                    <label for="result_theme_black"><img src="../img/theme/black.png"/></label><br>
+                    <input id="result_theme_black" class="option" type="radio" name="result_theme" value="black" checked="checked" />
+                    <label for="result_theme_black">black</label>
+                </div>
+                <div style="display: table-cell">
+                    <label for="result_theme_white"><img src="../img/theme/white.png"/></label><br>
+                    <input id="result_theme_white" class="option" type="radio" name="result_theme" value="white" />
+                    <label for="result_theme_white">white</label>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">
+            表示位置<br>
+            <span class="default_value">(デフォルト:bottom)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                結果表示のポップアップを表示する位置を指定してください
+            </p>
+            <label for="result_position">位置:</label>
+            <select id="result_position" class="option" name="result_position">
+                <option value="botom" label="bottom">
+                <option value="left" label="left">
+                <option value="right" label="right">
+                <option value="top" label="top">
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">
+            表示カラム数<br>
+            <span class="default_value">(デフォルト:1)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                結果表示のポップアップをカラム(列)数を指定してください
+            </p>
+            <label for="result_cell_length">カラム数:</label>
+            <input id="result_cell_length" class="option" type="number" name="result_cell_length" value="1" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">表示幅<br>
+            <span class="default_value">(デフォルト:50)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">画面下に表示される結果表示のポップアップの大きさを指定してください<br>
+            画面全体の場合は100%です</p>
+            <input id="range_result_size" class="option" type="range" min="1" max="100" name="result_size" value="50" />
+            <input id="text_result_size" class="option" type="number" name="result_size" value="50" /> %
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">透過度<br>
+            <span class="default_value">(デフォルト:80)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">画面下に表示される結果表示のポップアップの透過度を指定してください<br>
+            100%にすると完全な不透過になります</p>
+            <input id="range_result_opacity" class="option" type="range" min="0" max="100" name="result_opacity" value="80" />
+            <input id="text_result_opacity" class="option" type="number" name="result_opacity" value="80" /> %
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">フォント<br>
+            <span class="default_value">(デフォルト:-)</span>
+        </th>
+        <td class="option_td">
+           <p class="notice">以下で指定したフォントで結果表示のポップアップを表示します</p>
+            <label for="font_family">フォント名:</label>
+            <input id="font_family" class="option" type="text" name="font_family" value="" style="width: 200px" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">フォントサイズ<br>
+            <span class="default_value">(デフォルト:100)</span>
+        </th>
+        <td class="option_td">
+           <p class="notice">100を基準とする相対的な大きさの数値を指定してください</p>
+            <input id="range_font_size" class="option" type="range" min="50" max="200" name="font_size" value="100" />
+            <input id="text_font_size" class="option" type="number" name="font_size" value="100" /> %
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">コンテキストメニュー<br>
+            <span class="default_value">(デフォルト:有効にする)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                右クリックに表示されるコンテキストメニューに<strong>MultiLookup</strong>の項目を追加します<br>
+                このコンテキストメニューからこの設定画面を開いたり、テキスト選択時にコンテキストメニューから調たいサイトを選ぶことができます<br>
+                ※ 後者はテキスト選択されているとき、前者は選択されていないときのみ表示されます
+            </p>
+            <input id="enable_context_menus" class="option" type="radio" value="1" name="enable_context_menus" />
+            <label for="enable_context_menus">有効にする</label><br>
+            <input id="disable_context_menus" class="option" type="radio" value="0" name="enable_context_menus" /> 
+            <label for="disable_context_menus">無効にする</label>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">マウスホイールボタン<br>
+            <span class="default_value">(デフォルト:有効にする)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                マウスホイールボタンをクリック時にも検索します<br>
+                ※修飾キーが押されていない場合でも検索を行ないます
+            </p>
+            <input id="enable_mousewheel_lookup" class="option" type="radio" value="1" name="enable_mousewheel_lookup" />
+            <label for="enable_mousewheel_lookup">有効にする</label><br>
+            <input id="disable_mousewheel_lookup" class="option" type="radio" value="0" name="enable_mousewheel_lookup" /> 
+            <label for="disable_mousewheel_lookup">無効にする</label>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">ダブルクリック<br>
+            <span class="default_value">(デフォルト:無効にする)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                ダブルクリック時に検索します<br>
+                ※修飾キーが押されていない場合でも検索を行ないます
+            </p>
+            <input id="enable_dblclick_lookup" class="option" type="radio" value="1" name="enable_dblclick_lookup" />
+            <label for="enable_dblclick_lookup">有効にする</label><br>
+            <input id="disable_dblclick_lookup" class="option" type="radio" value="0" name="enable_dblclick_lookup"  checked /> 
+            <label for="disable_dblclick_lookup">無効にする</label>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">修飾キー<br>
+            <span class="default_value">(デフォルト:有効にする, altKey)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                テキスト選択時に、修飾キー(altKey, ctrlKey, shiftKey, metaKey)が押されているときのみ検索を行ないます
+            </p>
+            <input id="enable_modifier_key" class="option" type="radio" value="1" name="enable_modifier_key" />
+            <label for="enable_modifier_key">有効にする</label>
+            <label for="modifier_key">修飾キー:</label>
+            <input id="modifier_key" class="option" type="text" name="modifier_key" /><br>
+            <input id="disable_modifier_key" class="option" type="radio" value="0" name="enable_modifier_key" /> 
+            <label for="disable_modifier_key">無効にする</label>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">すべて閉じる<br>
+            <span class="default_value">(デフォルト:ESC)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                表示されている結果表示をすべて閉じます
+            </p>
+            <label for="keybind-close">ショートカットキー:</label>
+            <input id="keybind-close" type="text" name="keybind-close" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">検索履歴<br>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                検索した文字列(種別がDirectoryに該当するもの. 単語or文節)の履歴を取ることができます。<br>
+                履歴は、ブラウザ右上部のアイコンをクリックしたときに表示されるポップアップページ(クイック検索)に表示されます。
+            </p>
+            <input id="enable_history" class="option" type="radio" value="1" name="enable_history" checked />
+            <label for="enable_history">有効にする</label>
+            <label for="history_limit">履歴の上限数:</label>
+            <input id="history_limit" class="option" type="number" name="history_limit" value="30" /><br>
+            <input id="disable_history" class="option" type="radio" value="0" name="enable_history" />
+            <label for="disable_history">無効にする</label>
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+
+<div class="preferences">
+<h2>サイト<span class="notice">(クリックで表示/非表示)</span></h2>
+<div class="notice">
+    サイトは、辞書引き・翻訳・ウェブ検索などの検索対象を表します<br>
+    サイトの選択や更新に関する設定ができます<br>
+    ※事前にサイトを選択しておくことで、ウェブ上のテキスト選択時にすばやく調べることができます
+</div>
+<div class="content">
+<div class="notice">
+    ※設定は自動で保存されます
+</div>
+<table id="siteinfo_preferences" class="options lookup">
+    <tr>
+        <th class="option_th">サイトの選択</th>
+        <td class="option_td">
+            <div class="notice">
+                サイトを選択してください
+                <ul>
+                <li>選択の状態にするには、ドラッグ＆ドロップで<strong>未選択なサイト</strong>から<strong>選択済みサイト</strong>に移動させます</li>
+                <li>ダブルクリックすると詳細情報が表示されます</li>
+                <li>左側のチェックボックスにチェックしたサイトは、デフォルトの検索対象となります
+                    <ul><li>デフォルトの検索対象は、テキスト選択やブラウザアクション(サイト指定なし)での検索時に使用されます</li></ul>
+                </li>
+                <li>選択したサイトの上下の並びは、結果表示の並びに反映されます</li>
+                </ul>
+            </div>
+            <div id="siteinfo_selector" class="table">
+                <div id="selected_siteinfo" class="table-cell">
+                    <div class='label'><strong>選択済みサイト</strong></div>
+                    <ul></ul>
+                </div>
+                <div id="unselected_siteinfo" class="table-cell">
+                    <div class='label'><strong>未選択なサイト</strong>
+                    <input id="site-filter" type="search" placeholder="絞り込み" /></div>
+                    <ul></ul>
+                </div>
+            </div>
+            <div id="siteinfo_detail"></div>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">更新</th>
+        <td class="option_td">
+            <p class="notice">
+                <a href="http://wedata.net/databases/Lookup/items"  target="_blank">Wedata(データベース:Lookup)</a>からサイト情報を取得し更新します<br>
+                ※以前に変更したサイトも更新される可能性があります
+            </p>
+            <input type="button" onclick="Options.site.updateSiteinfo();" value="更新する" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">自動更新<br>
+            <span class="default_value">(デフォルト:無効にする)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">ブラウザ起動時にサイトを更新します</p>
+            <input type="radio" id="enable_auto_update" class="option" value="1" name="enable_auto_update" />
+            <label for="enable_auto_update">有効にする</label><br>
+            <input type="radio" id="disable_auto_update" class="option" value="0" name="enable_auto_update" /> 
+            <label for="disable_auto_update">無効にする</label>
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+
+<div class="preferences">
+<h2>高度な設定<span class="notice">(クリックで表示/非表示)</span></h2>
+<div class="notice">
+選択された文字列の言語および種別の判別に用いられる正規表現の変更や、サイトの新規追加・変更・削除を行ないます
+</div>
+<div class="warn">※この設定は本拡張の動作に大きく影響しますので注意して変更してください</div>
+<div class="content" style="display: none">
+<div class="notice">※設定は自動で保存されます</div>
+<table id="advanced_preferences" class="options">
+    <tr>
+        <th class="option_th">選択文字数の上限<br>
+            <span class="default_value">(デフォルト:1200)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                テキスト選択による実行の際に選択文字数の長さの上限を指定してください<br>
+                文字列の長さが大きいほど負荷が高くなる可能性がありますのでご注意ください
+            </p>
+            <label for="lookup_limit_length">文字数の上限値:</label>
+            <input id="lookup_limit_length" class="option" type="number" name="lookup_limit_length" value="12" /> 文字
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">タイムアウト<br>
+            <span class="default_value">(デフォルト:5000)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                XmlHttpReqestで結果を取得する際のタイムアウト時間(ミリ秒)を指定します
+            </p>
+            <label for="lookup_xhr_timeout">タイムアウト:</label>
+            <input id="lookup_xhr_timeout" class="option" type="number" name="lookup_xhr_timeout" value="5000" /> msec
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">結果文字数の上限<br>
+            <span class="default_value">(デフォルト:300000)</span>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                XmlHttpRequestによって取得した結果の文字数の上限を指定します<br>
+                サイズの大きなHTMLの場合、サニタイズ処理などの負荷が高まります
+            </p>
+            <label for="lookup_limit_result_length">文字数の上限値:</label>
+            <input id="lookup_limit_result_length" class="option" type="number" name="lookup_limit_result_length" value="300000" /> 文字
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th" rowspan="2">言語の判別<br>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                Google Translation API を利用して言語の判別を行ないます<br>
+                こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません
+            </p>
+            <input type="radio" id="enable_language_detect_api" class="option" value="1" name="enable_language_detect_api" /> 
+            <label for="enable_language_detect_api">API を利用する</label>
+        </td>
+    </tr><tr>
+        <td class="option_td">
+            <p class="notice">
+                正規表現を各言語で定義して、言語の判別を行ないます
+            </p>
+            <input type="radio" id="disable_language_detect_api" class="option" value="0" name="enable_language_detect_api" checked /> 
+            <label for="disable_language_detect_api">正規表現を使用する</label><br>
+            <p class="notice">
+                文字列選択時の言語選択に用いる正規表現を設定してください
+            </p>
+            <label for="language_detect_regexp_select">言語</label>
+            <select id="language_detect_regexp_select">
+                <option value=""> -- </option>
+            </select> 
+            <label for="language_detect_regexp_input">正規表現</label>
+            <input type="text" id="language_detect_regexp_input" value="" />
+            <div style="text-align: right">
+                <input type="button" id="language_detect_regexp_add" value="言語を追加する" /> 
+                <input type="button" id="language_detect_regexp_del" value="選択中の言語を削除する" />
+            </div> 
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">種別の判別<br>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                文字列選択時の種別の選択に用いる正規表現を設定してください<br>
+                種別はそれぞれ、辞書引き(dictionary), 翻訳(translation), ウェブ検索(search)を表します
+            </p>
+            <label for="type_detect_regexp_language">言語</label>
+            <select id="type_detect_regexp_language">
+                <option value=""> -- </option>
+            </select> 
+            <label for="type_detect_regexp_type">種別</label>
+            <select id="type_detect_regexp_type">
+                <option value=""> -- </option>
+            </select> 
+            <label for="type_detect_regexp_input">正規表現</label>
+            <input type="text" id="type_detect_regexp_input" value="" />
+            <div style="text-align: right">
+                <input type="button" id="type_detect_regexp_add" value="選択中の言語の種別を追加する" /> 
+                <input type="button" id="type_detect_regexp_del" value="選択中の種別を削除する" />
+            </div> 
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">サイトの追加・変更・削除<br>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                サイト情報の新規追加と現在登録されているサイト情報の変更・削除を行うことができます
+            </p>
+            <div id="ad_siteinfo_selector">
+                <select id="editable_siteinfo_list"></select>
+                <input name="edit" type="button" value="変更" />
+                <input name="delete" type="button" value="削除" />
+                <input name="create" type="button" value="新規追加" />
+            </div>
+            <div id="create_attention" style="display: none">
+                ※サイトを追加する場合は、そのサイトの規約をご確認上追加してください。<br>
+                name, url, type, src-lang は必須項目です。
+            </div>
+            <div id="ad_siteinfo_edit_area">
+                <div class="notification"></div>
+            </div>
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+
+<div class="preferences">
+<h2>初期化<span class="notice">(クリックで表示/非表示)</span></h2>
+<div class="content">
+<table id="initialize_preferences" class="options initialize">
+    <tr>
+        <th class="option_th">設定の初期化</th>
+        <td class="option_td">
+            <p class="notice">※基本設定と高度な設定の設定項目すべてをデフォルト値に戻します</p>
+            <input type="button" onclick="Options.initialize.resetConfig();" value="初期設定に戻す" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">サイト情報の初期化</th>
+        <td class="option_td">
+            <p class="notice">※サイト情報をデフォルト値に戻します</p>
+            <input type="button" onclick="Options.initialize.resetSiteinfo();" value="初期設定に戻す" />
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">すべてを初期設定に戻す</th>
+        <td class="option_td">
+            <p class="notice">※すべての設定項目とサイト情報をデフォルト値に戻します</p>
+            <input type="button" onclick="Options.initialize.resetAll();" value="初期設定に戻す" />
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+
+<div class="preferences">
+<h2>その他<span class="notice">(クリックで表示/非表示)</span></h2>
+<div class="content">
+<table id="report" class="options">
+    <tr>
+        <th class="option_th">利用ガイド</th>
+        <td class="option_td">
+            <p class="notice">
+                この拡張について利用方法については、以下のページを参照してください<br>
+                <a target="_blank" href="http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup">http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup</a>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">報告</th>
+        <td class="option_td">
+        <p class="notice">
+            要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br>
+            報告頂いた内容は、<a target="_blank" href="http://www.simplivillage.com/trac/report/1">管理サイトのチケット</a>として登録されます。<br>
+            この拡張に関する感想は <a target="_blank" href="https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja">MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします
+        </p>
+        <div id="report_result"></div>
+        <div id="report_content">
+            <table>
+            <tr>
+                <th><label for="reporter">報告者(任意): </label></th>
+                <td><input type="text" id="reporter" name="reporter" /></td>
+            </tr><tr>
+                <th><span>種別: </span></th>
+                <td><select id="report_type" name="report_type">
+                    <option value="問題・バグ">問題・バグ</option>
+                    <option value="要望">要望</option>
+                </select></td>
+            </tr><tr>
+                <th><label for="report_summary">タイトル: </label></th>
+                <td><input type="text" id="report_summary" name="report_summary"/></td>
+            </tr><tr>
+                <th><label for="report_description">概要: </label></th>
+                <td><textarea id="report_description" name="report_content"></textarea></td>
+            </tr><tr>
+            <th></th>
+            <td><input type="button" onclick="Options.report.send();" value="送信" /></td>
+            </tr>
+            </table>
+        </div>
+        </td>
+    </tr>
+</table>
+</div>
+</div>
+</form>
+</div>
+</body>
+</html>
