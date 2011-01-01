@@ -10,19 +10,18 @@ const EDITABLE_SITEINFO_ATTRIBUTE = [
     "content-xpath", "content-selector", "content-jsonpath", "exclude-xpath", "exclude-selector",
     "lookup-regexp", "method", "data", "space", "charset"];
 const SITEINFO_ATTRIBUTE = EDITABLE_SITEINFO_ATTRIBUTE.concat(["created_by", "created_at", "updated_at", "resource_url"]);
+
+multilookup = chrome.extension.getBackgroundPage().multilookup;
 /**
  * Options
  */
-var Options = {
-    background: null,
+var MLuOptions = {
     config: null,
     siteinfo: null,
 
     init: function() {
-        var background = chrome.extension.getBackgroundPage();
-        this.background = background;
-        this.config = background.ConfigManager.getConfig();
-        this.siteinfo = background.SiteinfoManager.getSiteinfo();
+        this.config = multilookup.config.getConfig();
+        this.siteinfo = multilookup.siteinfo.getSiteinfo();
         // initialize
         this.common.init();
         this.basic.init();
@@ -32,23 +31,23 @@ var Options = {
     },
     
     saveConfig: function(sync) {
-        this.background.ConfigManager.save();
+        multilookup.config.save();
         if (sync) {
-            this.background.MLuManager.postConfigMessage();
+            multilookup.management.postConfigMessage();
         }
     },
     
     saveSiteinfo: function(sync) {
-        this.background.SiteinfoManager.save();
+        multilookup.siteinfo.save();
         if (sync) {
-            this.background.MLuManager.postSiteinfoMessage();
+            multilookup.management.postSiteinfoMessage();
         }
     }
 };
 
-Options.common = new function() {
+MLuOptions.common = new function() {
     var self = this;
-    var parent = Options;
+    var parent = MLuOptions;
 
     this.init = function() {
         this.toggleOptions();
@@ -113,21 +112,21 @@ Options.common = new function() {
     };
 };
 
-Options.basic = new function() {
+MLuOptions.basic = new function() {
     var self = this;
-    var parent = Options;
+    var parent = MLuOptions;
 
     this.init = function() {
         $("#basic_preferences input[name='enable_context_menus']").bind("change", function() {
             if ($(this).val() == "1") {
-                parent.background.MLuManager.updateDefaultContextMenu();
+                multilookup.management.updateDefaultContextMenu();
             } else {
                 chrome.contextMenus.removeAll();
             }
         });
         
         $("#modifier_key").val(parent.config["modifier_key"]).bind("keydown", function(evt) {
-            var keyname = KeybindFactory.getKeyname(evt, true);
+            var keyname = keybinds.getKeyFromEvent(evt, true);
             if (keyname) {
                 $(this).val(keyname);
                 parent.config["modifier_key"] = keyname;
@@ -140,7 +139,7 @@ Options.basic = new function() {
         });
         
         $("#keybind-close").val(parent.config["keybind"]["close"]).bind("keydown", function(evt) {
-            var keyname = KeybindFactory.getKeyname(evt);
+            var keyname = keybinds.getKeyFromEvent(evt);
             if (keyname) {
                 $(this).val(keyname);
                 parent.config["keybind"]["close"] = keyname;
@@ -155,9 +154,9 @@ Options.basic = new function() {
 };
 
 
-Options.site = new function() {
+MLuOptions.site = new function() {
     var self = this;
-    var parent = Options;
+    var parent = MLuOptions;
 
     this.init = function() {
         this.generateSelectBox();
@@ -166,7 +165,7 @@ Options.site = new function() {
     this.updateSiteinfo = function(evt) {
         var result = window.confirm("更新してもよろしいですか？");
         if (result) {
-            parent.background.SiteinfoManager.importSiteinfoFromRemote(function(res){
+            multilookup.siteinfo.importSiteinfoFromRemote(function(res){
                 if (res) {
                     parent.saveSiteinfo(true);
                     window.confirm("正常に更新されました");
@@ -179,11 +178,11 @@ Options.site = new function() {
     };
 
     this.cleanup = function() {
-        var keybinds = parent.config["keybind"]["entries"];
+        var kbs = parent.config["keybind"]["entries"];
         var siteinfo = parent.siteinfo;
-        $.each(keybinds, function(id, key) {
+        $.each(kbs, function(id, key) {
             if (siteinfo[id] == undefined) {
-                delete keybinds[id];
+                delete kbs[id];
             }
         });
     };
@@ -200,7 +199,7 @@ Options.site = new function() {
         parent.config["entries"] = ids;
         parent.config["lookup_entries"] = lookup_ids;
         parent.saveConfig(true);
-        parent.background.MLuManager.updateDefaultContextMenu();
+        multilookup.management.updateDefaultContextMenu();
     };
 
     this.generateSelectBox = function() {
@@ -321,7 +320,7 @@ Options.site = new function() {
         if (!config["keybind"]["entries"]) config["keybind"]["entries"] = {};
         if (!config["keybind"]["entries"][sid]) config["keybind"]["entries"][sid] = "";
         $(input).val(config["keybind"]["entries"][sid]).bind("keydown", function(evt) {
-            var keyname = KeybindFactory.getKeyname(evt);
+            var keyname = keybinds.getKeyFromEvent(evt);
             if (keyname) {
                 $(this).val(keyname);
                 self.cleanup();
@@ -357,9 +356,9 @@ Options.site = new function() {
     };
 };
 
-Options.advance = new function() {
+MLuOptions.advance = new function() {
     var self = this;
-    var parent = Options;
+    var parent = MLuOptions;
 
     this.init = function() {
         this.initLangRegexpField();
@@ -367,12 +366,12 @@ Options.advance = new function() {
         this.generateSelectList();
         
         $("#lookup_limit_length").attr("value", function() {
-            return Options.config[$(this).attr("name")];
+            return MLuOptions.config[$(this).attr("name")];
         }).bind("change", function() {
             var value = $(this).val();
             var name = $(this).attr("name");
-            Options.config[name] = value;
-            Options.saveConfig(true);
+            MLuOptions.config[name] = value;
+            MLuOptions.saveConfig(true);
         });
     };
     
@@ -582,11 +581,11 @@ Options.advance = new function() {
         data = $.each(data, function(i, v) {
             if (v == "") delete data[i];
         });
-        if (!parent.background.SiteinfoManager.setSiteinfo(data)) {
+        if (!multilookup.siteinfo.setSiteinfo(data)) {
             throw "必須項目を入力してください";
         }
         parent.saveSiteinfo(true);
-        parent.background.MLuManager.updateDefaultContextMenu();
+        multilookup.management.updateDefaultContextMenu();
         this.generateSelectList();
         parent.site.generateSelectBox();
         parent.site.init();
@@ -595,22 +594,22 @@ Options.advance = new function() {
 };
 
 
-Options.initialize = new function() {
+MLuOptions.initialize = new function() {
     var self = this;
-    var parent = Options;
+    var parent = MLuOptions;
     var siteinfoManager = null;
     var configManager = null;
     
     this.init = function() {
-        siteinfoManager = parent.background.SiteinfoManager;
-        configManager = parent.background.ConfigManager;
+        siteinfoManager = multilookup.siteinfo
+        configManager = multilookup.config;
     };
     
     this.resetAll = function(evt) {
         var result = window.confirm("すべての設定とサイト情報を初期化してもよろしいですか？");
         if (result) {
-            this.configManager.removeCache();
-            this.configManager.init(function() {
+            configManager.removeCache();
+            configManager.init(function() {
                 parent.saveConfig(true);
                 siteinfoManager.removeCache();
                 siteinfoManager.init(function() {
@@ -638,8 +637,8 @@ Options.initialize = new function() {
     this.resetSiteinfo = function(evt) {
         var result = window.confirm("サイト情報を初期化してもよろしいですか？");
         if (result) {
-            this.configManager.config["entries"] = [];
-            this.configManager.save();
+            configManager.config["entries"] = [];
+            configManager.save();
             siteinfoManager.removeCache();
             siteinfoManager.init(function() {
                 parent.saveSiteinfo(true);
@@ -655,7 +654,7 @@ Options.initialize = new function() {
     };
 };
 
-Options.report = new function() {
+MLuOptions.report = new function() {
     
     this.send = function() {
         var reporter = $("#reporter").val().trim() || "anonymous";
@@ -713,6 +712,6 @@ function jsonFormatter(jsonText) {
 }
 
 $(document).ready(function() {
-    Options.init();
-    KeybindFactory.init();
+    MLuOptions.init();
+    keybinds.init();
 });

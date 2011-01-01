@@ -337,7 +337,7 @@ var MultiLookup = {
         if (!this.node) {
             this.node = $n('div', {id:"MultiLookup"});
             ResultGroupFactory.init(this.node);
-            //KeybindFactory.init();
+            //keybinds.init();
 
         }
         if (!isElementInDocument(this.node)) {
@@ -379,10 +379,10 @@ var MultiLookup = {
             }
         }, 1000);
         // ShortcutKey Event
-        KeybindFactory.removeAll();
-        KeybindFactory.bind(window);
+        keybinds.removeAll();
+        keybinds.bind(window);
         // remove all results
-        KeybindFactory.add(window, config["keybind"]["close"], ResultGroupFactory.removeAll, false);
+        keybinds.add(window, config["keybind"]["close"], ResultGroupFactory.removeAll, false);
         var shortcutkeys = {};
         for (var j in entries) {
             if (entries[j] && entries.hasOwnProperty(j)) {
@@ -403,7 +403,7 @@ var MultiLookup = {
     setShortcutKey: function(id, keyname, node) {
         var self = this;
         if (!node) { node = document; }
-        KeybindFactory.add(node, keyname, function() {
+        keybinds.add(node, keyname, function() {
             self.lookup(node.getSelection().toString(), id);
         }, false);
     },
@@ -518,32 +518,35 @@ var MultiLookup = {
  * Utilities
  * ---------------------------------------------------------------------------*/
 /**
- * Entity of Keybind
- * @param element a DOM element
- * @param key shortcut key (e.x. Control + y -> C-y)
- * @param callback a callback function
- * @param force execute the callback even where at the input/textarea
+ * the script is a simple JavaScript library for keyboard shortcut.
+ * the keybinds is a factory class of Keybind[s](shortcutkey[s])
+ *
+ * Usage:
+ * - add Keybind(Control+y)
+ *   keybinds.add(element, 'C-y', function(event, [object Keybind]) { ... }, false)
+ *                 .add(element, 'C-x', function(event, [object Keybind]) { ... }, false);
+ * - remove Keybind
+ *   keybinds.remove([object Keybind]);
+ *   or
+ *   keybinds.removeByKey(element, 'C-y');
+ * - get key
+ *   var textform = document.getElementById('text-form');
+ *   keybinds.getKey(textform, function(key, event) { ... });
+ * - get Keybinds
+ *   - all keybinds
+ *     var keybinds = keybinds.getKeybinds();
+ *   - by key
+ *     var keybinds = keybinds.getKeybinds("C-y");
+ *   - by element
+ *     var keybinds = keybinds.getKeybinds(window);
+ *   - by key and element
+ *     var keybinds = keybinds.getKeybinds("C-y", window);
  */
-function Keybind(element, key, callback, force) {
-    this.element = element;
-    this.key = key;
-    this.callback = callback;
-    this.force = (force === undefined) ? false : force;
-}
-Keybind.prototype.execute = function(evt) {
-    if (!this.force)
-        if (isForm(evt.target)) return;
-    this.callback.call(this.element, evt, this);
-};
-
-/**
- * Factory of Keybind
- */
-var KeybindFactory = {
-    _binding_elements: [],
-    _type: 'keydown',
-    _binds: [],
-    keys: {
+var keybinds = {
+    _event_binding_elements: null,
+    _event_type: 'keydown',
+    _keybinds: [],
+    _keys: {
         9: "TAB",
         27: "ESC",
         33: "PageUp",
@@ -569,121 +572,242 @@ var KeybindFactory = {
         122: "F11",
         123: "F12"
     },
-    skeys: {
+    _skeys: {
         8: "BS",
         10: "RET",
         13: "RET",
         32: "SPC"
     },
-    mkeys: {
+    _mkeys: {
         'altKey': "A",
         'ctrlKey': "C",
         'metaKey': "M",
         'shiftKey': "S"
     },
-    
-    init: function() {
-        if (this._binding_elements && (this._binding_elements.length > 0))
-            this.unbind();
-        this.bind();
+
+    /**
+     * Keybind entity
+     * @constructor
+     * @param {object} element a DOM Element (HTMLElement/HTMLDocument/DOMWindow)
+     * @param {string} key the key string (e.x. Control + y -> C-y)
+     * @param {function} callback a callback function
+     * @param {boolean} force force execute the callback even where at the input/textarea
+     */
+    Keybind: function(element, key, callback, force) {
+        this.element = element;
+        this.key = key;
+        this.callback = callback;
+        this.force = (force === undefined) ? false : force;
+
+        this.execute = function(evt) {
+            if (!this.force) {
+                if (keybinds.isInputable(evt.target)) { return; }
+            }
+            this.callback.call(this.element, evt, this);
+        }
+        this.toString = function() {
+            return "[object Keybind]";
+        }
     },
-    
+
+    _listener: function(evt) {
+        var self = keybinds;
+        var key = self.getKeyFromEvent(evt);
+        if (key === "") return;
+        var kbs = self._keybinds, i = 0;
+        for (i=0; i<kbs.length; i++) {
+            if ((kbs[i].key === key) && ((kbs[i].element === evt.target) ||
+                    (/^(?:\[object DOMWindow\]|\[object HTMLDocument\])$/.test(kbs[i].element.toString())))) {
+                kbs[i].execute(evt);
+            }
+        }
+    },
+
+    /**
+     * initialize
+     */
+    init: function() {
+        var ebe = this._event_binding_elements;
+        if (ebe && (ebe.length > 0)) {
+            this.unbind();
+        }
+        this.bind();
+        return this;
+    },
+
+    /**
+     * @param {Element} elem add event the DOM Element (default: window)
+     */
     bind: function(elem) {
         if (!elem) elem = window;
-        if (elem in this._binding_elements) return;
-        elem.addEventListener(this._type, this._listener, false);
-        this._binding_elements.push(elem);
+        var ebe = this._event_binding_elements;
+        if (ebe === null) { ebe = []; }
+        if (elem in ebe) return;
+        elem.addEventListener(this._event_type, this._listener, false);
+        ebe.push(elem);
+        return this;
     },
-    
+
+    /**
+     * @param {Element} elem remove event the DOM Element(HTMLELement/HTMLDocument/DOMWindow)
+     */
     unbind: function(elem) {
-        var listeners = this._listeners;
-        if (listeners === null) return;
-        this._binding_elements.forEach(function(e, i) {
-            if ((elem === e) || !elem) {
-                e.removeEventListener(this._type, this._listener, false);
-                delete this._binding_elements[i];
+        var ebe = this._event_binding_elements;
+        if (!ebe || (ebe.length === 0)) return;
+        var i;
+        for (i=0; i<ebe.length; i++) {
+            if ((elem === ebe[i]) || !elem) {
+                ebe[i].removeEventListener(this._event_type, this._listener, false);
+                delete ebe[i];
             }
-        });
+        }
+        return this;
     },
-    
-    _listener: function(evt) {
-        var self = KeybindFactory;
-        var key = self.getKeyname(evt);
-        if (key === "") return;
-        self._binds.forEach(function(sk) {
-            if ((sk.key === key) && ((sk.element === evt.target) || (/^(?:\[object DOMWindow\]|\[object HTMLDocument\])$/.test(sk.element.toString())))) {
-                sk.execute(evt);
-            }
-        });
-    },
-    
+
+    /**
+     * create Keybind object.
+     * @return {object} the own object(keybinds)
+     * @param {object} element a DOM Element (HTMLElement/HTMLDocument/DOMWindow)
+     * @param {string} key the key string (e.x. Control + y -> C-y)
+     * @param {function} callback a callback function
+     * @param {boolean} force force execute the callback even where at the input/textarea
+     */
     add: function(element, key, callback, force) {
-        var keybind = new Keybind(element, key, callback, force);
-        this._binds.push(keybind);
-        return keybind;
+        if (element && key) {
+            if (this._event_binding_elements === null) {
+                this.init();
+            }
+            var kb = new this.Keybind(element, key, callback, force);
+            this._keybinds.push(kb);
+        }
+        return this;
     },
-    
-    getKeybinds: function() {
-        return this._binds;
-    },
-    
-    getKeyname: function(evt, isModiferKey) {
-        var key = [], k = '';
-        var mkeys = this.mkeys;
-        for (mk in mkeys) {
-            if (evt[mk] && mkeys.hasOwnProperty(mk)) {
-                if (isModiferKey) return mk;
-                if ((mk == "metaKey") && (evt["ctrlKey"] === true))
-                    continue;
-                key.push(this.mkeys[mk]);
+
+    /**
+     * return Keybind objects.
+     * @return {Array} the list of Keybind objects.
+     * @param {Element} element a DOM Element(HTMLElement/HTMLDocument/DOMWindow)
+     * @param {string} key the key string (e.x. Control + y -> C-y)
+     */
+    getKeybinds: function(element, key) {
+        var kbs = this._keybinds, i;
+        if ((!element && !key) || (!kbs || kbs.length < 1)) { return kbs; }
+        if (typeof element === "string") {
+            key = element;
+            element = undefined;
+        }
+        var binds = [];
+        for (i=0; i<kbs.length; i++) {
+            if (((key === undefined) || (kbs[i].key === key)) &&
+                    ((element === undefined) || (kbs[i].element === element))) {
+                binds.push(kbs[i]);
             }
         }
-        if (isModiferKey) return "";
-        if (evt.which) {
-            k = this.skeys[evt.which] || this.keys[evt.which] || String.fromCharCode(evt.which).toLowerCase();
-        } else if (evt.keyCode) {
-            k = this.keys[evt.keyCode];
+        return binds;
+    },
+
+    /**
+     * get a key from KeyboardEvent(keydown etc..)
+     * @return {string} the key string (Ctrol + y -> 'C-y')
+     * @param {KeyboardEvent} evt a KeyboardEvent object
+     * @param {boolean} isModifierKey if a getting key is a modifier key only, the attribute is ture.
+     */
+    getKeyFromEvent: function(evt, isModifierKey) {
+        var key = [], k = '';
+        var mkeys = this._mkeys;
+        for (var mk in mkeys) {
+            if (evt[mk] && mkeys.hasOwnProperty(mk)) {
+                if (isModifierKey) return mk;
+                if ((mk === "metaKey") && (evt["ctrlKey"] === true)) {
+                    continue;
+                }
+                key.push(this._mkeys[mk]);
+            }
         }
-        
+        if (isModifierKey) return undefined;
+        if (evt.which) {
+            k = this._skeys[evt.which] || this._keys[evt.which] || String.fromCharCode(evt.which).toLowerCase();
+        } else if (evt.keyCode) {
+            k = this._keys[evt.keyCode];
+        }
+
         if (/^(?:[a-zA-Z0-9]+)$/.test(k)) {
             key.push(key.length ? '-'+k : k);
             return key.join('');
         } else {
-            return "";
+            return undefined;
         }
+    },
+
+    /**
+     * get a key string.
+     * @return {string} the key string (Control + y -> 'C-y')
+     * @param {Element} element a DOM Element(optional, default:window)
+     * @param {function} callback (required)
+     * @param {boolean} isModifierKey if a getting key is a modifier key only, the attribute is ture.
+     */
+    getKey: function(element, callback, isModifierKey) {
+        var self = this;
+        if (typeof element === "function") {
+            if (callback !== undefined) {
+                isModifierKey = callback;
+            }
+            callback = element;
+            element = window;
+        }
+        if (typeof callback !== "function") { return undefined; }
+        element.addEventListener('keydown', function(evt) {
+            var key = self.getKeyFromEvent(evt, !!isModifierKey);
+            callback.call(element, key, evt);
+        }, false);
 
     },
-    
+
+    /**
+     * remove a Keybind from Keybind object.
+     * @param {Keybind} keybind a Keybind object
+     */
     remove: function(keybind) {
         if (keybind) {
-            this._binds = this._binds.filter(function(bind, index, array) {
+            this._keybinds = this._keybinds.filter(function(bind) {
                 return (keybind != bind);
             });
         }
     },
-    
-    removeAll: function() {
-        this._binds.forEach(function(bind) {
-            delete bind;
+
+    /**
+     * remove a Keybind from a Element and a key
+     * @param {Element} element a DOM Element
+     * @param {string} key the key string (e.x. Control + y -> C-y)
+     */
+    removeByKey: function(element, key) {
+        this._keybinds = this._keybinds.filter(function(keybind) {
+            return (!(keybind.element === element && keybind.key === key));
         });
-        this._binds = [];
     },
-    
-    removeByKeyname: function(element, key) {
-        this._binds = this._binds.filter(function(keybind, index, array) {
-            return (!(keybind.element == element && keybind.key == key));
-        });
+
+    /**
+     * remove all Keybinds
+     */
+    removeAll: function() {
+        var kbs = this._keybinds, i = 0;
+        if (!kbs || kbs.length === 0) {
+            return;
+        }
+        for (i=0; i<kbs.length; i++) {
+            delete kbs[i];
+        }
+    },
+
+    /**
+     * the method checks whether a input field or a textarea.
+     * @return {boolean} if the node is input or textarea, return true.
+     * @param {Element} node a DOM Element(HTMLElement/HTMLDocument/DOMWindow)
+     */
+    isInputable: function(node) {
+        return /^(?:input|textarea)$/.test(node.nodeName.toLowerCase());
     }
 };
-
-
-/**
- * the method checks whether a input field or a textarea.
- * @return boolean if the node is input or textarea, return true.
- */
-function isForm(node) {
-    return /^(?:input|textarea)$/.test(node.nodeName.toLowerCase());
-}
 
 /**
  * the method checks whether a anchor.

@@ -5,7 +5,7 @@
 <title>MultiLookup - 設定</title>
 <script src="/js/lib/jquery-1.4.2.min.js"></script>
 <script src="/js/lib/jquery-ui-1.8.5.min.js"></script>
-<script src="/js/keybind.js"></script>
+<script src="/js/keybinds.js"></script>
 <script src="/js/options.js" async></script>
 <link rel="stylesheet" href="/css/options.css" type="text/css" />
 </head>
@@ -255,7 +255,7 @@
                 <a href="http://wedata.net/databases/Lookup/items"  target="_blank">Wedata(データベース:Lookup)</a>からサイト情報を取得し更新します<br>
                 ※以前に変更したサイトも更新される可能性があります
             </p>
-            <input type="button" onclick="Options.site.updateSiteinfo();" value="更新する" />
+            <input type="button" onclick="MLuOptions.site.updateSiteinfo();" value="更新する" />
         </td>
     </tr>
     <tr>
@@ -412,21 +412,21 @@
         <th class="option_th">設定の初期化</th>
         <td class="option_td">
             <p class="notice">※基本設定と高度な設定の設定項目すべてをデフォルト値に戻します</p>
-            <input type="button" onclick="Options.initialize.resetConfig();" value="初期設定に戻す" />
+            <input type="button" onclick="MLuOptions.initialize.resetConfig();" value="初期設定に戻す" />
         </td>
     </tr>
     <tr>
         <th class="option_th">サイト情報の初期化</th>
         <td class="option_td">
             <p class="notice">※サイト情報をデフォルト値に戻します</p>
-            <input type="button" onclick="Options.initialize.resetSiteinfo();" value="初期設定に戻す" />
+            <input type="button" onclick="MLuOptions.initialize.resetSiteinfo();" value="初期設定に戻す" />
         </td>
     </tr>
     <tr>
         <th class="option_th">すべてを初期設定に戻す</th>
         <td class="option_td">
             <p class="notice">※すべての設定項目とサイト情報をデフォルト値に戻します</p>
-            <input type="button" onclick="Options.initialize.resetAll();" value="初期設定に戻す" />
+            <input type="button" onclick="MLuOptions.initialize.resetAll();" value="初期設定に戻す" />
         </td>
     </tr>
 </table>
@@ -474,7 +474,7 @@
                 <td><textarea id="report_description" name="report_content"></textarea></td>
             </tr><tr>
             <th></th>
-            <td><input type="button" onclick="Options.report.send();" value="送信" /></td>
+            <td><input type="button" onclick="MLuOptions.report.send();" value="送信" /></td>
             </tr>
             </table>
         </div>

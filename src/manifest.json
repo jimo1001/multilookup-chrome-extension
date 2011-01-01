@@ -2,7 +2,7 @@
   "id": "kploejngmljnhpofmejijjhegehhdfoa",
   "default_locale": "ja",
   "name": "__MSG_extName__",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "description": "__MSG_extDescription__",
   "icons": {
     "256": "img/icon256.png",
