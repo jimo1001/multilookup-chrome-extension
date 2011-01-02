@@ -2,7 +2,7 @@
 
 *, html {
     padding: 0;
-    margin: 0;
+    margin: 0
 }
 
 body {
@@ -15,24 +15,41 @@ body {
 }
 
 h1 {
-    padding: 5px 10px;
+    padding: 10px 10px 5px 10px;
     font-size: 90%;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-bottom: 5px solid #ccc; 
     color: #333;
-    background: -webkit-gradient(linear, left top, left bottom, from(#ccc), to(#eee))
+    background: -webkit-gradient(linear, left top, left bottom, from(#eee), to(#ccc))
 }
 
-div#lookup-option {
+#extension-title {
+    color: #666666;
+    float: right;
+    font-size: 110%;
+    padding-right: 0.5em
+}
+
+.content-title {
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.content-title-active {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: white
+}
+
+#lookup-option {
     margin-bottom: 10px
 }
 
-form#lookup {
+#lookup {
     padding: 10px
 }
 
-select#lookup-lang {
+#lookup-lang {
     padding-left: 3px;
     height: 24px;
     width: auto
@@ -52,7 +69,7 @@ select#lookup-type {
     color: #666
 }
 
-select#lookup-site {
+#lookup-site {
     padding-left: 3px;
     height: 24px;
     width: auto;
@@ -163,4 +180,30 @@ input[type='submit'], input[type='reset'] {
 
 .ui-menu-item a.ui-state-hover {
     background: #eee
+}
+
+.hide {
+    display: none
+}
+
+#option {
+    padding: 10px;
+    text-align: left
+}
+
+#option th, #option td {
+    padding: 0.5em
+}
+
+#option th {
+    background-color: #eee
+}
+
+#option select {
+    width: 10em;
+    padding-left: 0.5em
+}
+
+a {
+    color: #666
 }

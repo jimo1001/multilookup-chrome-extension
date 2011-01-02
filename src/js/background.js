@@ -57,7 +57,7 @@ multilookup = {
 
                 // favicon of base64 text
                 if ((info["icon"] === undefined) && multilookup.siteinfo.exist(info["id"])) {
-                    multilookup.getFaviconFromHatenaAPI(url.replace("%s", ""), function(data) {
+                    multilookup.favicon.getFaviconFromHatenaAPI(url.replace("%s", ""), function(data) {
                         var sm = multilookup.siteinfo.getSiteinfo();
                         sm[info["id"]]["icon"] = data;
                         self.sync = true;
@@ -221,75 +221,77 @@ multilookup = {
         };
     },
 
-    /**
-     * @param url
-     * @returns boolean
-     */
-    getFaviconFromHatenaAPI: function(url, callback) {
-        var api = "http://favicon.hatena.ne.jp/?url=";
-        url = api + url;
-        this.loadBase64TextImage(url, function(data) {
-            var type = this.getResponseHeader("Content-Type");
-            if (type == "text/html") data = "";
-            if (data != "")
-                data = "data:" + type + ";base64," + data;
-            if (callback)
-                callback.call(this, data);
-        });
-        return true;
-    },
+    favicon: {
+        /**
+         * @param url
+         * @returns boolean
+         */
+        getFaviconFromHatenaAPI: function(url, callback) {
+            var api = "http://favicon.hatena.ne.jp/?url=";
+            url = api + url;
+            this.loadBase64TextImage(url, function(data) {
+                var type = this.getResponseHeader("Content-Type");
+                if (type == "text/html") data = "";
+                if (data != "")
+                    data = "data:" + type + ";base64," + data;
+                if (callback)
+                    callback.call(this, data);
+            });
+            return true;
+        },
 
-    /**
-     * @param html_text HTML text
-     * @param url
-     * @returns boolean
-     */
-    getFaviconFromHTML: function(url, html_text, callback) {
-        var icon_url = null;
-        var links = html_text.match(/<link.*(\/?>|<\/link>)$/img);
-        if (links === null) return null;
-        links = $(links.join(""));
-        links.each(function() {
-            var rel = $(this).attr("rel");
-            if (rel !== undefined && /(?:icon)/.test(rel)) {
-                icon_url = completeURL($(this).attr("href"), url);
-                return false;
-            }
-        });
-        if (!icon_url)
-            icon_url = getURLtoHost(url) + "/favicon.ico";
-        this.loadBase64TextImage(icon_url, function(data) {
-            var type = this.getResponseHeader("Content-Type");
-            if (data != "") {
-                data = "data:" + type + ";base64," + data;
-            }
-            if (callback) {
-                callback.call(this, data);
-            }
-        });
-        return true;
-    },
+        /**
+         * @param html_text HTML text
+         * @param url
+         * @returns boolean
+         */
+        getFaviconFromHTML: function(url, html_text, callback) {
+            var icon_url = null;
+            var links = html_text.match(/<link.*(\/?>|<\/link>)$/img);
+            if (links === null) return null;
+            links = $(links.join(""));
+            links.each(function() {
+                var rel = $(this).attr("rel");
+                if (rel !== undefined && /(?:icon)/.test(rel)) {
+                    icon_url = completeURL($(this).attr("href"), url);
+                    return false;
+                }
+            });
+            if (!icon_url)
+                icon_url = getURLtoHost(url) + "/favicon.ico";
+            this.loadBase64TextImage(icon_url, function(data) {
+                var type = this.getResponseHeader("Content-Type");
+                if (data != "") {
+                    data = "data:" + type + ";base64," + data;
+                }
+                if (callback) {
+                    callback.call(this, data);
+                }
+            });
+            return true;
+        },
 
-    /**
-     * @param url
-     * @param callback
-     */
-    loadBase64TextImage: function(url, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', url, true);
-        xhr.overrideMimeType('text/plain;charset=x-user-defined');
-        xhr.send(null);
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if ((200 <= this.status) && (this.status <= 226)) {
-                    var data = this.responseText;
-                    var bytes = [];
-                    for (var i = 0; i < data.length; i++) {
-                        bytes[i] = (data.charCodeAt(i) & 0xff);
+        /**
+         * @param url
+         * @param callback
+         */
+        loadBase64TextImage: function(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.overrideMimeType('text/plain;charset=x-user-defined');
+            xhr.send(null);
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if ((200 <= this.status) && (this.status <= 226)) {
+                        var data = this.responseText;
+                        var bytes = [];
+                        for (var i = 0; i < data.length; i++) {
+                            bytes[i] = (data.charCodeAt(i) & 0xff);
+                        }
+                        callback.call(this, btoa(String.fromCharCode.apply(String, bytes)));
+                    } else {
+                        callback.call(this, "");
                     }
-                    callback.call(this, btoa(String.fromCharCode.apply(String, bytes)));
-                } else {
-                    callback.call(this, "");
                 }
             }
         }
