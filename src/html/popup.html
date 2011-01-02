@@ -70,7 +70,7 @@ popup.lookup = {
         $(self.selector.context).bind("keyup", self.onKeyup).focus();
 
         $("input, select").bind("change", function() {
-            self.saveFormData();
+            popup.cache.saveFormData();
         });
 
         this.showHistories();

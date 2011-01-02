@@ -14,6 +14,8 @@ function Result(id, context, result) {
     this.id = id;
     this.context = context;
     this.element = null;
+    this.article_element = null;
+    this.height = 0;
     this.infoId = result["siteinfo_id"];
     this.resultText = result["result_text"];
     this.url = result["url"];
@@ -37,8 +39,19 @@ Result.prototype = {
             evt.stopPropagation();
         }, true);
         article.innerHTML = this.resultText;
+        article.style.opacity = 0;
         this.element.appendChild(title);
         this.element.appendChild(article);
+        this.article_element = article;
+        window.setTimeout(function() {
+            self.height = article.offsetHeight;
+            article.style.maxHeight = self.height + "px";
+            article.style.opacity = 1;
+            article.style.display = "block";
+            window.setTimeout(function() {
+                article.style.webkitTransitionProperty = "all";
+            }, 100);
+        }, 100);
         return this.element;
     },
     
@@ -52,18 +65,28 @@ Result.prototype = {
     },
     
     show: function(element) {
-        var e = element || this.element;
-        e.setAttribute('style', "display: block");
+        var self = this;
+        var e = element || this.article_element;
+        e.style.display = "block";
+        window.setTimeout(function() {
+            e.style.opacity = 1;
+            e.style.maxHeight = self.height + "px";
+
+        }, 100);
         if (!element) this.hidden = false;
     },
     
     hide: function(element) {
-        var e = element || this.element;
-        e.setAttribute('style', "display: none");
+        var e = element || this.article_element;
+        e.style.maxHeight = "0";
+        e.style.opacity = 0;
+        window.setTimeout(function() {
+            e.style.display = "none";
+        }, 500);
         if (!element) this.hidden = true;
     },
     toggle: function(element) {
-        var e = element || this.elment;
+        var e = element || this.article_element;
         var style = e.getAttribute('style');
         var hidden = (element) ? !(style == null || style.match("display: block")) : this.hidden;
         if (hidden)
@@ -86,7 +109,7 @@ function ResultGroup(id, context, resultList) {
     this.hidden = false;
     this.indicator = null;
     this._hidden_indicator = false;
-    
+
     this.createElement();
     if (resultList)
         this.addResultList(resultList);
@@ -131,14 +154,12 @@ ResultGroup.prototype = {
     
     getGroupStyle: function() {
         var position = CONFIG["result_position"] || "bottom";
-        var size = CONFIG["result_size"] || "50";
+        var size = CONFIG["result_size"] || 50;
         var font_size = CONFIG["font_size"] || 100;
         var font_family = CONFIG["font_family"];
-        
         var style = "font-size: "+font_size+"%;";
         if (font_family)
             style += " font-family: \'"+font_family+"\';";
-        
         switch(position) {
             case "top":
                 return style+" top: 0; right: 0; left: 0; max-height: "+size+"%;";
@@ -154,8 +175,13 @@ ResultGroup.prototype = {
     },
     
     removeElement: function() {
-        if (this.element)
-            this.element.parentNode.removeChild(this.element);
+        var e = this.element;
+        if (e) {
+            e.style.opacity = "0";
+            window.setTimeout(function() {
+                e.parentNode.removeChild(e);
+            }, 500);
+        }
         this.results = [];
     },
     
@@ -266,9 +292,13 @@ var ResultGroupFactory = {
     add: function(context, results) {
         var id = this.count;
         var group = new ResultGroup(id, context, results);
+        var e = group.getElement();
         this._resultGroups.push(group);
-        this._node.appendChild(group.getElement());
+        this._node.appendChild(e);
         this.count++;
+        window.setTimeout(function() {
+            e.style.opacity = "1";
+        }, 100);
         return id;
     },
 
@@ -613,7 +643,7 @@ var keybinds = {
     _listener: function(evt) {
         var self = keybinds;
         var key = self.getKeyFromEvent(evt);
-        if (key === "") return;
+        if (!key) return;
         var kbs = self._keybinds, i = 0;
         for (i=0; i<kbs.length; i++) {
             if ((kbs[i].key === key) && ((kbs[i].element === evt.target) ||

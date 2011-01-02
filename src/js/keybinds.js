@@ -95,7 +95,7 @@ keybinds = {
     _listener: function(evt) {
         var self = keybinds;
         var key = self.getKeyFromEvent(evt);
-        if (key === "") return;
+        if (!key) return;
         var kbs = self._keybinds, i = 0;
         for (i=0; i<kbs.length; i++) {
             if ((kbs[i].key === key) && ((kbs[i].element === evt.target) ||
