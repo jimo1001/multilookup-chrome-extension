@@ -333,7 +333,8 @@ popup.changeTab = function(name) {
     $("#"+tid).addClass("content-title-active");
     $(".content").hide();
     $("#"+name).show();
-    popup.cache.data["active_tab_name"] = name;
+    var cache = popup.cache.getCachedData();
+    cache["active_tab_name"] = name;
     popup.cache.saveFormData();
 };
 

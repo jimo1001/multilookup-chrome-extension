@@ -76,7 +76,7 @@
     position: fixed;
     z-index: 99999;
     opacity: 0;
-    -webkit-transition: opacity 0.5s
+    -webkit-transition: opacity 0.3s
 }
 
 #MultiLookup.black .MLu_group {
