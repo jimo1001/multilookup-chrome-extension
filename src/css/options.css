@@ -22,20 +22,94 @@ body {
     opacity: 0.9
 }
 
-.ui-dialog { position: absolute; padding: .2em; width: 750px; overflow: hidden; }
-.ui-dialog .ui-dialog-titlebar { padding: .5em 1em .3em; position: relative; background: #AAA; }
-.ui-dialog .ui-dialog-title { float: left; margin: .1em 16px .2em 0; } 
-.ui-dialog .ui-dialog-titlebar-close { position: absolute; right: 0.5em; top: 50%; width: auto; margin: -10px 0 0 0; padding: 1px; height: 18px; text-decoration: none; }
-.ui-dialog .ui-dialog-titlebar-close span { display: block; margin: 1px; color: #333; }
-.ui-dialog .ui-dialog-titlebar-close:hover span { color: #933; }
-.ui-dialog .ui-dialog-content { position: relative; border: 0; padding: .5em 1em; background: none; zoom: 1; }
-.ui-dialog .ui-dialog-buttonpane { text-align: left; border-width: 1px 0 0 0; background-image: none; margin: .5em 0 0 0; padding: .3em 1em .5em .4em; }
-.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { float: right; }
-.ui-dialog .ui-dialog-buttonpane button { margin: .5em .4em .5em 0; cursor: pointer; }
-.ui-dialog .ui-resizable-se { width: 14px; height: 14px; right: 3px; bottom: 3px; }
-.ui-draggable .ui-dialog-titlebar { cursor: move; }
-.ui-helper-clearfix::after { clear: both; content: '.'; display: block; height: 0px; visibility: hidden; }
+.ui-dialog {
+    position: absolute;
+    padding: .2em;
+    width: 750px;
+    overflow: hidden;
+    background-color: white;
+    color: #333;
+    border-radius: 10px;
+}
 
+.ui-dialog .ui-dialog-titlebar {
+    padding: .5em 1em .3em;
+    position: relative;
+    background: #CCC;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.ui-dialog .ui-dialog-title {
+    float: left;
+    margin: .1em 16px .2em 0;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    position: absolute;
+    right: 0.5em;
+    top: 50%;
+    width: auto;
+    margin: -10px 0 0 0;
+    padding: 1px;
+    height: 18px;
+    text-decoration: none;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: block;
+    margin: 1px;
+    color: #333;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover span {
+    color: #933;
+}
+
+.ui-dialog .ui-dialog-content {
+    position: relative;
+    border: 0;
+    padding: .5em 1em;
+    background: none;
+    zoom: 1;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+    text-align: left;
+    border-width: 1px 0 0 0;
+    background-image: none;
+    margin: .5em 0 0 0;
+    padding: .3em 1em .5em .4em;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset {
+    float: right;
+}
+
+.ui-dialog .ui-dialog-buttonpane button {
+    margin: .5em .4em .5em 0;
+    cursor: pointer;
+}
+
+.ui-dialog .ui-resizable-se {
+    width: 14px;
+    height: 14px;
+    right: 3px;
+    bottom: 3px;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+    cursor: move;
+}
+
+.ui-helper-clearfix::after {
+    clear: both;
+    content: '.';
+    display: block;
+    height: 0px;
+    visibility: hidden;
+}
 
 #wrapper {
     margin: 0 auto;
@@ -247,24 +321,35 @@ div.table div.table-cell.spacer {
 
 #siteinfo_detail th, 
 #siteinfo_detail td {
-    border: 1px solid #999;
     padding: 0.25em;
+    border: 1px solid #999
 }
 
 #siteinfo_detail thead th {
+    padding-right: 0.5em;
+    text-align: right;
+    background: #CCC
+}
+
+#siteinfo_detail thead td {
+    font-weight: bold;
+    padding-right: 0.5em;
     text-align: left;
     background: #CCC
 }
 
 #siteinfo_detail tbody th {
+    padding-right: 0.5em;
     width: 150px;
     max-width: 150px;
-    text-align: left
+    border-right: 1px dotted #999;
+    text-align: right
 }
 
 #siteinfo_detail tbody td {
     width: 550px;
     max-width: 550px;
+    border-left: 0;
     word-break: break-all
 }
 

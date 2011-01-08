@@ -257,28 +257,33 @@
     float: none !important
 }
 
+#MultiLookup .MLu_result_article td,
+#MultiLookup .MLu_result_article th {
+    padding: 0.1em 0.25em
+}
+
 #MultiLookup.black .MLu_result:nth-child(odd) .MLu_result_article,
 #MultiLookup.black .MLu_result:nth-child(odd) .MLu_result_article * {
-    color: #EEEEEE;
-    background-color: #000000
+    color: #EEEEEE !important;
+    background-color: #000000 !important
 }
 
 #MultiLookup.white .MLu_result:nth-child(odd) .MLu_result_article,
 #MultiLookup.white .MLu_result:nth-child(odd) .MLu_result_article * {
-    color: #333333;
-    background-color: #FFFFFF
+    color: #333333 !important;
+    background-color: #FFFFFF !important
 }
 
 #MultiLookup.black .MLu_result:nth-child(even) .MLu_result_article,
 #MultiLookup.black .MLu_result:nth-child(even) .MLu_result_article * {
-    color: #EEEEEE;
-    background-color: #111111
+    color: #EEEEEE !important;
+    background-color: #111111 !important
 }
 
 #MultiLookup.white .MLu_result:nth-child(even) .MLu_result_article,
 #MultiLookup.white .MLu_result:nth-child(even) .MLu_result_article * {
-    color: #333333;
-    background-color: #EEEEEE
+    color: #333333 !important;
+    background-color: #EEEEEE !important
 }
 
 #MultiLookup .MLu_group .MLu_result .MLu_result_article a {
@@ -287,12 +292,12 @@
 
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article a,
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article a * {
-    color: #CCCCFF
+    color: #CCCCFF !important
 }
 
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article a,
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article a * {
-    color: #3333CC
+    color: #3333CC !important
 }
 
 #MultiLookup .MLu_group .MLu_result .MLu_result_article li {
@@ -359,7 +364,7 @@
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article h5 *,
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article h6,
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article h6 * {
-    color: #EEE
+    color: #EEE !important
 }
 
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article h1,
@@ -374,19 +379,19 @@
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article h5 *,
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article h6,
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article h6 * {
-    color: #111
+    color: #111 !important
 }
 
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article em,
 #MultiLookup.black .MLu_group .MLu_result .MLu_result_article strong {
     font-style: normal;
-    color: #FCC
+    color: #FCC !important
 }
 
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article em,
 #MultiLookup.white .MLu_group .MLu_result .MLu_result_article strong {
     font-style: normal;
-    color: #633
+    color: #633 !important
 }
 
 #MultiLookup .MLu_group .MLu_result .MLu_result_article button:empty,

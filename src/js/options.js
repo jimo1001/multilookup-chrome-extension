@@ -304,7 +304,7 @@ MLuOptions.site = new function() {
         var sid = $("input[type='hidden']", tnode).val();
         var siteinfo = parent.siteinfo[sid];
         var node = $("#siteinfo_detail");
-        var table = $("<table><thead><tr><th>項目名</th><th>値</th></tr><thead><tbody></tbody></table>");
+        var table = $("<table><thead><tr><th>項目名</th><td>値</td></tr><thead><tbody></tbody></table>");
         var tbody = $("tbody", table);
         $.each(SITEINFO_ATTRIBUTE, function(i, v) {
             if (v in siteinfo) {
@@ -342,7 +342,7 @@ MLuOptions.site = new function() {
             }
             parent.saveConfig(true);
         });
-        keybind.append($("<th></th>").text("ShortcutKey"));
+        keybind.append($("<th></th>").text("shortcut_key"));
         keybind.append($("<td></td>").append(input));
         tbody.append(keybind);
         node.contents().remove();

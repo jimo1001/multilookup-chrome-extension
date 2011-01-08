@@ -111,19 +111,28 @@ function sanitize(node, prefix) {
     var func = arguments.callee;
     var nodes = node.childNodes;
     var contents =[];
-    for (var i=0,l=nodes.length;i<l;i++){
+    for (var i=0,l=nodes.length;i<l;i++) {
         var content = func(nodes[i], prefix);
         if(content) contents.push(content);
     }
     
-    if (node.nodeType === Node.ELEMENT_NODE){
+    if (node.nodeType === Node.ELEMENT_NODE) {
         var tag = node.tagName;
-        var attr = (function(){
+        var attr = (function() {
             var res=[''];
-            switch(tag){
+            switch(tag) {
                 case 'IMG':
                     if (/^(?:https?:\/\/|data:image)/.test(node.src)) {
                         res.push('src=' + JSON.stringify(node.src));
+                    }
+                    if (node.width) {
+                        res.push('width=' + node.width);
+                    }
+                    if (node.height) {
+                        res.push('height=' + node.height);
+                    }
+                    if (node.align) {
+                        res.push('align=' + node.align);
                     }
                     break;
                 case 'A':
@@ -147,17 +156,38 @@ function sanitize(node, prefix) {
                         res.push('name=' + JSON.stringify(prefix+node.name));
                     }
                     break;
-                default:
-                    if (prefix) {
-                        if (node.id) {
-                            res.push('id=' + JSON.stringify(prefix + node.id));
-                        }
-                        //if (node.className) {
-                        //    res.push('class=' + JSON.stringify(prefix + node.className));
-                        //}
+                case 'TD':
+                    if (node.colSpan && (node.colSpan > 1)) {
+                        res.push('colspan='+node.colSpan);
                     }
                     break;
+                case 'TH':
+                    if (node.colSpan && (node.colSpan > 1)) {
+                        res.push('colspan='+node.colSpan);
+                    }
+                    break;
+                default:
+                    break;
             }
+            if (prefix) {
+                if (node.id) {
+                    res.push('id=' + JSON.stringify(prefix + node.id));
+                }
+                if (node.className) {
+                    res.push((function() {
+                        var classes = node.className.split(" ");
+                        for (var i=0; i<classes.length; i++) {
+                            classes[i] = prefix + classes[i];
+                        }
+                        return "class=" + JSON.stringify(classes.join(" "));
+                    })());
+                }
+            }
+
+            if (node.style && node.style.cssText) {
+                res.push('style=' + JSON.stringify(node.style.cssText));
+            }
+            
             return res.join(' ');
         })();
         return '<' + tag + attr + '>' + contents.join('') + '</'+tag+'>';
