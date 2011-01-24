@@ -1,23 +1,326 @@
 {
-  "extName": {
-    "message": "MultiLookup"
-  },
-  "extDescription": {
-    "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
-  },
-  "all": {
-    "message": "すべて"
-  },
-  "autoDetect": {
-    "message": "自動判別(選択済みサイト)"
-  },
-  "dictionary": {
-    "message": "辞書引き"
-  },
-  "search": {
-    "message": "ウェブ検索"
-  },
-  "translation": {
-    "message": "翻訳"
-  }
+    "ext_name": {
+        "message": "MultiLookup"
+    },
+    "ext_description": {
+        "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
+    },
+    "all": {
+        "message": "すべて"
+    },
+    "auto_detect": {
+        "message": "自動判別(選択済みサイト)"
+    },
+    "dictionary": {
+        "message": "辞書引き"
+    },
+    "search": {
+        "message": "ウェブ検索"
+    },
+    "translation": {
+        "message": "翻訳"
+    },
+    "default": {
+        "message": "デフォルト"
+    },
+    "characters": {
+        "message": "文字"
+    },
+    "type": {
+        "message": "種別"
+    },
+    "language": {
+        "message": "言語"
+    },
+    "regexp": {
+        "message": "正規表現"
+    },
+    "shortcut_key": {
+        "message": "ショートカットキー"
+    },
+    "enable": {
+        "message": "有効にする"
+    },
+    "disable": {
+        "message": "無効にする"
+    },
+    "button_update": {
+        "message": "更新する"
+    },
+    "button_edit": {
+        "message": "変更"
+    },
+    "button_delete": {
+        "message": "削除"
+    },
+    "button_send": {
+        "message": "送信"
+    },
+    "button_addnew": {
+        "message": "新規追加"
+    },
+    "button_initialize": {
+        "message": "初期設定に戻す"
+    },
+    "button_add_language": {
+        "message": "言語を追加する"
+    },
+    "button_delete_language": {
+        "message": "選択中の言語を削除する"
+    },
+    "button_add_type": {
+        "message": "言語の種別を追加する"
+    },
+    "button_delete_type": {
+        "message": "選択中の言語の種別を削除する"
+    },
+    "option_page": {
+        "message": "オプションページ"
+    },
+    "option_page_title": {
+        "message": "MultiLookup オプション"
+    },
+    "option_section_show_toggle": {
+        "message": "クリックで表示/非表示"
+    },
+    "option_auto_save_notice": {
+        "message": "※設定は自動で保存されます"
+    },
+    "option_basic_settings": {
+        "message": "基本設定"
+    },
+    "option_basic_settings_description": {
+        "message": "検索結果の表示や検索方法などの基本的な設定を行います"
+    },
+    "option_theme": {
+        "message": "テーマ"
+    },
+    "option_results_position": {
+        "message": "表示位置"
+    },
+    "option_results_position_description": {
+        "message": "結果表示のポップアップを表示する位置を指定してください"
+    },
+    "option_show_column_number": {
+        "message": "表示カラム数"
+    },
+    "option_show_column_number_description": {
+        "message": "結果表示のポップアップをカラム(列)数を指定してください"
+    },
+    "option_results_width": {
+        "message": "表示幅"
+    },
+    "option_results_width_description": {
+        "message": "画面下に表示される結果表示のポップアップの大きさを指定してください<br>画面全体の場合は100%です"
+    },
+    "option_results_opacity": {
+        "message": "不透過度"
+    },
+    "option_results_opacity_description": {
+        "message": "画面下に表示される結果表示のポップアップの透過度を指定してください<br>100%にすると完全な不透過になります"
+    },
+    "option_font_family_description": {
+        "message": "フォント名を指定してください<br>以下で指定したフォントで結果表示のポップアップを表示します"
+    },
+    "option_font_size": {
+        "message": "フォントサイズ"
+    },
+    "option_font_size_description": {
+        "message": "100を基準とする相対的な大きさの数値を指定してください"
+    },
+    "option_contextmenu": {
+        "message": "コンテキストメニュー"
+    },
+    "option_contextmenu_description": {
+        "message": "右クリックに表示されるコンテキストメニューに<strong>MultiLookup</strong>の項目を追加します<br>このコンテキストメニューからこの設定画面を開いたり、テキスト選択時にコンテキストメニューから調たいサイトを選ぶことができます<br>※ 後者はテキスト選択されているとき、前者は選択されていないときのみ表示されます"
+    },
+    "option_middle_click_lookup": {
+        "message": "ミドルクリック検索"
+    },
+    "option_middle_click_lookup_description": {
+        "message": "テキスト選択時に中(マウスホイール)ボタンクリック時に検索を行います<br>※修飾キーが押されていない場合でも検索を行ないます"
+    },
+    "option_dblclick_lookup": {
+        "message": "ダブルクリック検索"
+    },
+    "option_dblclick_lookup_description": {
+        "message": "ダブルクリック時に検索します<br>※修飾キーが押されていない場合でも検索を行ないます"
+    },
+    "option_modifier_key": {
+        "message": "修飾キー"
+    },
+    "option_modifier_key_description": {
+        "message": "テキスト選択時に、修飾キー(altKey, ctrlKey, shiftKey, metaKey)が押されているときのみ検索を行ないます"
+    },
+    "option_close_all_results": {
+        "message": "すべて閉じる"
+    },
+    "option_close_all_results_description": {
+        "message": "表示されている結果表示をすべて閉じます"
+    },
+    "option_lookup_history": {
+        "message": "検索履歴"
+    },
+    "option_lookup_history_description": {
+        "message": "検索した文字列(種別がDirectoryに該当するもの. 単語or文節)の履歴を取ることができます<br>履歴は、ブラウザ右上部のアイコンをクリックしたときに表示されるポップアップページ(クイック検索)に表示されます"
+    },
+    "option_history_limit": {
+        "message": "履歴の上限数"
+    },
+    "option_siteinfo_settings": {
+        "message": "サイト"
+    },
+    "option_siteinfo_settings_description": {
+        "message": "サイトは、辞書引き・翻訳・ウェブ検索などの検索対象を表します<br>サイトの選択や更新に関する設定ができます<br>※事前にサイトを選択しておくことで、ウェブ上のテキスト選択時にすばやく調べることができます"
+    },
+    "option_select_siteinfo": {
+        "message": "サイトの選択"
+    },
+    "option_select_siteinfo_description": {
+        "message": "サイトを選択してください<ul><li>選択の状態にするには、ドラッグ＆ドロップで<strong>未選択なサイト</strong>から<strong>選択済みサイト</strong>に移動させます</li><li>ダブルクリックすると詳細情報が表示されます</li><li>左側のチェックボックスにチェックしたサイトは、デフォルトの検索対象となります<ul><li>デフォルトの検索対象は、テキスト選択やブラウザアクション(サイト指定なし)での検索時に使用されます</li></ul></li><li>選択したサイトの上下の並びは、結果表示の並びに反映されます</li></ul>"
+    },
+    "option_selected_siteinfo": {
+        "message": "選択済みサイト"
+    },
+    "option_unselected_siteinfo": {
+        "message": "未選択なサイト"
+    },
+    "option_update_siteinfo": {
+        "message": "サイト情報の更新"
+    },
+    "option_update_siteinfo_description": {
+        "message": "<a href='http://wedata.net/databases/Lookup/items' target='_blank'>Wedata(データベース:Lookup)</a>からサイト情報を取得し更新します<br>※以前に変更したサイトも更新される可能性があります"
+    },
+    "option_auto_update_siteinfo": {
+        "message": "自動更新"
+    },
+    "option_auto_update_siteinfo_description": {
+        "message": "ブラウザ起動時にサイトを更新します"
+    },
+    "option_advanced_settings": {
+        "message": "高度な設定"
+    },
+    "option_advanced_settings_description": {
+        "message": "選択された文字列の言語および種別の判別に用いられる正規表現の変更や、サイトの新規追加・変更・削除を行ないます"
+    },
+    "option_advanced_settings_warning_message": {
+        "message": "※この設定は本拡張の動作に大きく影響しますので注意して変更してください"
+    },
+    "option_limit_length": {
+        "message": "選択文字数の上限値"
+    },
+    "option_limit_length_description": {
+        "message": "テキスト選択による実行の際に選択文字数の長さの上限を指定してください<br>文字列の長さが大きいほど負荷が高くなる可能性がありますのでご注意ください"
+    },
+    "option_xhr_timeout": {
+        "message": "タイムアウト"
+    },
+    "option_xhr_timeout_description": {
+        "message": "XmlHttpReqestで結果を取得する際のタイムアウト時間(ミリ秒)を指定します"
+    },
+    "option_lookup_limit_result_length": {
+        "message": "結果文字数の上限値"
+    },
+    "option_lookup_limit_result_length_description": {
+        "message": "XmlHttpRequestによって取得した結果の文字数の上限を指定します<br>サイズの大きなHTMLの場合、サニタイズ処理などの負荷が高まります"
+    },
+    "option_language_detect": {
+        "message": "言語の判別"
+    },
+    "option_language_detect_api_description": {
+        "message": "Google Translation API を利用して言語の判別を行ないます<br>こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません"
+    },
+    "option_use_api": {
+        "message": "API を利用する"
+    },
+    "option_language_detect_regexp_description": {
+        "message": "正規表現を各言語で定義して、言語の判別を行ないます"
+    },
+    "use_regexp": {
+        "message": "正規表現を使用する"
+    },
+    "option_set_language_detect_regexp_message": {
+        "message": "文字列選択時の言語選択に用いる正規表現を設定してください"
+    },
+    "option_type_detect": {
+        "message": "種別の判別"
+    },
+    "option_type_detect_description": {
+        "message": "文字列選択時の種別の選択に用いる正規表現を設定してください<br>種別はそれぞれ、辞書引き(dictionary), 翻訳(translation), ウェブ検索(search)を表します"
+    },
+    "option_siteinfo_edit": {
+        "message": "サイトの追加・変更・削除"
+    },
+    "option_siteinfo_edit_description": {
+        "message": "サイト情報の新規追加と現在登録されているサイト情報の変更・削除を行うことができます"
+    },
+    "option_edit_siteinfo_attention": {
+        "message": "※サイトを追加する場合は、そのサイトの規約をご確認上追加してください<br>name, url, type, src-lang は必須項目です"
+    },
+    "option_initialize": {
+        "message": "初期化"
+    },
+    "option_initialize_settings": {
+        "message": "設定の初期化"
+    },
+    "option_initialize_settings_description": {
+        "message": "※基本設定と高度な設定の設定項目すべてをデフォルト値に戻します"
+    },
+    "option_initialize_siteinfo": {
+        "message": "サイト情報の初期化"
+    },
+    "option_initialize_siteinfo_description": {
+        "message": "※サイト情報をデフォルト値に戻します"
+    },
+    "option_initialize_all_description": {
+        "message": "※すべての設定項目とサイト情報をデフォルト値に戻します"
+    },
+    "option_etc": {
+        "message": "その他"
+    },
+    "option_usage": {
+        "message": "利用ガイド"
+    },
+    "option_usage_information": {
+        "message": "この拡張について利用方法については、以下のページを参照してください"
+    },
+    "option_report": {
+        "message": "報告"
+    },
+    "option_report_description": {
+        "message": "要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br>報告頂いた内容は、<a target='_blank' href='http://www.simplivillage.com/trac/report/1'>管理サイトのチケット</a>として登録されます。<br>この拡張に関する感想は <a target='_blank' href='https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja'>MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします"
+    },
+    "option_report_owner": {
+        "message": "報告者(任意):"
+    },
+    "option_report_type": {
+        "message": "種別: "
+    },
+    "option_report_type_issue": {
+        "message": "問題・バグ"
+    },
+    "option_report_type_demand": {
+        "message": "要望"
+    },
+    "option_report_title": {
+        "message": "タイトル: "
+    },
+    "option_report_content_description": {
+        "message": "概要: "
+    },
+    "option_page_open": {
+        "message": "オプションページを開く"
+    },
+    "background_error_not_such_siteinfo": {
+        "message": "該当する検索サイトがありませんでした"
+    },
+    "background_error_no_lookup_entry": {
+        "message": "検索サイトが選択されていません。<a href='__MSG_@@extension_id__/html/options.html' target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください"
+    },
+    "popup_enable_suggest": {
+        "message": "サジェストを有効にする"
+    },
+    "popup_searchform_placeholder": {
+        "message": "入力してください"
+    }
 }

@@ -524,9 +524,7 @@ multilookup = {
         },
 
         exist: function(id) {
-            if (this._infos[id])
-                return true;
-            return false;
+            return !!(this._infos[id]);
         },
 
         setSiteinfo: function(aSiteinfo) {
@@ -1111,7 +1109,7 @@ multilookup = {
 
             // auto detect
             chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("autoDetect") || "Auto",
+                title: chrome.i18n.getMessage("auto_detect2") || "Auto",
                 contexts: ["selection"],
                 onclick: function(info, tab) {
                     self.lookupShowResult(info.selectionText, null, tab);

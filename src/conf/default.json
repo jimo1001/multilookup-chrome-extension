@@ -13,7 +13,7 @@
   "enable_trim": true,
   "enable_selection_lookup": true,
   "enable_effect": false,
-  "enable_mousewheel_lookup": true,
+  "enable_middle_click_lookup": true,
   "enable_dblclick_lookup": false,
   "enable_auto_update": false,
   "enable_context_menus": true,

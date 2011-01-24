@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <title>MultiLookup - ブラウザアクション</title>
-<script src="/js/lib/jquery-1.4.2.min.js"></script>
-<script src="/js/lib/jquery-ui-1.8.5.min.js"></script>
-<script src="/js/keybinds.js"></script>
+<script src="../js/lib/jquery-1.4.2.min.js"></script>
+<script src="../js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="../js/keybinds.js"></script>
 <script async>
 var multilookup = chrome.extension.getBackgroundPage().multilookup;
 var popup = {};
@@ -411,10 +411,10 @@ $(document).ready(function() {
         <tr>
             <th>マウスホイールボタン</th>
             <td>
-                <input type="radio" id="enable_mousewheel_lookup" value="1" name="enable_mousewheel_lookup" checked>
-                <label for="enable_mousewheel_lookup">有効にする</label>
-                <input type="radio" id="disable_mousewheel_lookup" value="0" name="enable_mousewheel_lookup">
-                <label for="disable_mousewheel_lookup">無効にする</label>
+                <input type="radio" id="enable_middle_click_lookup" value="1" name="enable_middle_click_lookup" checked>
+                <label for="enable_middle_click_lookup">有効にする</label>
+                <input type="radio" id="disable_middle_click_lookup" value="0" name="enable_middle_click_lookup">
+                <label for="disable_middle_click_lookup">無効にする</label>
             </td>
         </tr>
         <tr>

@@ -83,7 +83,7 @@ MLuOptions.common = new function() {
                 var name = this.name;
                 var value = $(this).val();
                 if ((value == "0") || (value == "1")) {
-                    value = (value == "1") ? true : false;
+                    value = (value === "1");
                 }
                 parent.config[name] = value;
                 parent.saveConfig(true);
@@ -714,4 +714,41 @@ function jsonFormatter(jsonText) {
 $(document).ready(function() {
     MLuOptions.init();
     keybinds.init();
+
+    $(".i18n").each(function() {
+        var message = chrome.i18n.getMessage(this.title);
+        if ((this.tagName === "INPUT") && ($(this).attr('type') === "button")) {
+            $(this).val(message);
+        } else {
+            $(this).html(message);
+        }
+    });
+    var def = chrome.i18n.getMessage("default");
+    var re = RegExp("-");
+    multilookup.config.getDefaultConfig(function(config) {
+        $(".default_value").each(function() {
+            var contexts = this.title.split(" ");
+            var configs = [];
+            contexts.forEach(function(context) {
+                if (!context) return;
+                var contexts = [];
+                var conf = "";
+                if (re.test(context)) {
+                    contexts = context.split("-");
+                    for (var i=0; i<contexts.length; i++) {
+                        if (!conf) {
+                            conf = config[contexts[i]];
+                        } else {
+                            conf = conf[contexts[i]];
+                        }
+                    }
+                } else {
+                    conf = config[context];
+                }
+                configs.push(conf)
+            });
+            var conf_text = configs.join(", ");
+            $(this).text("("+def+": "+(conf_text===""?"-":conf_text)+")");
+        });
+    });
 });

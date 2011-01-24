@@ -448,13 +448,17 @@ var MultiLookup = {
         var text = trim(node.getSelection().toString());
         var wheel = false;
         if (!text) return;
-        
+
+        var enable_middle_click_lookup = CONFIG["enable_middle_click_lookup"];
+        var enable_context_menus = CONFIG["enable_context_menus"];
+
         // update context menu (unsupport)
-        if (CONFIG["enable_context_menus"]) {
+        if (enable_context_menus || (enable_context_menus === void(0))) {
             if (evt["button"] === 0)
                 self.postMessage({id: "contextmenu-update", value: text});
         }
-        if (CONFIG["enable_mousewheel_lookup"]) {
+
+        if (enable_middle_click_lookup || (enable_middle_click_lookup === void(0))) {
             if ((evt["button"] == 1) && !isAnchor(evt.target))
                 wheel = true;
         }
