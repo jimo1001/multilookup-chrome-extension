@@ -266,12 +266,30 @@
                 <div id="unselected_siteinfo" class="table-cell">
                     <div class='label'>
                         <strong class="i18n" title="option_unselected_siteinfo">未選択なサイト</strong>
-                        <input id="site-filter" type="search" placeholder="絞り込み" />
+                        <input id="site-filter" type="search" placeholder="Search Text" />
                     </div>
                     <ul></ul>
                 </div>
             </div>
             <div id="siteinfo_detail"></div>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th i18n" title="option_manage_siteinfo_db">データベースの追加・削除</th>
+        <td class="option_td">
+            <p class="notice i18n" title="option_manage_siteinfo_db_description">
+                新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加、または削除します。<br>
+                現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>
+                Ja: http://wedata.net/databases/Lookup_en/items.json<br>
+                En: http://wedata.net/databases/Lookup/items.json<br>
+                追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>
+                ※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。
+            </p>
+            <label><span class="i18n" title="url">URL:</span>
+                <input style="width: 400px" type="text" />
+
+                <input class="i18n" title="button_add" type="button" onclick="" value="追加する" />
+            </label>
         </td>
     </tr>
     <tr>

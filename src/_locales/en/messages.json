@@ -62,6 +62,9 @@
     "quick_lookup": {
         "message": "Quick Lookup"
     },
+    "url": {
+        "message": "URL"
+    },
     "table_key": {
         "message": "Title"
     },
@@ -226,6 +229,15 @@
     },
     "option_unselected_siteinfo": {
         "message": "Unselected Sites"
+    },
+    "option_manage_siteinfo_db": {
+        "message": "データベースの追加・削除"
+    },
+    "option_manage_siteinfo_db_description": {
+        "message": "新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加します。<br>現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>Ja: http://wedata.net/databases/Lookup_en/items.json<br>En: http://wedata.net/databases/Lookup/items.json<br>追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。"
+    },
+    "option_warning_add_siteinfo_db_duplicate_url": {
+        "message": "指定されたデータベースは既に登録されています"
     },
     "option_update_siteinfo": {
         "message": "Update Site Info"
