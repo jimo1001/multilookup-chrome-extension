@@ -44,8 +44,9 @@
         }
     },
     "available_siteinfo_url_list": [],
-    "default_siteinfo_url": {
+    "default_remote_siteinfo_url": {
         "ja": "http://wedata.net/databases/Lookup/items.json",
         "en": "http://wedata.net/databases/Lookup_en/items.json"
-    }
+    },
+    "default_local_siteinfo_url": ["/data/siteinfo.json"]
 }

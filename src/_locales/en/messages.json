@@ -425,6 +425,9 @@
     "background_error_no_lookup_entry": {
         "message": "No search sites are selected. Add search sites from the <a href='$1' target='_blank'>Options Page</a>."
     },
+    "background_error_over_lookup_limit_length": {
+        "message": "検索文字列長の上限($1)を超えています"
+    },
     "popup_enable_suggest": {
         "message": "Enable Search Suggest"
     },

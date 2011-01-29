@@ -425,6 +425,9 @@
     "background_error_no_lookup_entry": {
         "message": "検索サイトが選択されていません。<a href='$1' target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください"
     },
+    "background_error_over_lookup_limit_length": {
+        "message": "検索文字列長の上限($1)を超えています"
+    },
     "popup_enable_suggest": {
         "message": "サジェストを有効にする"
     },

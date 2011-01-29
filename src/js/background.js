@@ -3,11 +3,7 @@
  * @author jimo1001
  */
 
-// global variable
-const SITEINFO_REMOTE_URI_LIST = ["http://wedata.net/databases/Lookup/items.json"];
-const SITEINFO_LOCAL_URI_LIST = ["/data/siteinfo.json"];
-
-
+var multilookup = {};
 multilookup = {
     /**
      * Lookup word/text
@@ -489,7 +485,8 @@ multilookup = {
         init: function(callback) {
             this.loadSiteinfo();
             if (!this._infos || (this._infos == "null") || isEmpty(this._infos)) {
-                this.importSiteinfoFromLocal(callback);
+                //this.importSiteinfoFromLocal(callback);
+                this.importSiteinfoFromRemote(callback)
                 return;
             }
             if (callback)
@@ -598,11 +595,19 @@ multilookup = {
         },
 
         importSiteinfoFromRemote: function(callback) {
-            this._importSiteinfo(SITEINFO_REMOTE_URI_LIST, callback);
+            var list = multilookup.config.getConfigByName("available_siteinfo_url_list");
+            var lang = "ja", url = "";
+            if (list && (list.length < 1)) {
+                lang = getLanguage();
+                url = multilookup.config.getConfigByName("default_remote_siteinfo_url")[lang];
+                list = [url];
+            }
+            this._importSiteinfo(list, callback);
         },
 
         importSiteinfoFromLocal: function(callback) {
-            this._importSiteinfo(SITEINFO_LOCAL_URI_LIST, callback);
+            var url = multilookup.config.getConfigByName("default_local_siteinfo_url");
+            this._importSiteinfo([url], callback);
         },
 
         _importSiteinfo: function(urls, callback) {
@@ -984,7 +989,7 @@ multilookup = {
             var message;
             var limit = multilookup.config.getConfigByName("lookup_limit_length") || 1200;
             if (context.length > limit) {
-                message = "検索文字列長の上限("+limit+")を超えています";
+                message = _("background_error_over_lookup_limit_length", limit);
                 callback.call(this, {id: "lookup", value: {status: "error", results: { message: message }, context: context}});
                 return;
             }
