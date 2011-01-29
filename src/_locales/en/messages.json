@@ -14,8 +14,11 @@
     "ext_description": {
         "message": "This extension lets you select text to search from multiple sources (categorized as dictionary, translation, or search) and displays the results in a single pop-up screen."
     },
-    "translator": {
-        "message": "Translator"
+    "contributor": {
+        "message": "Contributors"
+    },
+    "translated_by": {
+        "message": "translated by "
     },
     "all": {
         "message": "All"

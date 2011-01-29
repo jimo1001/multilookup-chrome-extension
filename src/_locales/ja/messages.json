@@ -14,8 +14,11 @@
     "ext_description": {
         "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
     },
-    "translator": {
-        "message": "翻訳者"
+    "contributor": {
+        "message": "協力者"
+    },
+    "translated_by": {
+        "message": "翻訳者: "
     },
     "all": {
         "message": "すべて"

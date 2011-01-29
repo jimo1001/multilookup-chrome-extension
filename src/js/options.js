@@ -207,7 +207,9 @@ MLuOptions.site = new function() {
         var config = parent.config;
         var selected = $("#selected_siteinfo");
         var unselected = $("#unselected_siteinfo");
-        
+
+        // empty siteinfo
+        if (!siteinfo || (siteinfo.length === 0)) return;
         // initialize
         $("li", $("#siteinfo_selector")).remove();
         
@@ -493,6 +495,7 @@ MLuOptions.advance = new function() {
     this.generateSelectList = function() {
         var list = $("#editable_siteinfo_list");
         var siteinfo = parent.siteinfo;
+        if (!siteinfo || (siteinfo.length === 0)) return;
         $("*", list).remove();
         $.each(siteinfo, function(id, info) {
             var option = $("<option/>").val(id).text(info["name"]);
@@ -707,17 +710,18 @@ $(document).ready(function() {
     MLuOptions.init();
     keybinds.init();
     
-    $(".i18n").each(function() {
-        var message = _(this.title);
-        var lang = window.navigator.language;
+    $("[data-i18n]").each(function() {
+        var message = _(this.dataset["i18n"]);
+        var lang = getLanguage();
+        if (!message) { return; }
         if ((this.tagName === "INPUT") && ($(this).attr('type') === "button")) {
-            $(this).val(message).attr("lang", lang).removeAttr("title");
+            $(this).val(message).attr("lang", lang);
         } else {
-            $(this).html(message).attr("lang", lang).removeAttr("title");
+            $(this).html(message).attr("lang", lang);
         }
     });
     if ($("#translator_name").text) {
-        $("#translator").show();
+        $("#contributor").show();
     }
     var def = _("default");
     var enable = _("enable");

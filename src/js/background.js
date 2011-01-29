@@ -24,7 +24,7 @@ multilookup = {
             if (!this.siteinfos || isEmpty(this.siteinfos)) {
                 console.warn("Lookup error, siteinfo is empty");
                 var message = _("background_error_not_such_siteinfo");
-                if (isEmpty(multilookup.config.getConfigByName("lookup_entries"))) {
+                if (isEmpty(multilookup.config.get("lookup_entries", []))) {
                     var link = multilookup.config.getOptionURL();
                     message = _("background_error_no_lookup_entry", link);
                 }
@@ -42,7 +42,7 @@ multilookup = {
             });
             var self = this;
             var infos = this.siteinfos;
-            var timeout_delay = multilookup.config.getConfigByName("lookup_xhr_timeout") || 5000;
+            var timeout_delay = multilookup.config.get("lookup_xhr_timeout", 5000);
 
             $.each(infos, function(index, info) {
                 if (!info) return false;
@@ -148,7 +148,7 @@ multilookup = {
             var result_nodes;
 
             // check result size
-            var max_size = multilookup.config.getConfigByName("lookup_limit_result_length") || 500000;
+            var max_size = multilookup.config.get("lookup_limit_result_length", 500000);
             if (html.length > max_size)
                 result_text = this.notice("Result size is too large.");
 
@@ -323,7 +323,7 @@ multilookup = {
         getLanguageByRegexp: function(context) {
             context = $.trim(context);
             if (!context) return [];
-            var langRegexp = multilookup.config.getConfigByName("lang_regexp") || [];
+            var langRegexp = multilookup.config.get("lang_regexp", []);
             var lang =  [];
             if (!isEmpty(langRegexp)) {
                 $.each(langRegexp, function(i, v) {
@@ -353,7 +353,7 @@ multilookup = {
         },
 
         getLanguage: function(context, callback) {
-            var enable_api = multilookup.config.getConfigByName("enable_language_detect_api");
+            var enable_api = multilookup.config.get("enable_language_detect_api", false);
             if (enable_api) {
                 this.getLanguageByAPI(context, function(langs) {
                     callback.call(this, langs);
@@ -366,7 +366,7 @@ multilookup = {
 
         getType: function(context, langs, callback) {
             var self = this, types = {};
-            var cexp = multilookup.config.getConfigByName("content_regexp") || {};
+            var cexp = multilookup.config.get("content_regexp", {});
             if ($.isFunction(langs)) {
                 callback = langs;
                 langs = null;
@@ -406,7 +406,7 @@ multilookup = {
             var self = this;
             context = $.trim(context);
             if (!context) { return; }
-            var cexp = multilookup.config.getConfigByName("content_regexp") || {};
+            var cexp = multilookup.config.get("content_regexp", {});
 
             if (!langs) {
                 return this.getLanguage(context, function(lang) {
@@ -414,7 +414,7 @@ multilookup = {
                 });
             }
             if (!siteinfo) {
-                var entries = multilookup.config.getConfigByName("lookup_entries") || [];
+                var entries = multilookup.config.get("lookup_entries", []);
                 if (isEmpty(entries)) { return callback.call(this, [], langs); }
                 siteinfo = multilookup.siteinfo.getSiteinfoById(entries);
             }
@@ -477,6 +477,153 @@ multilookup = {
     },
 
     /**
+     * Preference
+     */
+    config: {
+        _data: null,
+        default_config_uri: "/conf/default.json",
+        manifest_uri: "/manifest.json",
+        option_uri: "html/options.html",
+
+        init: function(callback) {
+            var self = this;
+            var isDefault = false;
+            if (!this.load()) {
+                return this.getDefaultConfig(function(config) {
+                    self._data = config;
+                    isDefault = true;
+                    self.save();
+                    return _initExtension(callback);
+                });
+            }
+            return _initExtension(callback);
+            
+            function _initExtension(callback) {
+                self.getExtVersion(function(version) {
+                    var current = self._data["version"] || "0.0.1";
+                    if (version > current) {
+                        self._data["version"] = version;
+                        self.updateBatch(current);
+                        self.save();
+                    }
+                    if (callback) {
+                        callback.apply({}, [this._data, isDefault]);
+                    }
+                });
+            }
+        },
+
+        get: function(name, defvalue) {
+            if (!this._data) {
+                return defvalue;
+            }
+            return this._data[name] || defvalue;
+        },
+
+        getConfig: function() {
+            return this._data;
+        },
+
+        getConfigByName: function(name) {
+            if (!this._data) { return undefined; }
+            else { return this._data[name]; }
+        },
+
+        save: function(config) {
+            this._data = config || this._data;
+            var t = JSON.stringify(this._data);
+            localStorage["config"] = t;
+        },
+
+        load: function() {
+            var config = localStorage["config"];
+            if (config && config != "null") {
+                this._data = JSON.parse(config);
+                return true;
+            } else {
+                return false;
+            }
+        },
+
+        updateBatch: function(old_version) {
+            var self = this;
+
+            if (old_version < "0.3.1") {
+                this.getDefaultConfig(function(config) {
+                    self._data["lang_regexp"] = config["lang_regexp"];
+                    self._data["lookup_entries"] = [];
+                    self.save();
+                });
+            }
+        },
+
+        removeCache: function() {
+            delete localStorage["config"];
+            this.config = null;
+        },
+
+        getExtVersion: function(callback) {
+            var self = this;
+            var uri = this.manifest_uri;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', uri, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == 4) {
+                    var manifest = JSON.parse(xhr.responseText);
+                    callback.call(this, manifest["version"]);
+                }
+            }
+        },
+
+        getDefaultConfig: function(callback) {
+            var self = this;
+            var uri = this.default_config_uri;
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', uri, true);
+            xhr.send();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    var config = JSON.parse(xhr.responseText);
+                    callback.call(this, config);
+                }
+            }
+        },
+
+        getOptionURL: function(uri) {
+            if (!uri)
+                uri = this.option_uri;
+            return chrome.extension.getURL(uri);
+        },
+
+        openOptionPage: function() {
+            var self = this;
+
+            chrome.tabs.getAllInWindow(null, function(tabs) {
+                var exist = false;
+                if (tabs && tabs.length > 0) {
+                    for (var i=0; i<tabs.length; i++) {
+                        var tab = tabs[i];
+                        if (tab.url === self.getOptionURL()) {
+                            chrome.tabs.update(tab.id, {selected: true});
+                            exist = true;
+                            break;
+                        }
+                    }
+                }
+                if (exist) return;
+                chrome.tabs.getSelected(null, function (tab) {
+                    var properties = {};
+                    properties["url"] = self.option_uri;
+                    if (tab !== undefined)
+                        properties["index"] = tab.index + 1;
+                    chrome.tabs.create(properties);
+                });
+            });
+        }
+    },
+
+    /**
      * Siteinfo
      */
     siteinfo: {
@@ -485,8 +632,8 @@ multilookup = {
         init: function(callback) {
             this.loadSiteinfo();
             if (!this._infos || (this._infos == "null") || isEmpty(this._infos)) {
-                //this.importSiteinfoFromLocal(callback);
-                this.importSiteinfoFromRemote(callback)
+                this.importSiteinfoFromLocal(callback);
+                //this.importSiteinfoFromRemote(callback)
                 return;
             }
             if (callback)
@@ -589,64 +736,68 @@ multilookup = {
             var self = this;
             var result = false;
             $.each(siteinfos, function(i, siteinfo) {
-                result = self.setSiteinfo(siteinfo);
+                result = self.setSiteinfo(siteinfo) || result;
             });
             return result;
         },
 
         importSiteinfoFromRemote: function(callback) {
-            var list = multilookup.config.getConfigByName("available_siteinfo_url_list");
+            var list = multilookup.config.get("available_siteinfo_url_list", []);
             var lang = "ja", url = "";
             if (list && (list.length < 1)) {
                 lang = getLanguage();
-                url = multilookup.config.getConfigByName("default_remote_siteinfo_url")[lang];
+                url = multilookup.config.get("default_remote_siteinfo_url", {})[lang];
                 list = [url];
             }
             this._importSiteinfo(list, callback);
         },
 
         importSiteinfoFromLocal: function(callback) {
-            var url = multilookup.config.getConfigByName("default_local_siteinfo_url");
+            var url = multilookup.config.get("default_local_siteinfo_url", "");
             this._importSiteinfo([url], callback);
         },
 
         _importSiteinfo: function(urls, callback) {
             var self = this;
-            if(!$.isArray(urls) || urls.length < 1) return;
-
-            for (var i=0; i<urls.length; i++) {
-                var url = urls[i];
-                if (!url) continue;
+            if (!$.isArray(urls) || (urls.length < 1)) return;
+            var count = 0;
+            urls.forEach(function(url, i) {
+                if (!url) return;
                 var xhr = new XMLHttpRequest();
-                xhr.url = url;
                 xhr.open('GET', url, true);
                 xhr.send();
                 xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4) {
-                        var s = JSON.parse(xhr.responseText);
-                        if (!s) { return; }
-                        var result = true;
-                        if ($.isArray(s)) {
-                            result = self.setSiteinfoList(s);
-                        } else if (s instanceof Object) {
-                            result = self.setSiteinfo(s);
+                    var status = this.status, result = false, data = null;
+                    if (this.readyState === 4) {
+                        count += 1;
+                        if ((status === 0) || ((200 <= status) && (status <= 226))) {
+                            data = JSON.parse(this.responseText);
+                            if (data) {
+                                if ($.isArray(data)) {
+                                    result = self.setSiteinfoList(data);
+                                } else if (data instanceof Object) {
+                                    result = self.setSiteinfo(data);
+                                }
+                            }
                         }
                         // for debug
-                        // if (result) {
-                        //     console.info("a siteinfo import successful from", this.url);
-                        // } else {
-                        //     console.warn("a siteinfo import error from", this.url);
-                        // }
-                        // save siteinfo
-                        if (i == (urls.length - 1)) {
-                            self.save();
+                        /*
+                        if (result) {
+                            console.log("a siteinfo import successful from", url);
+                        } else {
+                            console.error("a siteinfo import error from", url);
                         }
-                        if (callback) {
-                            callback.call(this, result);
+                        */
+                        // save siteinfo
+                        if (count === urls.length) {
+                            self.save();
+                            if (callback) {
+                                callback(result);
+                            }
                         }
                     }
                 }
-            }
+            });
         },
 
         save: function() {
@@ -662,158 +813,19 @@ multilookup = {
         }
     },
 
-    /**
-     * Preference
-     */
-    config: {
-        _data: null,
-        default_config_uri: "/conf/default.json",
-        manifest_uri: "/manifest.json",
-        option_uri: "html/options.html",
-
-        init: function(callback) {
-            var self = this;
-
-            if (!this.load()) {
-                this.getDefaultConfig(function(config) {
-                    self._data = config;
-                    self.save();
-                    if (callback) { callback.call(this, config) };
-                });
-                return "default";
-            }
-
-            this.getExtVersion(function(version) {
-                var current = self._data["version"] || "0.0.1";
-                if (version > current) {
-                    self._data["version"] = version;
-                    self.updateBatch(current);
-                    self.save();
-                }
-            });
-
-            if (callback) {
-                callback.call(this, this._data);
-            }
-            return "strage";
-        },
-
-        updateBatch: function(old_version) {
-            var self = this;
-
-            if (old_version < "0.3.1") {
-                this.getDefaultConfig(function(config) {
-                    self._data["lang_regexp"] = config["lang_regexp"];
-                    self._data["lookup_entries"] = [];
-                    self.save();
-                });
-            }
-        },
-
-        removeCache: function() {
-            delete localStorage["config"];
-            this.config = null;
-        },
-
-        getConfig: function() {
-            return this._data;
-        },
-
-        getConfigByName: function(name) {
-            if (!this._data) { return undefined; }
-            else { return this._data[name]; }
-        },
-
-        save: function(config) {
-            this._data = config || this._data;
-            var t = JSON.stringify(this._data);
-            localStorage["config"] = t;
-        },
-
-        load: function() {
-            var config = localStorage["config"];
-            if (config && config != "null") {
-                this._data = JSON.parse(config);
-                return true;
-            } else {
-                return false;
-            }
-        },
-
-        getExtVersion: function(callback) {
-            var self = this;
-            var uri = this.manifest_uri;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', uri, true);
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    var manifest = JSON.parse(xhr.responseText);
-                    callback.call(this, manifest["version"]);
-                }
-            }
-        },
-
-        getDefaultConfig: function(callback) {
-            var self = this;
-            var uri = this.default_config_uri;
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', uri, true);
-            xhr.send();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == 4) {
-                    var config = JSON.parse(xhr.responseText);
-                    callback.call(this, config);
-                }
-            }
-        },
-
-        getOptionURL: function(uri) {
-            if (!uri)
-                uri = this.option_uri;
-            return chrome.extension.getURL(uri);
-        },
-
-        openOptionPage: function() {
-            var self = this;
-
-            chrome.tabs.getAllInWindow(null, function(tabs) {
-                var exist = false;
-                if (tabs && tabs.length > 0) {
-                    for (var i=0; i<tabs.length; i++) {
-                        var tab = tabs[i];
-                        if (tab.url === self.getOptionURL()) {
-                            chrome.tabs.update(tab.id, {selected: true});
-                            exist = true;
-                            break;
-                        }
-                    }
-                }
-                if (exist) return;
-                chrome.tabs.getSelected(null, function (tab) {
-                    var properties = {};
-                    properties["url"] = self.option_uri;
-                    if (tab !== undefined)
-                        properties["index"] = tab.index + 1;
-                    chrome.tabs.create(properties);
-                });
-            });
-        }
-    },
-
     history: {
         _enabled: null,
         _histories: [],
 
         enabled: function() {
-            this._enabled = multilookup.config.getConfigByName("enable_history") || true;
+            this._enabled = multilookup.config.get("enable_history", true);
             return this._enabled;
         },
 
         add: function(text) {
             if (!this.enabled()) { return; }
             var histories = this._histories;
-            var limit = multilookup.config.getConfigByName("history_limit") || 30;
+            var limit = multilookup.config.get("history_limit", 30);
             var length = histories.length;
             while (length > limit) {
                 histories.pop();
@@ -858,26 +870,29 @@ multilookup = {
 
         init: function() {
             var self = this;
-            var from = multilookup.config.init(function() {
-                if (multilookup.config.getConfigByName("enable_auto_update")) {
+            multilookup.config.init(function(config, isDefault) {
+                if (multilookup.config.get("enable_auto_update", false)) {
                     multilookup.siteinfo.init(function() {
                         multilookup.siteinfo.importSiteinfoFromRemote(self._loadedSiteinfoCallback);
                     });
                 } else {
-                    multilookup.siteinfo.init(self._loadedSiteinfoCallback);
+                    multilookup.siteinfo.init(function() {
+                        self._loadedSiteinfoCallback();
+                        // Open the OptionPage automatically when launch the extension at first.
+                        if (isDefault) {
+                            multilookup.config.openOptionPage();
+                        }
+                    });
                 }
                 // initialize History
                 multilookup.history.load();
             });
-            if (from === "default") {
-                multilookup.config.openOptionPage();
-            }
             chrome.extension.onConnect.addListener(self._onConnect);
             chrome.extension.onRequest.addListener(self._onRequest);
         },
 
         _loadedSiteinfoCallback: function() {
-            var enableContextMenus = multilookup.config.getConfigByName("enable_context_menus");
+            var enableContextMenus = multilookup.config.get("enable_context_menus", true);
             if (enableContextMenus) {
                 multilookup.management.updateDefaultContextMenu();
             }
@@ -987,7 +1002,7 @@ multilookup = {
         lookup: function(context, ids, callback) {
             var siteinfo = null;
             var message;
-            var limit = multilookup.config.getConfigByName("lookup_limit_length") || 1200;
+            var limit = multilookup.config.get("lookup_limit_length", 1200);
             if (context.length > limit) {
                 message = _("background_error_over_lookup_limit_length", limit);
                 callback.call(this, {id: "lookup", value: {status: "error", results: { message: message }, context: context}});
@@ -1053,7 +1068,7 @@ multilookup = {
                 });
                 this.contextmenus = [];
             }
-            var enabled = multilookup.config.getConfigByName("enable_context_menus");
+            var enabled = multilookup.config.get("enable_context_menus", true);
             if (enabled)
                 this.createContextMenuForKeyword(text);
         },
@@ -1062,19 +1077,19 @@ multilookup = {
             var self = this;
             if (!text) return;
             if (!chrome.contextMenus) return;
-            var entries = multilookup.config.getConfigByName("entries") || [];
+            var entries = multilookup.config.get("entries") || [];
             if (isEmpty(entries)) return [];
 
             var siteinfo = multilookup.siteinfo.getSiteinfoById(entries);
             multilookup.detector.getSiteinfo(text, {siteinfo: siteinfo}, function(selected, lang) {
                 if (!selected) return;
                 var sp = chrome.contextMenus.create( {type: "separator", contexts: ["selection"] });
-                var lookup_entries = multilookup.config.getConfigByName("lookup_entries");
+                var lookup_entries = multilookup.config.get("lookup_entries", []);
                 self.contextmenus.push(sp);
                 $.each(selected, function(i, v) {
                     var id = chrome.contextMenus.create({
                         type: "checkbox",
-                        checked: ($.inArray(v["id"], lookup_entries) !== -1) ? true : false,
+                        checked: ($.inArray(v["id"], lookup_entries) !== -1),
                         title: v["name"],
                         contexts: ["selection"],
                         onclick: function(info, tab) {
@@ -1089,7 +1104,7 @@ multilookup = {
         updateDefaultContextMenu: function() {
             chrome.contextMenus.removeAll();
             this.contextmenus = [];
-            var enabled = multilookup.config.getConfigByName("enable_context_menus");
+            var enabled = multilookup.config.get("enable_context_menus", true);
             if (enabled)
                 this.createDefaultContextMenu();
         },
@@ -1097,7 +1112,7 @@ multilookup = {
         createDefaultContextMenu: function() {
             var self = multilookup.management;
             if (!chrome.contextMenus) return;
-            var entries = multilookup.config.getConfigByName("entries") || [];
+            var entries = multilookup.config.get("entries", []);
             var preference = chrome.contextMenus.create({
                 title: "MultiLookup - 設定",
                 contexts: ["page"],

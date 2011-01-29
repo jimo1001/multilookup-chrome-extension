@@ -257,7 +257,7 @@ function isInstanceof(object, className) {
  * return localized message for i18n
  */
 function _() {
-    return chrome.i18n.getMessage.apply({}, Array.prototype.slice.call(arguments))
+    return chrome.i18n.getMessage.apply({}, Array.prototype.slice.call(arguments));
 }
 
 /**
