@@ -1,9 +1,21 @@
 {
+    "translator_name": {
+        "message": ""
+    },
+    "translator_email": {
+        "message": ""
+    },
+    "translator_homepage": {
+        "message": ""
+    },
     "ext_name": {
         "message": "MultiLookup"
     },
     "ext_description": {
         "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
+    },
+    "translator": {
+        "message": "翻訳者"
     },
     "all": {
         "message": "すべて"
@@ -26,6 +38,9 @@
     "characters": {
         "message": "文字"
     },
+    "site": {
+        "message": "サイト"
+    },
     "type": {
         "message": "種別"
     },
@@ -43,6 +58,15 @@
     },
     "disable": {
         "message": "無効にする"
+    },
+    "quick_lookup": {
+        "message": "クイック検索"
+    },
+    "table_key": {
+        "message": "項目名"
+    },
+    "table_value": {
+        "message": "値"
     },
     "button_update": {
         "message": "更新する"
@@ -73,6 +97,18 @@
     },
     "button_delete_type": {
         "message": "選択中の言語の種別を削除する"
+    },
+    "button_add": {
+        "message": "追加"
+    },
+    "button_lookup": {
+        "message": "検索"
+    },
+    "button_reset": {
+        "message": "リセット"
+    },
+    "option": {
+        "message": "オプション"
     },
     "option_page": {
         "message": "オプションページ"
@@ -119,6 +155,9 @@
     "option_results_opacity_description": {
         "message": "画面下に表示される結果表示のポップアップの透過度を指定してください<br>100%にすると完全な不透過になります"
     },
+    "option_font_family": {
+        "message": "フォント"
+    },
     "option_font_family_description": {
         "message": "フォント名を指定してください<br>以下で指定したフォントで結果表示のポップアップを表示します"
     },
@@ -148,6 +187,9 @@
     },
     "option_modifier_key": {
         "message": "修飾キー"
+    },
+    "option_disable_modifir_key": {
+        "message": "修飾キーなし"
     },
     "option_modifier_key_description": {
         "message": "テキスト選択時に、修飾キー(altKey, ctrlKey, shiftKey, metaKey)が押されているときのみ検索を行ないます"
@@ -272,6 +314,9 @@
     "option_initialize_siteinfo_description": {
         "message": "※サイト情報をデフォルト値に戻します"
     },
+    "option_initialize_all": {
+        "message": "すべてを初期設定に戻す"
+    },
     "option_initialize_all_description": {
         "message": "※すべての設定項目とサイト情報をデフォルト値に戻します"
     },
@@ -310,6 +355,69 @@
     },
     "option_page_open": {
         "message": "オプションページを開く"
+    },
+    "option_update_confirm": {
+        "message": "更新してもよろしいですか？"
+    },
+    "option_update_succeeded": {
+        "message": "正常に更新されました"
+    },
+    "option_update_failed": {
+        "message": "更新に失敗しました\nしばらくして再度実行してください"
+    },
+    "option_siteinfo_detail": {
+        "message": "サイト詳細情報"
+    },
+    "option_input_additional_language_notice": {
+        "message": "追加する言語を入力してください(半角英数のみ)"
+    },
+    "option_delete_language_confirm": {
+        "message": "言語: $1 を削除してもよろしいですか？"
+    },
+    "option_input_additional_type_notice": {
+        "message": "追加する種別を入力してください(半角英数のみ)"
+    },
+    "option_delete_type_confirm": {
+        "message": "言語: $1 の種別: $2 を削除してもよろしいですか？"
+    },
+    "option_update_siteinfo_succeeded": {
+        "message": "サイト情報(SITEINFO)を変更しました"
+    },
+    "option_add_siteinfo_succeeded": {
+        "message": "サイト情報(SITEINFO)を追加しました"
+    },
+    "option_json_syntax_error": {
+        "message": "フォーマットが不正です, 正しいJSON形式のフォーマットを入力してください"
+    },
+    "option_missing_required_arguments": {
+        "message": "必須項目を入力してください"
+    },
+    "option_reset_all_confirm": {
+        "message": "すべての設定とサイト情報を初期化してもよろしいですか？"
+    },
+    "option_reset_all_succeeded": {
+        "message": "全て初期設定に戻されました"
+    },
+    "option_reset_settings_confirm": {
+        "message": "設定を初期化してもよろしいですか？"
+    },
+    "option_reset_settings_succeeded": {
+        "message": "設定を初期化しました"
+    },
+    "option_reset_siteinfo_confirm": {
+        "message": "サイト情報(SITEINFO)を初期化してもよろしいですか？"
+    },
+    "option_reset_siteinfo_succeeded": {
+        "message": "サイト情報を初期化しました"
+    },
+    "option_send_report_confirm": {
+        "message": "この報告内容を送信してもよろしいですか？"
+    },
+    "option_send_report_succeeded": {
+        "message": "正常に送信されました。ご報告頂いた内容とステータスは以下から確認することができます。<br>"
+    },
+    "option_send_report_failed": {
+        "message": "送信に失敗しました\n しばらくしてもう一度お試しください"
     },
     "background_error_not_such_siteinfo": {
         "message": "該当する検索サイトがありませんでした"

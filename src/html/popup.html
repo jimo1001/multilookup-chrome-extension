@@ -5,6 +5,7 @@
 <title>MultiLookup - ブラウザアクション</title>
 <script src="../js/lib/jquery-1.4.2.min.js"></script>
 <script src="../js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="../js/utils.js"></script>
 <script src="../js/keybinds.js"></script>
 <script async>
 var multilookup = chrome.extension.getBackgroundPage().multilookup;
@@ -349,47 +350,58 @@ $(document).ready(function() {
     var cache = popup.cache.getCachedData();
     var tabname = cache["active_tab_name"] || "lookup";
     popup.changeTab(tabname);
+
+    $(".i18n").each(function() {
+        var message = _(this.title);
+        var lang = window.navigator.language;
+        var type = this.type;
+        if ((this.tagName === "INPUT") && (type === "button" || type === "reset" || type === "submit")) {
+            $(this).val(message).attr("lang", lang).removeAttr("title");
+        } else {
+            $(this).html(message).attr("lang", lang).removeAttr("title");
+        }
+    });
 });
 </script>
 <link rel="stylesheet" href="/css/popup.css" type="text/css" />
 </head>
 <body>
 <h1>
-    <span id="extension-title">MultiLookup</span>
-    <span class="content-title content-title-active" id="lookup-title" >クイック検索</span>
-    <span class="content-title" id="option-title">オプション</span>
+    <span id="extension-title" class="i18n" title="ext_name">MultiLookup</span>
+    <span class="content-title content-title-active i18n" id="lookup-title" title="quick_lookup">クイック検索</span>
+    <span class="content-title i18n" id="option-title" title="option">オプション</span>
 </h1>
 <form class="content" id="lookup" onsubmit="return false;">
     <div id="lookup-option">
-        <label for="lookup-lang">言語</label>
+        <label for="lookup-lang" class="i18n" title="language">言語</label>
         <select id="lookup-lang" name="lang">
             <option value="">--</option>
         </select>
-        <label for="lookup-type">種別</label>
+        <label for="lookup-type" class="i18n" title="type">種別</label>
         <select id="lookup-type" name="lookup-type">
             <option value="">--</option>
         </select>
-        <label for="lookup-site">サイト</label>
+        <label for="lookup-site" class="i18n" title="site">サイト</label>
         <select id="lookup-site" name="lookup-site">
             <option value="">--</option>
         </select>
     </div>
-    <input id="lookup-context" type="search" name="search" placeholder="入力してください" />
-    <input type="submit" value="検索" />
-    <input type="reset" value="リセット" />
+    <input id="lookup-context" type="search" name="search" placeholder="input search text" />
+    <input type="submit" class="i18n" title="button_lookup" value="検索" />
+    <input type="reset" class="i18n" title="button_reset" value="リセット" />
     <div id="lookup-suboption">
         <input id="enable-suggest" type="checkbox" checked />
-        <label for="enable-suggest">サジェストを有効にする</label>
+        <label for="enable-suggest" class="i18n" title="popup_enable_suggest">サジェストを有効にする</label>
     </div>
     <div id="history" style="display: none">
-        <h2 class="history-title">履歴</h2>
+        <h2 class="history-title i18n" title="option_lookup_history">履歴</h2>
         <div id="history-list"></div>
     </div>
 </form>
 <form class="content hide" id="option" onsubmit="return false;">
     <table>
         <tr>
-            <th>表示位置</th>
+            <th><label for="result_position" class="i18n" title="option_results_position">表示位置</label></th>
             <td>
                 <select id="result_position" class="option" name="result_position">
                     <option value="buttom">buttom</option>
@@ -400,44 +412,44 @@ $(document).ready(function() {
             </td>
         </tr>
         <tr>
-            <th>コンテキストメニュー</th>
+            <th class="i18n" title="option_contextmenu">コンテキストメニュー</th>
             <td>
                 <input type="radio" id="enable_context_menus" value="1" name="enable_context_menus" checked>
-                <label for="enable_context_menus">有効にする</label>
+                <label for="enable_context_menus" class="i18n" title="enable">有効にする</label>
                 <input type="radio" id="disable_context_menus" value="0" name="enable_context_menus">
-                <label for="disable_context_menus">無効にする</label>
+                <label for="disable_context_menus" class="i18n" title="disable">無効にする</label>
             </td>
         </tr>
         <tr>
-            <th>マウスホイールボタン</th>
+            <th class="i18n" title="option_middle_click_lookup">ミドルクリック検索</th>
             <td>
                 <input type="radio" id="enable_middle_click_lookup" value="1" name="enable_middle_click_lookup" checked>
-                <label for="enable_middle_click_lookup">有効にする</label>
+                <label for="enable_middle_click_lookup" class="i18n" title="enable">有効にする</label>
                 <input type="radio" id="disable_middle_click_lookup" value="0" name="enable_middle_click_lookup">
-                <label for="disable_middle_click_lookup">無効にする</label>
+                <label for="disable_middle_click_lookup" class="i18n" title="disable">無効にする</label>
             </td>
         </tr>
         <tr>
-            <th>ダブルクリック</th>
+            <th class="i18n" title="option_dblclick_lookup">ダブルクリック検索</th>
             <td>
                 <input type="radio" id="enable_dblclick_lookup" value="1" name="enable_dblclick_lookup">
-                <label for="enable_dblclick_lookup">有効にする</label>
+                <label for="enable_dblclick_lookup" class="i18n" title="enable">有効にする</label>
                 <input type="radio" id="disable_dblclick_lookup" value="0" name="enable_dblclick_lookup" checked>
-                <label for="disable_dblclick_lookup">無効にする</label>
+                <label for="disable_dblclick_lookup" class="i18n" title="disable">無効にする</label>
             </td>
         </tr>
         <tr>
-            <th>修飾キー</th>
+            <th class="i18n" title="option_modifier_key">修飾キー</th>
             <td>
                 <input type="radio" id="enable_modifier_key" value="1" name="enable_modifier_key" checked>
-                <label for="enable_modifier_key">有効にする</label>
+                <label for="enable_modifier_key" class="i18n" title="enable">有効にする</label>
                 <input type="radio" id="disable_modifier_key" value="0" name="enable_modifier_key">
-                <label for="disable_modifier_key">修飾キーなし</label>
+                <label for="disable_modifier_key" class="i18n" title="option_disable_modifier_key">修飾キーなし</label>
             </td>
         </tr>
         <tr>
-            <th>オプションページ</th>
-            <td><a id="open_option_page" href="#">オプションページを開く</a></td>
+            <th class="i18n" title="option_page">オプションページ</th>
+            <td><a id="open_option_page" class="i18n" title="option_page_open" href="#">オプションページを開く</a></td>
         </tr>
     </table>
 </form>

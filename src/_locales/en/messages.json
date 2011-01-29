@@ -1,9 +1,21 @@
 {
+    "translator_name": {
+        "message": "James Lazo"
+    },
+    "translator_email": {
+        "message": ""
+    },
+    "translator_homepage": {
+        "message": ""
+    },
     "ext_name": {
         "message": "MultiLookup"
     },
     "ext_description": {
         "message": "This extension lets you select text to search from multiple sources (categorized as dictionary, translation, or search) and displays the results in a single pop-up screen."
+    },
+    "translator": {
+        "message": "Translator"
     },
     "all": {
         "message": "All"
@@ -26,6 +38,9 @@
     "characters": {
         "message": "Characters"
     },
+    "site": {
+        "message": "Site"
+    },
     "type": {
         "message": "Type"
     },
@@ -43,6 +58,15 @@
     },
     "disable": {
         "message": "Disable"
+    },
+    "quick_lookup": {
+        "message": "Quick Lookup"
+    },
+    "table_key": {
+        "message": "Title"
+    },
+    "table_value": {
+        "message": "Value"
     },
     "button_update": {
         "message": "Update"
@@ -73,6 +97,18 @@
     },
     "button_delete_type": {
         "message": "Delete the Selected Language Category"
+    },
+    "button_add": {
+        "message": "Add"
+    },
+    "button_lookup": {
+        "message": "Search"
+    },
+    "button_reset": {
+        "message": "Reset"
+    },
+    "option": {
+        "message": "Options"
     },
     "option_page": {
         "message": "Options Page"
@@ -119,6 +155,9 @@
     "option_results_opacity_description": {
         "message": "Set the opacity for display screen<br>Select 100%  for full opacity"
     },
+    "option_font_family": {
+        "message": "Font"
+    },
     "option_font_family_description": {
         "message": "Set the font name<br>Displays results in the configured font"
     },
@@ -148,6 +187,9 @@
     },
     "option_modifier_key": {
         "message": "Modifier Key"
+    },
+    "option_disable_modifier_key": {
+        "message": "Disable Modifier Key"
     },
     "option_modifier_key_description": {
         "message": "Perform search only when the modifier key is pressed (ALT, CTRL, SHIFT, META)"
@@ -272,6 +314,9 @@
     "option_initialize_siteinfo_description": {
         "message": "Reset site info to default settings"
     },
+    "option_initialize_all": {
+        "message": "Reset All"
+    },
     "option_initialize_all_description": {
         "message": "*All settings and site info will be reset to default settings"
     },
@@ -310,6 +355,69 @@
     },
     "option_page_open": {
         "message": "Open the Options Page"
+    },
+    "option_update_confirm": {
+        "message": "更新してもよろしいですか？"
+    },
+    "option_update_succeeded": {
+        "message": "正常に更新されました"
+    },
+    "option_update_failed": {
+        "message": "更新に失敗しました\nしばらくして再度実行してください"
+    },
+    "option_siteinfo_detail": {
+        "message": "サイト詳細情報"
+    },
+    "option_input_additional_language_notice": {
+        "message": "追加する言語を入力してください(半角英数のみ)"
+    },
+    "option_delete_language_confirm": {
+        "message": "言語: $1 を削除してもよろしいですか？"
+    },
+    "option_input_additional_type_notice": {
+        "message": "追加する種別を入力してください(半角英数のみ)"
+    },
+    "option_delete_type_confirm": {
+        "message": "言語: $1 の種別: $2 を削除してもよろしいですか？"
+    },
+    "option_update_siteinfo_succeeded": {
+        "message": "サイト情報(SITEINFO)を変更しました"
+    },
+    "option_add_siteinfo_succeeded": {
+        "message": "サイト情報(SITEINFO)を追加しました"
+    },
+    "option_json_syntax_error": {
+        "message": "フォーマットが不正です, 正しいJSON形式のフォーマットを入力してください"
+    },
+    "option_missing_required_arguments": {
+        "message": "必須項目を入力してください"
+    },
+    "option_reset_all_confirm": {
+        "message": "すべての設定とサイト情報を初期化してもよろしいですか？"
+    },
+    "option_reset_all_succeeded": {
+        "message": "全て初期設定に戻されました"
+    },
+    "option_reset_settings_confirm": {
+        "message": "設定を初期化してもよろしいですか？"
+    },
+    "option_reset_settings_succeeded": {
+        "message": "設定を初期化しました"
+    },
+    "option_reset_siteinfo_confirm": {
+        "message": "サイト情報(SITEINFO)を初期化してもよろしいですか？"
+    },
+    "option_reset_siteinfo_succeeded": {
+        "message": "サイト情報を初期化しました"
+    },
+    "option_send_report_confirm": {
+        "message": "この報告内容を送信してもよろしいですか？"
+    },
+    "option_send_report_succeeded": {
+        "message": "正常に送信されました。ご報告頂いた内容とステータスは以下から確認することができます。<br>"
+    },
+    "option_send_report_failed": {
+        "message": "送信に失敗しました\n しばらくしてもう一度お試しください"
     },
     "background_error_not_such_siteinfo": {
         "message": "No sites match your type of search"

@@ -1,46 +1,51 @@
 {
-  "keybind": {
-    "close": "ESC",
-    "entries": {}
-  },
-  "font_size": 100,
-  "font_family": "",
-  "result_size": 50,
-  "result_opacity": 80,
-  "result_theme": "black",
-  "result_position": "bottom",
-  "result_cell_length": 1,
-  "enable_trim": true,
-  "enable_selection_lookup": true,
-  "enable_effect": false,
-  "enable_middle_click_lookup": true,
-  "enable_dblclick_lookup": false,
-  "enable_auto_update": false,
-  "enable_context_menus": true,
-  "enable_language_detect_api": false,
-  "enable_modifier_key": true,
-  "modifier_key": "altKey",
-  "entries": [],
-  "lookup_entries": [],
-  "lookup_limit_length": 1200,
-  "lookup_limit_result_length": 500000,
-  "lookup_xhr_timeout": 5000,
-  "enable_history": true,
-  "history_limit": 30,
-  "lang_regexp": {
-    "ja": "[ぁ-ヶ亜-黑]+",
-    "en": "^[^ぁ-ヶ亜-黑]+$"
-  },
-  "content_regexp": {
-    "ja": {
-      "dictionary": "^.{0,18}$",
-      "translation": "^.{5,}",
-      "search": "^.{2,50}$"
+    "keybind": {
+        "close": "ESC",
+        "entries": {}
     },
-    "en": {
-      "dictionary": "^(?:[a-zA-Z0-9+_'-]+[ ,]*){0,3}$",
-      "translation": "^(?:[a-zA-Z0-9+_'-]+[ ,.]+){2,}",
-      "search": "^(?:[a-zA-Z0-9+_'-]+[ ,.]*){1,10}$"
+    "font_size": 100,
+    "font_family": "",
+    "result_size": 50,
+    "result_opacity": 80,
+    "result_theme": "black",
+    "result_position": "bottom",
+    "result_cell_length": 1,
+    "enable_trim": true,
+    "enable_selection_lookup": true,
+    "enable_effect": false,
+    "enable_middle_click_lookup": true,
+    "enable_dblclick_lookup": false,
+    "enable_auto_update": false,
+    "enable_context_menus": true,
+    "enable_language_detect_api": false,
+    "enable_modifier_key": true,
+    "modifier_key": "altKey",
+    "entries": [],
+    "lookup_entries": [],
+    "lookup_limit_length": 1200,
+    "lookup_limit_result_length": 500000,
+    "lookup_xhr_timeout": 5000,
+    "enable_history": true,
+    "history_limit": 30,
+    "lang_regexp": {
+        "ja": "[ぁ-ヶ亜-黑]+",
+        "en": "^[^ぁ-ヶ亜-黑]+$"
+    },
+    "content_regexp": {
+        "ja": {
+            "dictionary": "^.{0,18}$",
+            "translation": "^.{5,}",
+            "search": "^.{2,50}$"
+        },
+        "en": {
+            "dictionary": "^(?:[a-zA-Z0-9+_'-]+[ ,]*){0,3}$",
+            "translation": "^(?:[a-zA-Z0-9+_'-]+[ ,.]+){2,}",
+            "search": "^(?:[a-zA-Z0-9+_'-]+[ ,.]*){1,10}$"
+        }
+    },
+    "available_siteinfo_url_list": [],
+    "default_siteinfo_url": {
+        "ja": "http://wedata.net/databases/Lookup/items.json",
+        "en": "http://wedata.net/databases/Lookup_en/items.json"
     }
-  }
 }

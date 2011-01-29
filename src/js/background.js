@@ -27,10 +27,10 @@ multilookup = {
         this.execute = function(context, lookupFinishedCallback) {
             if (!this.siteinfos || isEmpty(this.siteinfos)) {
                 console.warn("Lookup error, siteinfo is empty");
-                var message = "該当する検索サイトがありませんでした";
+                var message = _("background_error_not_such_siteinfo");
                 if (isEmpty(multilookup.config.getConfigByName("lookup_entries"))) {
                     var link = multilookup.config.getOptionURL();
-                    message = "検索サイトが選択されていません。<a href="+link+" target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください";
+                    message = _("background_error_no_lookup_entry", link);
                 }
                 lookupFinishedCallback.call(this, "error", { message: message }, context);
                 return;

@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="../css/options.css" type="text/css" />
 <script src="../js/lib/jquery-1.4.2.min.js"></script>
 <script src="../js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="../js/utils.js" async></script>
 <script src="../js/keybinds.js"></script>
 <script src="../js/options.js" async></script>
 </head>
@@ -104,7 +105,7 @@
     </tr>
     <tr>
         <th class="option_th">
-            <label for="font_family" title="option_font_family">フォント</label><br>
+            <label for="font_family" class="i18n" title="option_font_family">フォント</label><br>
             <span class="default_value" title="font_family"></span>
         </th>
         <td class="option_td">
@@ -464,7 +465,7 @@
         </td>
     </tr>
     <tr>
-        <th class="option_th" title="option_initialize_all">すべてを初期設定に戻す</th>
+        <th class="option_th i18n" title="option_initialize_all">すべてを初期設定に戻す</th>
         <td class="option_td">
             <p class="notice i18n" title="option_initialize_all_description">
                 ※すべての設定項目とサイト情報をデフォルト値に戻します
@@ -491,8 +492,12 @@
                 <a target="_blank" href="http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup">http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup</a>
             </p>
         </td>
-    </tr>
-    <tr>
+    </tr><tr style="display: none" id="translator">
+        <th class="option_th i18n" title="translator">翻訳者</th>
+        <td class="option_td">
+            <em id="translator_name" class="i18n" title="translator_name"></em>
+        </td>
+    </tr><tr>
         <th class="option_th i18n" title="option_report">報告</th>
         <td class="option_td">
         <p class="notice i18n" title="option_report_description">

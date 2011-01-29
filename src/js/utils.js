@@ -254,6 +254,24 @@ function isInstanceof(object, className) {
 }
 
 /**
+ * return localized message for i18n
+ */
+function _() {
+    return chrome.i18n.getMessage.apply({}, Array.prototype.slice.call(arguments))
+}
+
+/**
+ * a Formatter for json
+ * @param jsonText string data of JSON format
+ */
+function jsonFormatter(jsonText) {
+    return jsonText.replace(/({)(\")/g, "$1\n$2")
+                    .replace(/(,)(\")/mg, "$1\n$2")
+                    .replace(/(\"):(\")/mg, "$1 : $2")
+                    .replace(/(\")(})/mg, "$1\n$2")
+                    .replace(/(^[^{}])/mg, "  $1");
+}
+/**
  * Escape encoding
  */
 function escapeByCharset(type, str) {

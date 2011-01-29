@@ -163,15 +163,15 @@ MLuOptions.site = new function() {
     },
     
     this.updateSiteinfo = function(evt) {
-        var result = window.confirm("更新してもよろしいですか？");
+        var result = window.confirm(_("option_update_confirm"));
         if (result) {
-            multilookup.siteinfo.importSiteinfoFromRemote(function(res){
+            multilookup.siteinfo.importSiteinfoFromRemote(function(res) {
                 if (res) {
                     parent.saveSiteinfo(true);
-                    window.confirm("正常に更新されました");
+                    window.confirm(_("option_update_succeeded"));
                     self.generateSelectBox();
                 } else {
-                    window.alert("更新に失敗しました。しばらくして再度実行してください");
+                    window.alert(_("option_update_failed"));
                 }
             });
         }
@@ -225,10 +225,11 @@ MLuOptions.site = new function() {
             var res = info["res-lang"] || "none";
             var li = $("<li class='ui-state-default' />");
             var checkbox = $("<input class='lookup-entry' type='checkbox' />").val(info["id"]);
+
             li.attr("title", (info["name"] + (info["description"] ? (" : "+info["description"]) : "")));
             li.append(checkbox);
             li.append($("<span>"+info["name"]+"</span><br>"));
-            li.append($("<span/>").addClass("info").text("( 種別: "+info["type"]+", 言語: "+src+" -> "+res+")"));
+            li.append($("<span/>").addClass("info").text("( "+_("type")+": "+info["type"]+", "+_("language")+": "+src+" -> "+res+")"));
             li.append($("<input type='hidden'/>").val(info["id"]));
             var keybind = config["keybind"]["entries"];
             if ((keybind !== undefined) && (keybind[info["id"]] !== undefined) && (keybind[info["id"]] !== "")) {
@@ -304,7 +305,7 @@ MLuOptions.site = new function() {
         var sid = $("input[type='hidden']", tnode).val();
         var siteinfo = parent.siteinfo[sid];
         var node = $("#siteinfo_detail");
-        var table = $("<table><thead><tr><th>項目名</th><td>値</td></tr><thead><tbody></tbody></table>");
+        var table = $("<table><thead><tr><th>"+_("table_key")+"</th><td>"+_("table_value")+"</td></tr></thead><tbody></tbody></table>");
         var tbody = $("tbody", table);
         $.each(SITEINFO_ATTRIBUTE, function(i, v) {
             if (v in siteinfo) {
@@ -348,7 +349,7 @@ MLuOptions.site = new function() {
         node.contents().remove();
         node.append(table);
         node.dialog({
-            title: "サイト詳細情報",
+            title: _("option_siteinfo_detail"),
             modal: true,
             position: "center",
             width: 750
@@ -407,7 +408,7 @@ MLuOptions.advance = new function() {
         });
         
         add_button.click(function() {
-            var lang = window.prompt("追加する言語を入力してください(半角英数のみ)", "");
+            var lang = window.prompt(_("option_input_additional_language_notice"), "");
             if (!lang) return;
             if (regexps[lang] !== undefined) return;
             regexps[lang] = "";
@@ -418,7 +419,7 @@ MLuOptions.advance = new function() {
         del_button.click(function() {
             var lang = selectbox.val();
             if (!lang) return;
-            var result = window.confirm("言語: " + lang + " を削除してもよろしいですか？");
+            var result = window.confirm(_("option_delete_language_confirm", lang));
             if (!result) return;
             if (regexps[lang] === undefined) return;
             delete regexps[lang];
@@ -469,7 +470,7 @@ MLuOptions.advance = new function() {
         add_button.click(function() {
             var lang = lang_selectbox.val();
             if (!lang) return;
-            var type = window.prompt("追加する種別を入力してください(半角英数のみ)", "");
+            var type = window.prompt(_("option_input_additional_type_notice"), "");
             if (!type) return;
             if (regexps[lang][type] !== undefined) return;
             regexps[lang][type] = "";
@@ -480,7 +481,7 @@ MLuOptions.advance = new function() {
             var lang = lang_selectbox.val();
             var type = type_selectbox.val();
             if (!lang || !type) return;
-            var result = window.confirm("言語: " + lang + " の種別: " + type + " を削除してもよろしいですか？");
+            var result = window.confirm(_("option_delete_type_confirm", lang, type));
             if (!result) return;
             if (regexps[lang][type] === undefined) return;
             delete regexps[lang][type];
@@ -509,25 +510,27 @@ MLuOptions.advance = new function() {
             $("*", editor).remove();
             var attention = $("#create_attention");
             var name = $(this).attr("name");
+            var id = $("#editable_siteinfo_list").val();
+            var notice = $("div.notification", editor);
+            var button = $("<input type='button'/>");
+            var textarea = $("<textarea/>");
+            var data = {}, json = "";
             if (name == "edit") {
                 attention.show();
-                var id = $("#editable_siteinfo_list").val();
-                var data = {};
                 $.each(siteinfo[id], function(k, v) {
                     if ($.inArray(k, EDITABLE_SITEINFO_ATTRIBUTE) !== -1)
                         data[k] = v;
                 });
-                var json = jsonFormatter(JSON.stringify(data));
-                var textarea = $("<textarea/>").attr("id", "edit_siteinfo_text").text(json);
-                var button = $("<input type='button'/>").val("変更する");
+                json = jsonFormatter(JSON.stringify(data));
+                textarea.attr("id", "edit_siteinfo_text").text(json);
+                button.val(_("button_update"));
                 editor.append(textarea, "<br>", button);
-                var notice = $("div.notification", editor);
                 if (notice.length < 1)
                     notice = $("<div class='notification'></div>").insertBefore(textarea);
                 button.click(function() {
                     try {
                         self.addSiteinfo(textarea.val());
-                        notice.html("サイト情報を変更しました");
+                        notice.html(_("option_update_siteinfo_succeeded"));
                         attention.hide();
                     } catch (e) {
                         notice.html(e);
@@ -535,7 +538,6 @@ MLuOptions.advance = new function() {
                 });
             } else if (name == "delete") {
                 attention.hide();
-                var id = $("#editable_siteinfo_list").val();
                 if (delete siteinfo[id]) {
                     parent.saveSiteinfo(true);
                     self.generateSelectList();
@@ -544,24 +546,22 @@ MLuOptions.advance = new function() {
                 }
             } else if (name == "create") {
                 attention.show();
-                var data = {};
                 var list = $.grep(EDITABLE_SITEINFO_ATTRIBUTE, function(n, i) {
                     return (n !== "id");
                 });
                 list.forEach(function(v, i) {
                     data[v] = "";
                 });
-                var json = jsonFormatter(JSON.stringify(data));
-                var textarea = $("<textarea/>").attr("id", "create_siteinfo_text").text(json);
-                var button = $("<input type='button'/>").val("追加する");
+                json = jsonFormatter(JSON.stringify(data));
+                textarea.attr("id", "create_siteinfo_text").text(json);
+                button.val(_("buton_add"));
                 editor.append(textarea, "<br>", button);
-                var notice = $("div.notification", editor);
                 if (notice.length < 1)
                     notice = $("<div class='notification'></div>").insertBefore(textarea);
                 button.click(function() {
                     try {
                         self.addSiteinfo(textarea.val());
-                        notice.html("サイト情報を追加しました");
+                        notice.html(_("option_add_siteinfo_succeede"));
                         attention.hide();
                     } catch (e) {
                         notice.html(e);
@@ -576,13 +576,13 @@ MLuOptions.advance = new function() {
         try {
             data = JSON.parse(text);
         } catch (e) {
-            throw "フォーマットが不正です, 正しいJSON形式のフォーマットを入力してください";
+            throw _("option_json_syntax_error");
         }
         data = $.each(data, function(i, v) {
             if (v == "") delete data[i];
         });
         if (!multilookup.siteinfo.setSiteinfo(data)) {
-            throw "必須項目を入力してください";
+            throw _("option_missing_required_arguments");
         }
         parent.saveSiteinfo(true);
         multilookup.management.updateDefaultContextMenu();
@@ -601,12 +601,12 @@ MLuOptions.initialize = new function() {
     var configManager = null;
     
     this.init = function() {
-        siteinfoManager = multilookup.siteinfo
+        siteinfoManager = multilookup.siteinfo;
         configManager = multilookup.config;
     };
     
     this.resetAll = function(evt) {
-        var result = window.confirm("すべての設定とサイト情報を初期化してもよろしいですか？");
+        var result = window.confirm(_("option_reset_all_confirm"));
         if (result) {
             configManager.removeCache();
             configManager.init(function() {
@@ -617,25 +617,25 @@ MLuOptions.initialize = new function() {
                     self.site.init();
                 });
             });
-            if (window.confirm("全て初期設定に戻されました"))
+            if (window.confirm(_("option_reset_all_succeeded")))
                 this.reload();
         }
     };
     
     this.resetConfig = function(evt) {
-        var result = window.confirm("設定を初期化してもよろしいですか？");
+        var result = window.confirm(_("option_reset_settings_confirm"));
         if (result) {
             configManager.removeCache();
             configManager.init(function() {
                 parent.saveConfig(true);
             });
-            if (window.confirm("設定を初期化しました"))
+            if (window.confirm(_("option_reset_settings_succeeded")))
                 this.reload();
         }
     };
     
     this.resetSiteinfo = function(evt) {
-        var result = window.confirm("サイト情報を初期化してもよろしいですか？");
+        var result = window.confirm(_("option_reset_siteinfo_confirm"));
         if (result) {
             configManager.config["entries"] = [];
             configManager.save();
@@ -644,7 +644,7 @@ MLuOptions.initialize = new function() {
                 parent.saveSiteinfo(true);
                 parent.site.init();
             });
-            if (window.confirm("サイト情報を初期化しました"))
+            if (window.confirm(_("option_reset_siteinfo_succeeded")))
                 this.reload();
         }
     };
@@ -663,11 +663,11 @@ MLuOptions.report = new function() {
         var type = $("#report_type").val().trim();
     
         if (!summary || !description) {
-            $("#report_result").html("<span class='error'>※未入力の項目があります</span>");
+            $("#report_result").html("<span class='error'>"+_("option_missing_required_arguments")+"</span>");
             return;
         }
     
-        var result = window.confirm("この報告内容を送信してもよろしいですか？");
+        var result = window.confirm(_("option_send_report_confirm"));
         if (!result) return;
     
         var xhr = new XMLHttpRequest();
@@ -694,29 +694,21 @@ MLuOptions.report = new function() {
                     var href = "http://www.simplivillage.com/trac/ticket/"+res["result"];
                     var link = $("<a/>").attr("href", href).attr("target", "_blank").text(href);
                     $("#report_result")
-                            .html("正常に送信されました。ご報告頂いた内容とステータスは以下から確認することができます。<br>").append(link);
+                            .html(_("option_send_report_succeeded")).append(link);
                 } else {
-                    $("#report_result").text("送信に失敗しました、しばらくしてもう一度お試しください。");
+                    $("#report_result").text(_("option_send_report_failed"));
                 }
             }
         };
     };
 };
 
-function jsonFormatter(jsonText) {
-    return jsonText.replace(/({)(\")/g, "$1\n$2")
-                    .replace(/(,)(\")/mg, "$1\n$2")
-                    .replace(/(\"):(\")/mg, "$1 : $2")
-                    .replace(/(\")(})/mg, "$1\n$2")
-                    .replace(/(^[^{}])/mg, "  $1");
-}
-
 $(document).ready(function() {
     MLuOptions.init();
     keybinds.init();
-
+    
     $(".i18n").each(function() {
-        var message = chrome.i18n.getMessage(this.title);
+        var message = _(this.title);
         var lang = window.navigator.language;
         if ((this.tagName === "INPUT") && ($(this).attr('type') === "button")) {
             $(this).val(message).attr("lang", lang).removeAttr("title");
@@ -724,9 +716,12 @@ $(document).ready(function() {
             $(this).html(message).attr("lang", lang).removeAttr("title");
         }
     });
-    var def = chrome.i18n.getMessage("default");
-    var enable = chrome.i18n.getMessage("enable");
-    var disable = chrome.i18n.getMessage("disable");
+    if ($("#translator_name").text) {
+        $("#translator").show();
+    }
+    var def = _("default");
+    var enable = _("enable");
+    var disable = _("disable");
     var re = RegExp("-");
     multilookup.config.getDefaultConfig(function(config) {
         $(".default_value").each(function() {
