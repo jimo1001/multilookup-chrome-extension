@@ -315,7 +315,7 @@
         "message": "該当する検索サイトがありませんでした"
     },
     "background_error_no_lookup_entry": {
-        "message": "検索サイトが選択されていません。<a href='__MSG_@@extension_id__/html/options.html' target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください"
+        "message": "検索サイトが選択されていません。<a href='$1' target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください"
     },
     "popup_enable_suggest": {
         "message": "サジェストを有効にする"

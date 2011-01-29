@@ -717,13 +717,16 @@ $(document).ready(function() {
 
     $(".i18n").each(function() {
         var message = chrome.i18n.getMessage(this.title);
+        var lang = window.navigator.language;
         if ((this.tagName === "INPUT") && ($(this).attr('type') === "button")) {
-            $(this).val(message);
+            $(this).val(message).attr("lang", lang).removeAttr("title");
         } else {
-            $(this).html(message);
+            $(this).html(message).attr("lang", lang).removeAttr("title");
         }
     });
     var def = chrome.i18n.getMessage("default");
+    var enable = chrome.i18n.getMessage("enable");
+    var disable = chrome.i18n.getMessage("disable");
     var re = RegExp("-");
     multilookup.config.getDefaultConfig(function(config) {
         $(".default_value").each(function() {
@@ -734,21 +737,25 @@ $(document).ready(function() {
                 var contexts = [];
                 var conf = "";
                 if (re.test(context)) {
-                    contexts = context.split("-");
-                    for (var i=0; i<contexts.length; i++) {
+                    var ctxs = context.split("-");
+                    for (var i=0; i<ctxs.length; i++) {
                         if (!conf) {
-                            conf = config[contexts[i]];
+                            conf = config[ctxs[i]];
                         } else {
-                            conf = conf[contexts[i]];
+                            conf = conf[ctxs[i]];
                         }
                     }
                 } else {
                     conf = config[context];
                 }
-                configs.push(conf)
+                if (typeof(conf) === "boolean") {
+                    conf = conf ? enable : disable;
+                }
+                configs.push(conf);
             });
             var conf_text = configs.join(", ");
-            $(this).text("("+def+": "+(conf_text===""?"-":conf_text)+")");
+            var lang = window.navigator.language;
+            $(this).text("("+def+": "+(conf_text===""?"-":conf_text)+")").attr("lang", lang).removeAttr("title")
         });
     });
 });

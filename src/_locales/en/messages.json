@@ -3,19 +3,19 @@
         "message": "MultiLookup"
     },
     "ext_description": {
-        "message": "テキスト選択で複数の検索結果(辞書・翻訳・ウェブ検索など)をまとめてポップアップ表示する拡張です。"
+        "message": "This extension lets you select text to search from multiple sources (categorized as dictionary, translation, or search) and displays the results in a single pop-up screen."
     },
     "all": {
         "message": "All"
     },
     "auto_detect": {
-        "message": "自動判別(選択済みサイト)"
+        "message": "Auto-Detect (pre-selected sites)"
     },
     "dictionary": {
         "message": "Dictionary"
     },
     "search": {
-        "message": "WebSearch"
+        "message": "Web Search"
     },
     "translation": {
         "message": "Translation"
@@ -36,7 +36,7 @@
         "message": "RegExp"
     },
     "shortcut_key": {
-        "message": "ショートカットキー"
+        "message": "Keyboard Shortcut"
     },
     "enable": {
         "message": "Enable"
@@ -60,267 +60,267 @@
         "message": "Add New"
     },
     "button_initialize": {
-        "message": "初期設定に戻す"
+        "message": "Reset Settings"
     },
     "button_add_language": {
-        "message": "言語を追加する"
+        "message": "Add a Language"
     },
     "button_delete_language": {
-        "message": "選択中の言語を削除する"
+        "message": "Delete the Selected Language"
     },
     "button_add_type": {
-        "message": "言語の種別を追加する"
+        "message": "Add a Language Category"
     },
     "button_delete_type": {
-        "message": "選択中の言語の種別を削除する"
+        "message": "Delete the Selected Language Category"
     },
     "option_page": {
-        "message": "オプションページ"
+        "message": "Options Page"
     },
     "option_page_title": {
-        "message": "MultiLookup オプション"
+        "message": "MultiLookup Options"
     },
     "option_section_show_toggle": {
-        "message": "クリックで表示/非表示"
+        "message": "Click to Hide/Display"
     },
     "option_auto_save_notice": {
-        "message": "※設定は自動で保存されます"
+        "message": "*Automagically saved"
     },
     "option_basic_settings": {
-        "message": "基本設定"
+        "message": "Basic Settings"
     },
     "option_basic_settings_description": {
-        "message": "検索結果の表示や検索方法などの基本的な設定を行います"
+        "message": "Configure basic settings such as display and search method"
     },
     "option_theme": {
-        "message": "テーマ"
+        "message": "Theme"
     },
     "option_results_position": {
-        "message": "表示位置"
+        "message": "Display Position"
     },
     "option_results_position_description": {
-        "message": "結果表示のポップアップを表示する位置を指定してください"
+        "message": "Set the pop-up position"
     },
     "option_show_column_number": {
-        "message": "表示カラム数"
+        "message": "Columns"
     },
     "option_show_column_number_description": {
-        "message": "結果表示のポップアップをカラム(列)数を指定してください"
+        "message": "Set the number of columns to display"
     },
     "option_results_width": {
-        "message": "表示幅"
+        "message": "Screen Width"
     },
     "option_results_width_description": {
-        "message": "画面下に表示される結果表示のポップアップの大きさを指定してください<br>画面全体の場合は100%です"
+        "message": "Set the display screen size<br>Select 100% for full screen"
     },
     "option_results_opacity": {
-        "message": "不透過度"
+        "message": "Opacity"
     },
     "option_results_opacity_description": {
-        "message": "画面下に表示される結果表示のポップアップの透過度を指定してください<br>100%にすると完全な不透過になります"
+        "message": "Set the opacity for display screen<br>Select 100%  for full opacity"
     },
     "option_font_family_description": {
-        "message": "フォント名を指定してください<br>以下で指定したフォントで結果表示のポップアップを表示します"
+        "message": "Set the font name<br>Displays results in the configured font"
     },
     "option_font_size": {
-        "message": "フォントサイズ"
+        "message": "Font Size"
     },
     "option_font_size_description": {
-        "message": "100を基準とする相対的な大きさの数値を指定してください"
+        "message": "Select a font size derived from the 100% standard size"
     },
     "option_contextmenu": {
-        "message": "コンテキストメニュー"
+        "message": "Context Menu"
     },
     "option_contextmenu_description": {
-        "message": "右クリックに表示されるコンテキストメニューに<strong>MultiLookup</strong>の項目を追加します<br>このコンテキストメニューからこの設定画面を開いたり、テキスト選択時にコンテキストメニューから調たいサイトを選ぶことができます<br>※ 後者はテキスト選択されているとき、前者は選択されていないときのみ表示されます"
+        "message": "Add <strong>MultiLookup</strong> to your right-click context menu<br>The context menu supports opening this Options Page and searching specific sites when text is selected<br>*Right-clicking will display sites when text is selected, and the options link when text is not selected"
     },
     "option_middle_click_lookup": {
-        "message": "ミドルクリック検索"
+        "message": "Middle-Click Search"
     },
     "option_middle_click_lookup_description": {
-        "message": "テキスト選択時に中(マウスホイール)ボタンクリック時に検索を行います<br>※修飾キーが押されていない場合でも検索を行ないます"
+        "message": "Click the middle button (scroll wheel) when text is selected to search<br>*Does not require the modifier key"
     },
     "option_dblclick_lookup": {
-        "message": "ダブルクリック検索"
+        "message": "Double-Click Search"
     },
     "option_dblclick_lookup_description": {
-        "message": "ダブルクリック時に検索します<br>※修飾キーが押されていない場合でも検索を行ないます"
+        "message": "Double-click to search<br>*Does not require the modifier key"
     },
     "option_modifier_key": {
-        "message": "修飾キー"
+        "message": "Modifier Key"
     },
     "option_modifier_key_description": {
-        "message": "テキスト選択時に、修飾キー(altKey, ctrlKey, shiftKey, metaKey)が押されているときのみ検索を行ないます"
+        "message": "Perform search only when the modifier key is pressed (ALT, CTRL, SHIFT, META)"
     },
     "option_close_all_results": {
-        "message": "すべて閉じる"
+        "message": "Close All Results"
     },
     "option_close_all_results_description": {
-        "message": "表示されている結果表示をすべて閉じます"
+        "message": "Close displayed search results"
     },
     "option_lookup_history": {
-        "message": "検索履歴"
+        "message": "Search History"
     },
     "option_lookup_history_description": {
-        "message": "検索した文字列(種別がDirectoryに該当するもの. 単語or文節)の履歴を取ることができます<br>履歴は、ブラウザ右上部のアイコンをクリックしたときに表示されるポップアップページ(クイック検索)に表示されます"
+        "message": "Supports search history (saves terms and phrases by search type, i.e. dictionary, translation, and search)<br>Your history can be accessed from the quick search menu when you click on the extension icon"
     },
     "option_history_limit": {
-        "message": "履歴の上限数"
+        "message": "Maximum History Entries"
     },
     "option_siteinfo_settings": {
-        "message": "サイト"
+        "message": "Sites"
     },
     "option_siteinfo_settings_description": {
-        "message": "サイトは、辞書引き・翻訳・ウェブ検索などの検索対象を表します<br>サイトの選択や更新に関する設定ができます<br>※事前にサイトを選択しておくことで、ウェブ上のテキスト選択時にすばやく調べることができます"
+        "message": "These are the dictionary, translation and search sites used by MultiLookup<br>You can make your site selections and configure update settings<br>*Pre-select certain sites for easy searching while you're browsing the web"
     },
     "option_select_siteinfo": {
-        "message": "サイトの選択"
+        "message": "Site Selection"
     },
     "option_select_siteinfo_description": {
-        "message": "サイトを選択してください<ul><li>選択の状態にするには、ドラッグ＆ドロップで<strong>未選択なサイト</strong>から<strong>選択済みサイト</strong>に移動させます</li><li>ダブルクリックすると詳細情報が表示されます</li><li>左側のチェックボックスにチェックしたサイトは、デフォルトの検索対象となります<ul><li>デフォルトの検索対象は、テキスト選択やブラウザアクション(サイト指定なし)での検索時に使用されます</li></ul></li><li>選択したサイトの上下の並びは、結果表示の並びに反映されます</li></ul>"
+        "message": "Select your sites<ul><li>Drag and drop between <strong>Unselected Sites</strong> and <strong>Selected Sites</strong></li><li>Double-click site entries for detailed information</li><li>Checkmark boxes on the left to add them to your default sites<ul><li>Default sites will be searched automatically when text is selected and during browser actions (when sites are not specified)</li></ul></li><li>The order of sites below will be the order of results displayed</li></ul>"
     },
     "option_selected_siteinfo": {
-        "message": "選択済みサイト"
+        "message": "Selected Sites"
     },
     "option_unselected_siteinfo": {
-        "message": "未選択なサイト"
+        "message": "Unselected Sites"
     },
     "option_update_siteinfo": {
-        "message": "サイト情報の更新"
+        "message": "Update Site Info"
     },
     "option_update_siteinfo_description": {
-        "message": "<a href='http://wedata.net/databases/Lookup/items' target='_blank'>Wedata(データベース:Lookup)</a>からサイト情報を取得し更新します<br>※以前に変更したサイトも更新される可能性があります"
+        "message": "Acquire site info from <a href='http://wedata.net/databases/Lookup_en/items' target='_blank'>Wedata (database lookup)</a> to update site info<br>*May update changed sites"
     },
     "option_auto_update_siteinfo": {
-        "message": "自動更新"
+        "message": "Auto Update"
     },
     "option_auto_update_siteinfo_description": {
-        "message": "ブラウザ起動時にサイトを更新します"
+        "message": "Updates sites on browser startup"
     },
     "option_advanced_settings": {
-        "message": "高度な設定"
+        "message": "Advanced Settings"
     },
     "option_advanced_settings_description": {
-        "message": "選択された文字列の言語および種別の判別に用いられる正規表現の変更や、サイトの新規追加・変更・削除を行ないます"
+        "message": "Change the search string languages, regular expressions used to distinguish search types (dictionary, translation, and search), and modify, delete, or add new sites"
     },
     "option_advanced_settings_warning_message": {
-        "message": "※この設定は本拡張の動作に大きく影響しますので注意して変更してください"
+        "message": "*WARNING: These settings affect the operation of this extension. Preceed with caution."
     },
     "option_limit_length": {
-        "message": "選択文字数の上限値"
+        "message": "Maximum Search String Length"
     },
     "option_limit_length_description": {
-        "message": "テキスト選択による実行の際に選択文字数の長さの上限を指定してください<br>文字列の長さが大きいほど負荷が高くなる可能性がありますのでご注意ください"
+        "message": "Select the maximum number of characters to search<br>Longer search strings increase load"
     },
     "option_xhr_timeout": {
-        "message": "タイムアウト"
+        "message": "Timeout"
     },
     "option_xhr_timeout_description": {
-        "message": "XmlHttpReqestで結果を取得する際のタイムアウト時間(ミリ秒)を指定します"
+        "message": "Set the timeout in milliseconds for acquiring XmlHttpRequest results"
     },
     "option_lookup_limit_result_length": {
-        "message": "結果文字数の上限値"
+        "message": "Maximum Result Length"
     },
     "option_lookup_limit_result_length_description": {
-        "message": "XmlHttpRequestによって取得した結果の文字数の上限を指定します<br>サイズの大きなHTMLの場合、サニタイズ処理などの負荷が高まります"
+        "message": "Set the maximum characters for XmlHttpRequest results<br>Large HTML requests will increase the load for sanitizing results"
     },
     "option_language_detect": {
-        "message": "言語の判別"
+        "message": "Language Detection"
     },
     "option_language_detect_api_description": {
-        "message": "Google Translation API を利用して言語の判別を行ないます<br>こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません"
+        "message": "The Google Translation API is used to detect language<br>The API produces more accurate detection for better results, but may increase connection time before displaying results"
     },
     "option_use_api": {
-        "message": "API を利用する"
+        "message": "Use the API"
     },
     "option_language_detect_regexp_description": {
-        "message": "正規表現を各言語で定義して、言語の判別を行ないます"
+        "message": "Define regular expressions for detecting each language"
     },
     "use_regexp": {
-        "message": "正規表現を使用する"
+        "message": "Use Regular Expressions"
     },
     "option_set_language_detect_regexp_message": {
-        "message": "文字列選択時の言語選択に用いる正規表現を設定してください"
+        "message": "Set the regular expressions used for detecting language when text is selected"
     },
     "option_type_detect": {
-        "message": "種別の判別"
+        "message": "Search Type Detection"
     },
     "option_type_detect_description": {
-        "message": "文字列選択時の種別の選択に用いる正規表現を設定してください<br>種別はそれぞれ、辞書引き(dictionary), 翻訳(translation), ウェブ検索(search)を表します"
+        "message": "Set regular expressions used to select search type when text is selected<br>Search types are dictionary, translation, and search"
     },
     "option_siteinfo_edit": {
-        "message": "サイトの追加・変更・削除"
+        "message": "Modify, add or delete sites"
     },
     "option_siteinfo_edit_description": {
-        "message": "サイト情報の新規追加と現在登録されているサイト情報の変更・削除を行うことができます"
+        "message": "Add new site info and modify or delete current site info"
     },
     "option_edit_siteinfo_attention": {
-        "message": "※サイトを追加する場合は、そのサイトの規約をご確認上追加してください<br>name, url, type, src-lang は必須項目です"
+        "message": "*Check the Terms of Use for each site before adding it<br><strong>name</strong>, <strong>url</strong>, <strong>type</strong>, and <strong>src-lang</strong> are required fields"
     },
     "option_initialize": {
-        "message": "初期化"
+        "message": "Reset"
     },
     "option_initialize_settings": {
-        "message": "設定の初期化"
+        "message": "Reset Settings"
     },
     "option_initialize_settings_description": {
-        "message": "※基本設定と高度な設定の設定項目すべてをデフォルト値に戻します"
+        "message": "*Reset basic and advanced settings to default settings"
     },
     "option_initialize_siteinfo": {
-        "message": "サイト情報の初期化"
+        "message": "Reset Site Info"
     },
     "option_initialize_siteinfo_description": {
-        "message": "※サイト情報をデフォルト値に戻します"
+        "message": "Reset site info to default settings"
     },
     "option_initialize_all_description": {
-        "message": "※すべての設定項目とサイト情報をデフォルト値に戻します"
+        "message": "*All settings and site info will be reset to default settings"
     },
     "option_etc": {
-        "message": "その他"
+        "message": "Other"
     },
     "option_usage": {
-        "message": "利用ガイド"
+        "message": "User's Guide"
     },
     "option_usage_information": {
-        "message": "この拡張について利用方法については、以下のページを参照してください"
+        "message": "Follow the link below for more information on using MultiLookup"
     },
     "option_report": {
-        "message": "報告"
+        "message": "Report"
     },
     "option_report_description": {
-        "message": "要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br>報告頂いた内容は、<a target='_blank' href='http://www.simplivillage.com/trac/report/1'>管理サイトのチケット</a>として登録されます。<br>この拡張に関する感想は <a target='_blank' href='https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja'>MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします"
+        "message": "Use the form below to submit requests or to report issues. When reporting issues, include details on how to reproduce them.<br>Report information will be logged as <a target='_blank' href='http://www.simplivillage.com/trac/report/1'>Admin Site Tickets</a>.<br>Share your thoughts in the comments at <a target='_blank' href='https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=en'>MultiLookup - Google Chrome Extension Gallery</a>."
     },
     "option_report_owner": {
-        "message": "報告者(任意):"
+        "message": "Name (optional):"
     },
     "option_report_type": {
-        "message": "種別: "
+        "message": "Type: "
     },
     "option_report_type_issue": {
-        "message": "問題・バグ"
+        "message": "Issue/Bug"
     },
     "option_report_type_demand": {
-        "message": "要望"
+        "message": "Request"
     },
     "option_report_title": {
-        "message": "タイトル: "
+        "message": "Title: "
     },
     "option_report_content_description": {
-        "message": "概要: "
+        "message": "Message: "
     },
     "option_page_open": {
-        "message": "オプションページを開く"
+        "message": "Open the Options Page"
     },
     "background_error_not_such_siteinfo": {
-        "message": "該当する検索サイトがありませんでした"
+        "message": "No sites match your type of search"
     },
     "background_error_no_lookup_entry": {
-        "message": "検索サイトが選択されていません。<a href='__MSG_@@extension_id__/html/options.html' target='_blank'>オプションページ</a>の検索サイトの選択から検索サイトを追加選択してください"
+        "message": "No search sites are selected. Add search sites from the <a href='$1' target='_blank'>Options Page</a>."
     },
     "popup_enable_suggest": {
-        "message": "サジェストを有効にする"
+        "message": "Enable Search Suggest"
     },
     "popup_searchform_placeholder": {
-        "message": "入力してください"
+        "message": "Enter Text"
     }
 }
