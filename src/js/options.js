@@ -20,7 +20,7 @@ var MLuOptions = {
     siteinfo: null,
 
     init: function() {
-        this.config = multilookup.config.getConfig();
+        this.config = multilookup.config.getAll();
         this.siteinfo = multilookup.siteinfo.getSiteinfo();
         // initialize
         this.common.init();
@@ -159,7 +159,19 @@ MLuOptions.site = new function() {
     var parent = MLuOptions;
 
     this.init = function() {
-        this.generateSelectBox();
+        this.generateSiteSelectBox();
+        this.generateSiteinfoUrlSelectbox();
+        $("#add_siteinfo_db_url").bind("click", function() {
+            var input = $("#siteinfo_db_url");
+            var url = input.val();
+            var list = parent.config["available_siteinfo_url_list"];
+            if (!list.some(function(v, i) { return v === url })) {
+                list.push(url);
+                parent.saveConfig();
+                input.val("");
+                self.generateSiteinfoUrlSelectbox();
+            }
+        });
     },
     
     this.updateSiteinfo = function(evt) {
@@ -169,7 +181,7 @@ MLuOptions.site = new function() {
                 if (res) {
                     parent.saveSiteinfo(true);
                     window.confirm(_("option_update_succeeded"));
-                    self.generateSelectBox();
+                    self.generateSiteSelectBox();
                 } else {
                     window.alert(_("option_update_failed"));
                 }
@@ -202,7 +214,7 @@ MLuOptions.site = new function() {
         multilookup.management.updateDefaultContextMenu();
     };
 
-    this.generateSelectBox = function() {
+    this.generateSiteSelectBox = function() {
         var siteinfo = parent.siteinfo;
         var config = parent.config;
         var selected = $("#selected_siteinfo");
@@ -355,6 +367,26 @@ MLuOptions.site = new function() {
             modal: true,
             position: "center",
             width: 750
+        });
+    };
+
+    this.generateSiteinfoUrlSelectbox = function() {
+        var self = this;
+        var config = parent.config;
+        var select = $("#siteinfo_db_url_list");
+        var button = $("#delete_siteinfo_db_url");
+        var list = config["available_siteinfo_url_list"] || [];
+        $("option", select).remove();
+        $.each(list, function(i, v) {
+            var o = $("<option></option>").val(v).text(v);
+            select.append(o);
+        });
+        button.unbind().bind("click", function() {
+            var url = $(select).val();
+            list = list.filter(function(v, i) { return url !== v});
+            config["available_siteinfo_url_list"] = list;
+            parent.saveConfig(true);
+            self.generateSiteinfoUrlSelectbox();
         });
     };
 };
@@ -707,9 +739,6 @@ MLuOptions.report = new function() {
 };
 
 $(document).ready(function() {
-    MLuOptions.init();
-    keybinds.init();
-    
     $("[data-i18n]").each(function() {
         var message = _(this.dataset["i18n"]);
         var lang = getLanguage();
@@ -723,13 +752,15 @@ $(document).ready(function() {
     if ($("#translator_name").text) {
         $("#contributor").show();
     }
-    var def = _("default");
-    var enable = _("enable");
-    var disable = _("disable");
-    var re = RegExp("-");
     multilookup.config.getDefaultConfig(function(config) {
-        $(".default_value").each(function() {
-            var contexts = this.title.split(" ");
+        var def = _("default");
+        var enable = _("enable");
+        var disable = _("disable");
+        var re = RegExp("-");
+        $("[data-default]").each(function() {
+            var contexts = this.dataset["default"];
+            if (!contexts) { return; }
+            contexts = contexts.split(" ");
             var configs = [];
             contexts.forEach(function(context) {
                 if (!context) return;
@@ -753,8 +784,10 @@ $(document).ready(function() {
                 configs.push(conf);
             });
             var conf_text = configs.join(", ");
-            var lang = window.navigator.language;
-            $(this).text("("+def+": "+(conf_text===""?"-":conf_text)+")").attr("lang", lang).removeAttr("title")
+            var lang = getLanguage();
+            $(this).text("("+def+": "+(conf_text===""?"-":conf_text)+")").attr("lang", lang);
         });
     });
+    MLuOptions.init();
+    keybinds.init();
 });

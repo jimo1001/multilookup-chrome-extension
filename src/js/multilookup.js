@@ -129,7 +129,7 @@ ResultGroup.prototype = {
             evt.stopPropagation();
         }, true);
         var title = $n('div', {class: "MLu_group_title"},
-                [ $n('div', {class: "title"}, "検索文字列: "),
+                [ $n('div', {class: "title"}, "Search Text: "),
                   $n('div', {class: "content"}, this.context),
                   close ]);
         title.addEventListener('click', function(evt) {

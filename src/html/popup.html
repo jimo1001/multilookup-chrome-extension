@@ -36,7 +36,7 @@ popup.lookup = {
     init: function() {
         var self = this;
         this.siteinfo = multilookup.siteinfo.getSiteinfo();
-        this.entries = multilookup.config.get("entries", []);
+        this.entries = multilookup.config.getValue("entries", []);
         keybinds.init();
         $.each(this.entries, function(i, id) {
             var v = self.siteinfo[id];
@@ -218,6 +218,7 @@ popup.lookup = {
         var self = this;
         var list = $("<ul></ul>");
         var histories = multilookup.history.get();
+        if (histories && (histories.length < 1)) { return; }
         for (var i=0; i<histories.length; i++) {
             var li = $("<li></li>");
             var history = histories[i];
@@ -279,7 +280,7 @@ popup.cache = {
 popup.option = {
     config: null,
     init: function() {
-        this.config = multilookup.config.getConfig();
+        this.config = multilookup.config.getAll();
         this.load();
     },
 
@@ -340,17 +341,6 @@ popup.changeTab = function(name) {
 };
 
 $(document).ready(function() {
-    popup.lookup.init();
-    popup.option.init();
-    popup.cache.setCachedDataToForm();
-    $(".content-title").click(function() {
-        var name = this.id.replace("-title", "");
-        popup.changeTab(name);
-    });
-    var cache = popup.cache.getCachedData();
-    var tabname = cache["active_tab_name"] || "lookup";
-    popup.changeTab(tabname);
-
     $("[data-i18n]").each(function() {
         var message = _(this.dataset["i18n"]);
         var lang = window.navigator.language;
@@ -362,6 +352,17 @@ $(document).ready(function() {
             $(this).html(message).attr("lang", lang).removeAttr("title");
         }
     });
+
+    popup.lookup.init();
+    popup.option.init();
+    popup.cache.setCachedDataToForm();
+    $(".content-title").click(function() {
+        var name = this.id.replace("-title", "");
+        popup.changeTab(name);
+    });
+    var cache = popup.cache.getCachedData();
+    var tabname = cache["active_tab_name"] || "lookup";
+    popup.changeTab(tabname);
 });
 </script>
 <link rel="stylesheet" href="/css/popup.css" type="text/css" />

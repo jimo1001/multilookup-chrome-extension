@@ -48,5 +48,8 @@
         "ja": "http://wedata.net/databases/Lookup/items.json",
         "en": "http://wedata.net/databases/Lookup_en/items.json"
     },
-    "default_local_siteinfo_url": "/data/siteinfo.json"
+    "default_local_siteinfo_url": {
+        "ja": "/data/siteinfo_ja.json",
+        "en": "/data/siteinfo_en.json"
+    }
 }

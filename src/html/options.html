@@ -29,7 +29,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_theme">テーマ</span><br>
-            <span class="default_value" data-i18n="result_theme"></span>
+            <span class="default_value" data-default="result_theme"></span>
         </th>
         <td class="option_td">
             <div style="display: table">
@@ -49,7 +49,7 @@
     <tr>
         <th class="option_th">
             <label for="result_position" data-i18n="option_results_position">表示位置</label><br>
-            <span class="default_value" data-i18n="result_position"></span>
+            <span class="default_value" data-default="result_position"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_results_position_description">
@@ -66,7 +66,7 @@
     <tr>
         <th class="option_th">
             <label for="result_cell_length" data-i18n="option_show_column_number">表示カラム数</label><br>
-            <span class="default_value" data-i18n="result_cell_length"></span>
+            <span class="default_value" data-default="result_cell_length"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_show_column_number_description">
@@ -78,7 +78,7 @@
     <tr>
         <th class="option_th">
             <label for="text_result_size" data-i18n="option_results_width">表示幅</label><br>
-            <span class="default_value" data-i18n="result_size"></span>
+            <span class="default_value" data-default="result_size"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_results_width_description">
@@ -92,7 +92,7 @@
     <tr>
         <th class="option_th">
             <label for="text_result_opacity" data-i18n="option_results_opacity">不透過度</label><br>
-            <span class="default_value" data-i18n="result_opacity"></span>
+            <span class="default_value" data-default="result_opacity"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_results_opacity_description">
@@ -106,7 +106,7 @@
     <tr>
         <th class="option_th">
             <label for="font_family" data-i18n="option_font_family">フォント</label><br>
-            <span class="default_value" data-i18n="font_family"></span>
+            <span class="default_value" data-default="font_family"></span>
         </th>
         <td class="option_td">
            <p class="notice" data-i18n="option_font_family_description">
@@ -119,7 +119,7 @@
     <tr>
         <th class="option_th">
             <label for="text_font_size" data-i18n="option_font_size">フォントサイズ</label><br>
-            <span class="default_value" data-i18n="font_size"></span>
+            <span class="default_value" data-default="font_size"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_font_size_description">
@@ -132,7 +132,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_contextmenu">コンテキストメニュー</span><br>
-            <span class="default_value" data-i18n="enable_context_menus"></span>
+            <span class="default_value" data-default="enable_context_menus"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_contextmenu_description">
@@ -149,7 +149,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_middle_click_lookup">ミドルクリック検索</span><br>
-            <span class="default_value" data-i18n="enable_middle_click_lookup"></span>
+            <span class="default_value" data-default="enable_middle_click_lookup"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_middle_click_lookup_description">
@@ -165,7 +165,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_dblclick_lookup">ダブルクリック検索</span><br>
-            <span class="default_value" data-i18n="enable_dblclick_lookup"></span>
+            <span class="default_value" data-default="enable_dblclick_lookup"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_dblclick_lookup_description">
@@ -180,7 +180,7 @@
     </tr>
     <tr>
         <th class="option_th"><span data-i18n="option_modifier_key">修飾キー</span><br>
-            <span class="default_value" data-i18n="enable_modifier_key modifier_key"></span>
+            <span class="default_value" data-default="enable_modifier_key modifier_key"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_modifier_key_description">
@@ -197,7 +197,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_close_all_results">すべて閉じる</span><br>
-            <span class="default_value" data-i18n="keybind-close"></span>
+            <span class="default_value" data-default="keybind-close"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_close_all_results_description">
@@ -210,7 +210,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_lookup_history">検索履歴</span><br>
-            <span class="default_value" data-i18n="enable_history history_limit"></span>
+            <span class="default_value" data-default="enable_history history_limit"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_lookup_history_description">
@@ -280,15 +280,18 @@
             <p class="notice" data-i18n="option_manage_siteinfo_db_description">
                 新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加、または削除します。<br>
                 現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>
-                Ja: http://wedata.net/databases/Lookup_en/items.json<br>
-                En: http://wedata.net/databases/Lookup/items.json<br>
+                Ja: http://wedata.net/databases/Lookup/items.json<br>
+                En: http://wedata.net/databases/Lookup_en/items.json<br>
                 追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>
                 ※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。
             </p>
             <label><span data-i18n="url">URL:</span>
-                <input style="width: 400px" type="text" />
-
-                <input data-i18n="button_add" type="button" onclick="" value="追加する" />
+                <input id="siteinfo_db_url" style="width: 400px" type="text" />
+                <input id="add_siteinfo_db_url" data-i18n="button_add" type="button" value="追加" />
+            </label><br>
+            <label>
+                <select id="siteinfo_db_url_list"></select>
+                <input id="delete_siteinfo_db_url" data-i18n="button_delete" type="button" value="削除" />
             </label>
         </td>
     </tr>
@@ -305,7 +308,7 @@
     <tr>
         <th class="option_th">
             <span data-i18n="option_auto_update_siteinfo">自動更新</span><br>
-            <span class="default_value" data-i18n="enable_auto_update"></span>
+            <span class="default_value" data-default="enable_auto_update"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_auto_update_siteinfo_description">ブラウザ起動時にサイトを更新します</p>
@@ -334,7 +337,7 @@
     <tr>
         <th class="option_th">
             <label for="lookup_limit_length" data-i18n="option_limit_length">選択文字数の上限値</label><br>
-            <span class="default_value" data-i18n="lookup_limit_length"></span>
+            <span class="default_value" data-default="lookup_limit_length"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_limit_length_description">
@@ -347,7 +350,7 @@
     <tr>
         <th class="option_th">
             <label for="lookup_xhr_timeout" data-i18n="option_xhr_timeout">タイムアウト</label><br>
-            <span class="default_value" data-i18n="lookup_xhr_timeout"></span>
+            <span class="default_value" data-default="lookup_xhr_timeout"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_xhr_timeout_description">
@@ -359,7 +362,7 @@
     <tr>
         <th class="option_th">
             <label for="lookup_limit_result_length" data-i18n="option_lookup_limit_result_length">結果文字数の上限値</label><br>
-            <span class="default_value" data-i18n="lookup_limit_result_length"></span>
+            <span class="default_value" data-default="lookup_limit_result_length"></span>
         </th>
         <td class="option_td">
             <p class="notice" data-i18n="option_lookup_limit_result_length_description">
