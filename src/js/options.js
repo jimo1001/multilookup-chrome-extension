@@ -113,7 +113,6 @@ MLuOptions.common = new function() {
 };
 
 MLuOptions.basic = new function() {
-    var self = this;
     var parent = MLuOptions;
 
     this.init = function() {

@@ -234,13 +234,13 @@
         "message": "Unselected Sites"
     },
     "option_manage_siteinfo_db": {
-        "message": "データベースの追加・削除"
+        "message": "Add/Delete Databases"
     },
     "option_manage_siteinfo_db_description": {
-        "message": "新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加します。<br>現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>Ja: http://wedata.net/databases/Lookup/items.json<br>En: http://wedata.net/databases/Lookup_en/items.json<br>追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。"
+        "message": "Enter the URL for a new site info database. <br>The following databases are currently added. The language will be selected upon installation according to your browser settings. <br>Ja: http://wedata.net/databases/Lookup/items.json<br>En: http://wedata.net/databases/Lookup_en/items.json<br>After adding site info, click <strong>Update</strong> in the Update Site Info section. Your added databases will be reflected in the <strong>Site Selection</strong> section.<br>*You can can add databases from sources outside of Wedata as long as they are in JSON format."
     },
     "option_warning_add_siteinfo_db_duplicate_url": {
-        "message": "指定されたデータベースは既に登録されています"
+        "message": "The database you entered is already available"
     },
     "option_update_siteinfo": {
         "message": "Update Site Info"
@@ -372,67 +372,67 @@
         "message": "Open the Options Page"
     },
     "option_update_confirm": {
-        "message": "更新してもよろしいですか？"
+        "message": "Do you want to update?"
     },
     "option_update_succeeded": {
-        "message": "正常に更新されました"
+        "message": "Update successful"
     },
     "option_update_failed": {
-        "message": "更新に失敗しました\nしばらくして再度実行してください"
+        "message": "Upload failed\n Please try again later"
     },
     "option_siteinfo_detail": {
-        "message": "サイト詳細情報"
+        "message": "Site info details"
     },
     "option_input_additional_language_notice": {
-        "message": "追加する言語を入力してください(半角英数のみ)"
+        "message": "Enter the language to be added (ASCII characters only)"
     },
     "option_delete_language_confirm": {
-        "message": "言語: $1 を削除してもよろしいですか？"
+        "message": "Delete langage: $1?"
     },
     "option_input_additional_type_notice": {
-        "message": "追加する種別を入力してください(半角英数のみ)"
+        "message": "Enter the type to be added (ASCII characters only)"
     },
     "option_delete_type_confirm": {
-        "message": "言語: $1 の種別: $2 を削除してもよろしいですか？"
+        "message": "Delete Language: $1 Type: $2?"
     },
     "option_update_siteinfo_succeeded": {
-        "message": "サイト情報(SITEINFO)を変更しました"
+        "message": "Site info successfully changed"
     },
     "option_add_siteinfo_succeeded": {
-        "message": "サイト情報(SITEINFO)を追加しました"
+        "message": "Site info successfully added"
     },
     "option_json_syntax_error": {
-        "message": "フォーマットが不正です, 正しいJSON形式のフォーマットを入力してください"
+        "message": "Incorrect format. Please enter in correct JSON format."
     },
     "option_missing_required_arguments": {
-        "message": "必須項目を入力してください"
+        "message": "Please enter the required fields"
     },
     "option_reset_all_confirm": {
-        "message": "すべての設定とサイト情報を初期化してもよろしいですか？"
+        "message": "Reset all settings and site info to default settings?"
     },
     "option_reset_all_succeeded": {
-        "message": "全て初期設定に戻されました"
+        "message": "All settings successfully reset"
     },
     "option_reset_settings_confirm": {
-        "message": "設定を初期化してもよろしいですか？"
+        "message": "Reset settings?"
     },
     "option_reset_settings_succeeded": {
-        "message": "設定を初期化しました"
+        "message": "Settings successfully reset"
     },
     "option_reset_siteinfo_confirm": {
-        "message": "サイト情報(SITEINFO)を初期化してもよろしいですか？"
+        "message": "Reset site info?"
     },
     "option_reset_siteinfo_succeeded": {
-        "message": "サイト情報を初期化しました"
+        "message": "Site info successfully reset"
     },
     "option_send_report_confirm": {
-        "message": "この報告内容を送信してもよろしいですか？"
+        "message": "Submit this report?"
     },
     "option_send_report_succeeded": {
-        "message": "正常に送信されました。ご報告頂いた内容とステータスは以下から確認することができます。<br>"
+        "message": "Submission successfully. You can confirm the report details and status below.<br>"
     },
     "option_send_report_failed": {
-        "message": "送信に失敗しました\n しばらくしてもう一度お試しください"
+        "message": "Submission failed\n Please try again later"
     },
     "background_error_not_such_siteinfo": {
         "message": "No sites match your type of search"
@@ -441,7 +441,7 @@
         "message": "No search sites are selected. Add search sites from the <a href='$1' target='_blank'>Options Page</a>."
     },
     "background_error_over_lookup_limit_length": {
-        "message": "検索文字列長の上限($1)を超えています"
+        "message": "The search string length exceeds the limit ($1)"
     },
     "popup_enable_suggest": {
         "message": "Enable Search Suggest"

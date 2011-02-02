@@ -8,8 +8,8 @@ multilookup = {
     /**
      * Lookup word/text
      *
-     * @param array siteinfos
-     * @returns Lookup
+     * @param siteinfos a list of SITEINFO
+     * @returns Lookup Lookup Object
      */
     Lookup: function(siteinfos) {
         if (!$.isArray(siteinfos)) {
