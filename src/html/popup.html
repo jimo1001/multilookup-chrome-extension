@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <title>MultiLookup</title>
-<script src="../js/lib/jquery-1.4.2.min.js"></script>
-<script src="../js/lib/jquery-ui-1.8.5.min.js"></script>
+<script src="../js/lib/jquery-1.4.4.min.js"></script>
+<script src="../js/lib/jquery-ui-1.8.9.min.js"></script>
 <script src="../js/utils.js"></script>
 <script src="../js/keybinds.js"></script>
 <script async>
@@ -68,7 +68,7 @@ popup.lookup = {
 
         $(self.selector.submit).bind("submit", self.onSubmit);
         $(self.selector.lang+", "+self.selector.type).bind("change", self.onChange);
-        $(self.selector.context).bind("keyup", self.onKeyup).focus();
+        $(self.selector.context).bind("keydown", self.onKeydown).focus();
 
         $("input, select").bind("change", function() {
             popup.cache.saveFormData();
@@ -148,10 +148,12 @@ popup.lookup = {
         self.setSiteList(lang, type);
     },
 
-    onKeyup: function() {
+    onKeydown: function(event) {
         var self = popup.lookup;
         var context = $(this).val();
+        var key = keybinds.getKeyFromEvent(event);
         if ((context.length <= 3) || (context == self.context) || (!self.enableSuggest())) return;
+        if ((key === "Up") || (key === "Down")) return;
         self.context = context;
         if (self.timeoutID != null) {
             window.clearTimeout(self.timeoutID);
@@ -161,7 +163,7 @@ popup.lookup = {
             self.getSuggestList(context, function(list) {
                 $(self.selector.context).unbind("autocomplete");
                 self.showSuggest(list);
-                $(self.selector.context).keydown();
+                $(".ui-autocomplete").show();
             });
         }, self.suggest.delay);
     },
@@ -181,16 +183,12 @@ popup.lookup = {
 
     showSuggest: function(list) {
         var self = popup.lookup;
-        $(self.selector.context).autocomplete({
+        var ui = $(self.selector.context).autocomplete({
             delay: 200,
             minLength: self.suggest.minLength,
             source: list,
-            search: function(evt, ui) {
-                keybinds.removeByKey("RET");
-                keybinds.add(this, "RET", function(evt, keybind) {
-                    $(this).autocomplete("close");
-                    keybinds.remove(keybind);
-                }, true);
+            create: function(evt, ui) {
+                $(this).autocompleteopen();
             }
         });
     },
