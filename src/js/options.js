@@ -164,7 +164,7 @@ MLuOptions.site = new function() {
             var input = $("#siteinfo_db_url");
             var url = input.val();
             var list = parent.config["available_siteinfo_url_list"];
-            if (!list.some(function(v, i) { return v === url })) {
+            if (!list.some(function(v) { return v === url })) {
                 list.push(url);
                 parent.saveConfig();
                 input.val("");
@@ -382,7 +382,7 @@ MLuOptions.site = new function() {
         });
         button.unbind().bind("click", function() {
             var url = $(select).val();
-            list = list.filter(function(v, i) { return url !== v});
+            list = list.filter(function(v) { return url !== v});
             config["available_siteinfo_url_list"] = list;
             parent.saveConfig(true);
             self.generateSiteinfoUrlSelectbox();
@@ -588,17 +588,18 @@ MLuOptions.advance = new function() {
                 });
                 json = jsonFormatter(JSON.stringify(data));
                 textarea.attr("id", "create_siteinfo_text").text(json);
-                button.val(_("buton_add"));
+                button.val(_("button_add"));
                 editor.append(textarea, "<br>", button);
                 if (notice.length < 1)
                     notice = $("<div class='notification'></div>").insertBefore(textarea);
-                button.click(function() {
+                button.bind("click", function() {
                     try {
                         self.addSiteinfo(textarea.val());
-                        notice.html(_("option_add_siteinfo_succeede"));
-                        attention.hide();
+                        $(notice).html(_("option_add_siteinfo_succeeded"));
+                        $(attention).hide();
                     } catch (e) {
-                        notice.html(e);
+                        console.log(e);
+                        $(notice).html(e);
                     }
                 });
             }
@@ -621,7 +622,7 @@ MLuOptions.advance = new function() {
         parent.saveSiteinfo(true);
         multilookup.management.updateDefaultContextMenu();
         this.generateSelectList();
-        parent.site.generateSelectBox();
+        parent.site.generateSiteSelectBox();
         parent.site.init();
         parent.site.cleanup();
     }
