@@ -68,7 +68,10 @@ popup.lookup = {
 
         $(self.selector.submit).bind("submit", self.onSubmit);
         $(self.selector.lang+", "+self.selector.type).bind("change", self.onChange);
-        $(self.selector.context).bind("keydown", self.onKeydown).focus();
+        $(self.selector.context).bind("keydown", self.onKeydown).autocomplete({
+            minLength: self.suggest.minLength,
+            source: []
+         }).focus();
 
         $("input, select").bind("change", function() {
             popup.cache.saveFormData();
@@ -150,20 +153,25 @@ popup.lookup = {
 
     onKeydown: function(event) {
         var self = popup.lookup;
-        var context = $(this).val();
+        var element = this;
+        var context = $(element).val();
         var key = keybinds.getKeyFromEvent(event);
-        if ((context.length <= 3) || (context == self.context) || (!self.enableSuggest())) return;
-        if ((key === "Up") || (key === "Down")) return;
+        if ((key === "RET")) {
+            $(self.selector.context).autocomplete("close");
+            return;
+        }
+        if ((context.length <= 3) || (context == self.context) || (!self.enableSuggest()) || (key === "Up") || (key === "Down")) return;
         self.context = context;
         if (self.timeoutID != null) {
+            console.log("clear", self.timeoutID);
             window.clearTimeout(self.timeoutID);
             self.timeoutID = null;
         }
         self.timeoutID = window.setTimeout(function() {
-            self.getSuggestList(context, function(list) {
-                $(self.selector.context).unbind("autocomplete");
-                self.showSuggest(list);
-                $(".ui-autocomplete").show();
+            self.context = $(element).val();
+            self.getSuggestList(self.context, function(list) {
+                $(self.selector.context).autocomplete("option", "source", list).autocomplete("search", self.context);
+                self.timeoutID = null;
             });
         }, self.suggest.delay);
     },
@@ -177,18 +185,6 @@ popup.lookup = {
             });
             if (callback) {
                 callback.call(this, self.suggest.list);
-            }
-        });
-    },
-
-    showSuggest: function(list) {
-        var self = popup.lookup;
-        var ui = $(self.selector.context).autocomplete({
-            delay: 200,
-            minLength: self.suggest.minLength,
-            source: list,
-            create: function(evt, ui) {
-                $(this).autocompleteopen();
             }
         });
     },
@@ -363,7 +359,7 @@ $(document).ready(function() {
     popup.changeTab(tabname);
 });
 </script>
-<link rel="stylesheet" href="/css/popup.css" type="text/css" />
+<link rel="stylesheet" href="../css/popup.css" type="text/css" />
 </head>
 <body>
 <h1>
@@ -386,7 +382,9 @@ $(document).ready(function() {
             <option value="">--</option>
         </select>
     </div>
-    <input id="lookup-context" type="search" name="search" placeholder="input search text" />
+    <label>
+        <input id="lookup-context" type="search" name="search" placeholder="input search text" />
+    </label>
     <input type="submit" data-i18n="button_lookup" value="検索" />
     <input type="reset" data-i18n="button_reset" value="リセット" />
     <div id="lookup-suboption">
