@@ -242,7 +242,7 @@ MLuOptions.site = new function() {
             li.attr("title", (info["name"] + (info["description"] ? (" : "+info["description"]) : "")));
             li.append(checkbox);
             li.append($("<span>"+info["name"]+"</span><br>"));
-            li.append($("<span/>").addClass("info").text("( "+_("type")+": "+info["type"]+", "+_("language")+": "+src+" -> "+res+")"));
+            li.append($("<span/>").addClass("info").text("("+_("type")+": "+info["type"]+", "+_("language")+": "+src+" -> "+res+")"));
             li.append($("<input type='hidden'/>").val(info["id"]));
             var keybind = config["keybind"]["entries"];
             if ((keybind !== undefined) && (keybind[info["id"]] !== undefined) && (keybind[info["id"]] !== "")) {
@@ -672,8 +672,7 @@ MLuOptions.initialize = new function() {
     this.resetSiteinfo = function(evt) {
         var result = window.confirm(_("option_reset_siteinfo_confirm"));
         if (result) {
-            configManager.config["entries"] = [];
-            configManager.save();
+            configManager.setValue("entries", []);
             siteinfoManager.removeCache();
             siteinfoManager.init(function() {
                 parent.saveSiteinfo(true);

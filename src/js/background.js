@@ -676,7 +676,7 @@ multilookup = {
         },
 
         removeCache: function() {
-            delete localStorage["siteinfo"];
+            localStorage["siteinfo"] = [];
             this._infos = null;
         },
 
