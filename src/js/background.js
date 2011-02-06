@@ -1150,7 +1150,7 @@ multilookup = {
             if (!chrome.contextMenus) return;
             var entries = multilookup.config.getValue("entries", []);
             var preference = chrome.contextMenus.create({
-                title: "MultiLookup - 設定",
+                title: _("option_page_title"),
                 contexts: ["page"],
                 onclick: function(info, tab) {
                     multilookup.config.openOptionPage();
