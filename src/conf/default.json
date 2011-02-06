@@ -17,7 +17,7 @@
     "enable_dblclick_lookup": false,
     "enable_auto_update": false,
     "enable_context_menus": true,
-    "enable_language_detect_api": false,
+    "enable_language_detect_api": true,
     "enable_modifier_key": true,
     "modifier_key": "altKey",
     "entries": [],

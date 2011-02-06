@@ -654,19 +654,19 @@ multilookup = {
         required_param: ["id", "name", "url", "type", "src-lang"],
         init: function(callback) {
             this.loadSiteinfo();
-            if (!this._infos || (this._infos == "null") || isEmpty(this._infos)) {
-                var lang = "en", url = "";
-                var list = multilookup.config.getValue("available_siteinfo_url_list", []);
-                if (list && (list.length < 1)) {
-                    lang = getLanguage();
-                    var urls = multilookup.config.getValue("default_remote_siteinfo_url", {});
-                    if (lang in urls) {
-                        url = urls[lang];
-                    } else {
-                        url = urls["en"];
-                    }
-                    multilookup.config.setValue("available_siteinfo_url_list", [url]);
+            var lang = "en", url = "";
+            var list = multilookup.config.getValue("available_siteinfo_url_list", []);
+            if (list && (list.length < 1)) {
+                lang = getLanguage();
+                var urls = multilookup.config.getValue("default_remote_siteinfo_url", {});
+                if (lang in urls) {
+                    url = urls[lang];
+                } else {
+                    url = urls["en"];
                 }
+                multilookup.config.setValue("available_siteinfo_url_list", [url]);
+            }
+            if (!this._infos || (this._infos == "null") || isEmpty(this._infos)) {
                 this.importSiteinfoFromLocal(callback);
                 //this.importSiteinfoFromRemote(callback)
                 return;

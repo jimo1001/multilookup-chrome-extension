@@ -288,10 +288,10 @@
         "message": "Google Translation API を利用して言語の判別を行ないます<br>こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません"
     },
     "option_enable_detect_language_api": {
-        "message": "正規表現 と API で判定する"
+        "message": "正規表現とAPIで判別する"
     },
     "option_detect_language_regexp": {
-        "message": "正規表現のみで判定する"
+        "message": "正規表現のみで判別する"
     },
     "option_language_detect_regexp_description": {
         "message": "正規表現を各言語で定義して、言語の判別を行ないます"
