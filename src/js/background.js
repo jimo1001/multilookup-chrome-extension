@@ -354,12 +354,17 @@ multilookup = {
 
         getLanguage: function(context, callback) {
             var enable_api = multilookup.config.getValue("enable_language_detect_api", false);
+            var langs = this.getLanguageByRegexp(context);
             if (enable_api) {
-                this.getLanguageByAPI(context, function(langs) {
+                this.getLanguageByAPI(context, function(languages) {
+                    $.each(languages, function(i, v) {
+                        if (!(v in langs)) {
+                            langs.push(v);
+                        }
+                    });
                     callback.call(this, langs);
                 });
             } else {
-                var langs = this.getLanguageByRegexp(context);
                 callback.call(this, langs);
             }
         },

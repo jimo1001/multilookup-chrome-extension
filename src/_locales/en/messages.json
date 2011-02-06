@@ -287,14 +287,14 @@
     "option_language_detect_api_description": {
         "message": "The Google Translation API is used to detect language<br>The API produces more accurate detection for better results, but may increase connection time before displaying results"
     },
-    "option_use_api": {
-        "message": "Use the API"
+    "option_enable_detect_language_api": {
+        "message": "Use the API and the Regular Expressions"
+    },
+    "option_detect_language_regexp": {
+        "message": "Use Reqular Expressions only"
     },
     "option_language_detect_regexp_description": {
         "message": "Define regular expressions for detecting each language"
-    },
-    "use_regexp": {
-        "message": "Use Regular Expressions"
     },
     "option_set_language_detect_regexp_message": {
         "message": "Set the regular expressions used for detecting language when text is selected"

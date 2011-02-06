@@ -381,16 +381,13 @@
                 Google Translation API を利用して言語の判別を行ないます<br>
                 こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません
             </p>
-            <input type="radio" id="enable_language_detect_api" class="option" value="1" name="enable_language_detect_api" /> 
-            <label for="enable_language_detect_api" data-i18n="option_use_api">API を利用する</label>
+            <input type="radio" id="enable_language_detect_api" class="option" value="1" name="enable_language_detect_api" />
+            <label for="enable_language_detect_api" data-i18n="option_enable_detect_language_api">正規表現 と Google API で判定する</label><br>
+            <input type="radio" id="disable_language_detect_api" class="option" value="0" name="enable_language_detect_api" checked />
+            <label for="disable_language_detect_api" data-i18n="option_detect_language_regexp">正規表現のみで判定する</label><br>
         </td>
     </tr><tr>
         <td class="option_td">
-            <p class="notice" data-i18n="option_language_detect_regexp_description">
-                正規表現を各言語で定義して、言語の判別を行ないます
-            </p>
-            <input type="radio" id="disable_language_detect_api" class="option" value="0" name="enable_language_detect_api" checked /> 
-            <label for="disable_language_detect_api" data-i18n="use_regexp">正規表現を使用する</label><br>
             <p class="notice" data-i18n="option_set_language_detect_regexp_message">
                 文字列選択時の言語選択に用いる正規表現を設定してください
             </p>

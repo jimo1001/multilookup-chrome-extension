@@ -287,14 +287,14 @@
     "option_language_detect_api_description": {
         "message": "Google Translation API を利用して言語の判別を行ないます<br>こちらの方が判別の精度が高く、対応言語が豊富ですが、通信を行うため結果を表示するまでの時間が若干伸びるかもしれません"
     },
-    "option_use_api": {
-        "message": "API を利用する"
+    "option_enable_detect_language_api": {
+        "message": "正規表現 と API で判定する"
+    },
+    "option_detect_language_regexp": {
+        "message": "正規表現のみで判定する"
     },
     "option_language_detect_regexp_description": {
         "message": "正規表現を各言語で定義して、言語の判別を行ないます"
-    },
-    "use_regexp": {
-        "message": "正規表現を使用する"
     },
     "option_set_language_detect_regexp_message": {
         "message": "文字列選択時の言語選択に用いる正規表現を設定してください"
