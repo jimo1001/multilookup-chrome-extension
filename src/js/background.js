@@ -358,7 +358,7 @@ multilookup = {
             if (enable_api) {
                 this.getLanguageByAPI(context, function(languages) {
                     $.each(languages, function(i, v) {
-                        if (!(v in langs)) {
+                        if (!langs.some(function(vv) { return vv === v })) {
                             langs.push(v);
                         }
                     });
@@ -1159,13 +1159,13 @@ multilookup = {
 
             if (!entries || (entries.length < 1)) return;
             var top = chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("all") || "All",
+                title: _("all") || "All",
                 contexts: ["selection"]
             });
 
             // auto detect
             chrome.contextMenus.create({
-                title: chrome.i18n.getMessage("auto_detect2") || "Auto",
+                title: _("auto_detect") || "Auto Detection",
                 contexts: ["selection"],
                 onclick: function(info, tab) {
                     self.lookupShowResult(info.selectionText, null, tab);
@@ -1179,7 +1179,7 @@ multilookup = {
                 var type = site["type"];
 
                 if (!menus[site["type"]]) {
-                    var title = chrome.i18n.getMessage(type) || type;
+                    var title = _(type) || type;
                     menus[type] = chrome.contextMenus.create({
                         title: title,
                         contexts: ["selection"],
