@@ -246,6 +246,7 @@
     padding: 3px 0.5em 5px 3em;
     font-size: 90%;
     line-height: 1.25em;
+    overflow-y: auto;
     -webkit-transition: opacity 0.5s
 }
 
