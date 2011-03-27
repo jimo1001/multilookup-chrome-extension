@@ -24,7 +24,10 @@
  *   - by key and element
  *     var keybinds = keybinds.getKeybinds("C-y", window);
  */
-keybinds = {
+
+"use strict";
+
+var keybinds = {
     _event_binding_elements: null,
     _event_type: 'keydown',
     _keybinds: [],
@@ -86,17 +89,16 @@ keybinds = {
                 if (keybinds.isInputable(evt.target)) { return; }
             }
             this.callback.call(this.element, evt, this);
-        }
+        };
         this.toString = function() {
             return "[object Keybind]";
-        }
+        };
     },
 
     _listener: function(evt) {
-        var self = keybinds;
-        var key = self.getKeyFromEvent(evt);
+        var key = keybinds.getKeyFromEvent(evt);
         if (!key) return;
-        var kbs = self._keybinds, i = 0;
+        var kbs = keybinds._keybinds, i = 0;
         for (i=0; i<kbs.length; i++) {
             if ((kbs[i].key === key) && ((kbs[i].element === evt.target) ||
                     (/^(?:\[object DOMWindow\]|\[object HTMLDocument\])$/.test(kbs[i].element.toString())))) {
@@ -242,12 +244,12 @@ keybinds = {
             var key = self.getKeyFromEvent(evt, !!isModifierKey);
             callback.call(element, key, evt);
         }, false);
-
+        return self;
     },
 
     /**
      * remove a Keybind from Keybind object.
-     * @param {Keybind} keybind a Keybind object
+     * @param {Object} keybind a Keybind object
      */
     remove: function(keybind) {
         if (keybind) {

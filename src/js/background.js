@@ -3,8 +3,13 @@
  * @author jimo1001
  */
 
-var multilookup = {};
-multilookup = {
+"use strict";
+
+if (!chrome) {
+    var chrome = {};
+}
+
+var multilookup = {
     /**
      * Lookup word/text
      *
@@ -142,7 +147,6 @@ multilookup = {
         };
 
         this.successDefaultCallback = function(xhr, siteinfo, url, index) {
-            var self = this;
             var html = xhr.responseText;
             var result_text;
             var result_nodes;
@@ -299,7 +303,7 @@ multilookup = {
     suggest: {
         url: "http://www.google.com/complete/search?callback=callback&q=%s",
 
-        getList: function(context, callback) {
+        getList: function(context) {
             var query = this.url.replace("%s", encodeURI(context));
             var xhr = new XMLHttpRequest();
             xhr.open("GET", query, true);
@@ -435,7 +439,7 @@ multilookup = {
                     }
                 });
             }
-            siteinfo = $.grep(siteinfo, function(v, i) {
+            siteinfo = $.grep(siteinfo, function(v) {
                 if (v == undefined) {
                     return false;
                 }
@@ -467,7 +471,7 @@ multilookup = {
             callback.call(this, siteinfo, langs, types);
         },
 
-        _xhr: function(query, callback) {
+        _xhr: function(query) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", query, true);
             xhr.send();
@@ -529,7 +533,7 @@ multilookup = {
                 return defvalue;
             }
             var attrs = name.split(".");
-            attrs.forEach(function(v, i) {
+            attrs.forEach(function(v) {
                 if (!data) {
                     return;
                 }
@@ -586,7 +590,6 @@ multilookup = {
         },
 
         getExtVersion: function(callback) {
-            var self = this;
             var uri = this.manifest_uri;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', uri, true);
@@ -600,7 +603,6 @@ multilookup = {
         },
 
         getDefaultConfig: function(callback) {
-            var self = this;
             var uri = this.default_config_uri;
             var xhr = new XMLHttpRequest();
             xhr.open('GET', uri, true);
@@ -712,7 +714,7 @@ multilookup = {
             var s = (typeof aSiteinfo === "string") ? JSON.parse(aSiteinfo) : aSiteinfo;
             if ((s["data"] !== undefined) && (typeof(s["data"]) !== "string")) {
                 var t_s = s["data"];
-                $.each(s, function(k, v) {
+                $.each(s, function(k) {
                     if (k !== "data") t_s[k] = s[k];
                 });
                 s = t_s;
@@ -797,7 +799,7 @@ multilookup = {
             var self = this;
             if (!$.isArray(urls) || (urls.length < 1)) return;
             var count = 0;
-            urls.forEach(function(url, i) {
+            urls.forEach(function(url) {
                 if (!url) return;
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, true);
@@ -868,7 +870,7 @@ multilookup = {
                 length--;
             }
             if ($.inArray(text, histories) !== -1) {
-                histories = $.grep(histories, function(n, i) {
+                histories = $.grep(histories, function(n) {
                     return (text !== n);
                 });
             }
@@ -939,7 +941,7 @@ multilookup = {
             self.ports.push(port);
             port.onMessage.addListener(self._onMessage);
             port.onDisconnect.addListener(function(port) {
-                self.ports = $.grep(self.ports, function(n, i) {
+                self.ports = $.grep(self.ports, function(n) {
                     return (n !== port);
                 });
             });
@@ -1062,7 +1064,7 @@ multilookup = {
                 siteinfo = multilookup.siteinfo.getSiteinfoById(ids);
                 exec(siteinfo);
             } else {
-                multilookup.detector.getSiteinfo(context, function(siteinfo, lang) {
+                multilookup.detector.getSiteinfo(context, function(siteinfo) {
                     exec(siteinfo);
                 });
             }

@@ -4,6 +4,8 @@
  * @author jimo1001
  */
 
+"use strict";
+
 // global variable
 const EDITABLE_SITEINFO_ATTRIBUTE = [
     "id", "name", "url", "type", "src-lang", "res-lang", "description",

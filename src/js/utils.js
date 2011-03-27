@@ -3,6 +3,8 @@
  * @author jimo1001
  */
 
+"use strict";
+
 /**
  * get elements by XPATH
  * 
