@@ -471,7 +471,7 @@ var multilookup = {
             callback.call(this, siteinfo, langs, types);
         },
 
-        _xhr: function(query) {
+        _xhr: function(query, callback) {
             var xhr = new XMLHttpRequest();
             xhr.open("GET", query, true);
             xhr.send();

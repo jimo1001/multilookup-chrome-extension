@@ -399,14 +399,12 @@ var MultiLookup = {
                 }
             }
             for (var j = 0; j < docs.length; j++) {
-                var doc = docs[i];
+                var doc = docs[j];
                 if (!doc) continue;
-                if (doc) {
-                    doc.addEventListener("mouseup", self.onMouseup, true);
-                    doc.addEventListener("click", self.onClick, false);
-                    if (config["enable_dblclick_lookup"]) {
-                        doc.addEventListener("dblclick", self.onDblClick, true);
-                    }
+                doc.addEventListener("mouseup", self.onMouseup, true);
+                doc.addEventListener("click", self.onClick, false);
+                if (config["enable_dblclick_lookup"]) {
+                    doc.addEventListener("dblclick", self.onDblClick, true);
                 }
             }
         }, 1000);
