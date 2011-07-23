@@ -8,9 +8,10 @@
 body {
     padding: 0;
     margin: 0;
-    border-radius: 5px;
-    font: 12px/24px Arial,sans-serif;
     width: 480px;
+    border-radius: 5px;
+    overflow: hidden;
+    font: 12px/24px Arial,sans-serif;
     color: #666
 }
 
@@ -90,12 +91,9 @@ input[type='submit'], input[type='reset'] {
     display: inline-block;
     height: 28px;
     width: 50px;
-    border-width: 1px;
-    border-style: solid;
-    border-top-color: #ccc;
+    border:  1px solid #CCC;
     border-right-color: #999;
-    border-bottom-color:#999;
-    border-left-color: #ccc;
+    border-bottom-color: #999;
     background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd));
     font-size: 11px;
     font-weight: bold;
@@ -121,12 +119,10 @@ input[type='submit'], input[type='reset'] {
     font-size: 95%;
     cursor: pointer;
     padding: 3px 0 3px 5px;
-    border-top-width: 1px;
-    border-right-width: 1px;
-    border-left-width: 1px;
-    border-bottom-width: 0px;
-    border-style: solid;
-    border-color: #999
+    border-top: 1px solid #999;
+    border-right: 1px solid #999;
+    border-left: 1px solid #999;
+    border-bottom: 0;
 }
 
 .history-item:last-child {
@@ -159,7 +155,6 @@ input[type='submit'], input[type='reset'] {
     padding: 0;
     width: 100%;
     background: #fff;
-    zoom: 1
 }
 
 .ui-menu .ui-menu-item a {
@@ -167,7 +162,6 @@ input[type='submit'], input[type='reset'] {
     line-height: 1.5;
     padding: 0.2em 0.4em;
     text-decoration: none;
-    zoom: 1
 }
 
 .ui-menu-item a.ui-state-hover {
