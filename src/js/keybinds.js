@@ -1,8 +1,10 @@
-
 /**
  * the script is a simple JavaScript library for keyboard shortcut.
  * the keybinds is a factory class of Keybind[s](shortcutkey[s])
  *
+ * (c) 2011, jimo1001
+ * Released under the New BSD License.
+ * 
  * Usage:
  * - add Keybind(Control+y)
  *   keybinds.add(element, 'C-y', function(event, [object Keybind]) { ... }, false)

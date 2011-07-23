@@ -1,6 +1,9 @@
 /**
  * MultiLookup content script.
- * @author jimo1001
+ * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
+ *
+ * (c) 2011, jimo1001
+ * Released under the New BSD License.
  */
 
 "use strict";
@@ -864,7 +867,7 @@ function isAnchor(node) {
  * the method checks array
  */
 function isArray(obj) {
-    return toString.call(obj) === "[object Array]";
+    return Object.prototype.toString.call(obj) === "[object Array]";
 }
 
 /**

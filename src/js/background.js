@@ -1,9 +1,10 @@
 /**
  * MultiLookup core script. background.js
- * @author jimo1001
+ * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
+ * 
+ * (c) 2011, jimo1001
+ * Released under the New BSD License.
  */
-
-"use strict";
 
 if (!chrome) {
     var chrome = {};
@@ -303,7 +304,7 @@ var multilookup = {
     suggest: {
         url: "http://www.google.com/complete/search?callback=callback&q=%s",
 
-        getList: function(context) {
+        getList: function(context, callback) {
             var query = this.url.replace("%s", encodeURI(context));
             var xhr = new XMLHttpRequest();
             xhr.open("GET", query, true);
@@ -311,6 +312,7 @@ var multilookup = {
             xhr.onreadystatechange = function() {
                 if (this.readyState === 4) {
                     if ((200 <= this.status) && (this.status <= 226)) {
+                        console.log(this);
                         eval(this.responseText);
                     }
                 }

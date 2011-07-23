@@ -9,15 +9,15 @@ body {
     padding: 0;
     margin: 0;
     border-radius: 5px;
-    font-size: 90%;
+    font: 12px/24px Arial,sans-serif;
     width: 480px;
     color: #666
 }
 
-h1 {
-    padding: 10px 10px 0px 10px;
-    height: 1.5em;
-    font-size: 90%;
+header {
+    padding: 0.5em 0.5em 0 0.5em;
+    height: 2em;
+    font-weight: bold;
     border-top-left-radius: 5px;
     border-top-right-radius: 5px;
     color: #333;
@@ -43,43 +43,31 @@ h1 {
     background: white
 }
 
-#lookup-option {
+#lookup-options {
     margin-bottom: 10px
+}
+
+#lookup-options label {
+    width: 48px;
+    display: inline-block;
+    text-align: right;
+}
+#lookup-options select {
+    padding-left: 3px;
+    color: #666;
+    height: 24px;
+}
+
+.option {
+    margin-bottom: 0.5em;
+}
+
+.option.inline {
+    display: inline-block;
 }
 
 #lookup {
     padding: 10px
-}
-
-#lookup-lang {
-    padding-left: 3px;
-    height: 24px;
-    width: auto
-}
-
-#lookup-lang option {
-    color: #666
-}
-
-select#lookup-type {
-    padding-left: 3px;
-    height: 24px;
-    width: auto
-}
-
-#lookup-type option {
-    color: #666
-}
-
-#lookup-site {
-    padding-left: 3px;
-    height: 24px;
-    width: auto;
-    max-width: 150px
-}
-
-#lookup-site option {
-    color: #666
 }
 
 #lookup-suboption {
@@ -108,7 +96,9 @@ input[type='submit'], input[type='reset'] {
     border-right-color: #999;
     border-bottom-color:#999;
     border-left-color: #ccc;
-    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd))
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd));
+    font-size: 11px;
+    font-weight: bold;
 }
 
 #history {

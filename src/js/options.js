@@ -1,19 +1,19 @@
 /**
  * MultiLookup options.js
- * 
- * @author jimo1001
+ * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
+ *
+ * (c) 2011, jimo1001
+ * Released under the New BSD License.
  */
 
-"use strict";
-
 // global variable
-const EDITABLE_SITEINFO_ATTRIBUTE = [
+var EDITABLE_SITEINFO_ATTRIBUTE = [
     "id", "name", "url", "type", "src-lang", "res-lang", "description",
     "content-xpath", "content-selector", "content-jsonpath", "exclude-xpath", "exclude-selector",
     "lookup-regexp", "method", "data", "space", "charset"];
-const SITEINFO_ATTRIBUTE = EDITABLE_SITEINFO_ATTRIBUTE.concat(["created_by", "created_at", "updated_at", "resource_url"]);
+var SITEINFO_ATTRIBUTE = EDITABLE_SITEINFO_ATTRIBUTE.concat(["created_by", "created_at", "updated_at", "resource_url"]);
 
-multilookup = chrome.extension.getBackgroundPage().multilookup;
+var multilookup = chrome.extension.getBackgroundPage().multilookup;
 /**
  * Options
  */
@@ -557,7 +557,7 @@ MLuOptions.advance = new function() {
                     if ($.inArray(k, EDITABLE_SITEINFO_ATTRIBUTE) !== -1)
                         data[k] = v;
                 });
-                json = jsonFormatter(JSON.stringify(data));
+                json = JSON.stringify(data, null, 4);
                 textarea.attr("id", "edit_siteinfo_text").text(json);
                 button.val(_("button_update"));
                 editor.append(textarea, "<br>", button);
