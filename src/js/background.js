@@ -374,7 +374,7 @@ var multilookup = {
     },
 
     getLanguage: function(context, callback) {
-      var enable_api = multilookup.config.getValue("enable_language_detect_api", false);
+      var enable_api = false; //multilookup.config.getValue("enable_language_detect_api", false);
       var langs = this.getLanguageByRegexp(context);
       if (enable_api) {
         this.getLanguageByAPI(context, function(languages) {
