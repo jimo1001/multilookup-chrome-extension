@@ -51,6 +51,7 @@ var multilookup = {
       var self = this;
       var infos = this.siteinfos;
       var timeout_delay = multilookup.config.getValue("lookup_xhr_timeout", 5000);
+      var ready_result_length = 0;
 
       $.each(infos, function(index, info) {
         if (!info) {
@@ -88,6 +89,7 @@ var multilookup = {
         xhr.send(data);
         xhr.onreadystatechange = function() {
           if (this.readyState === 4) {
+            ready_result_length++;
             if (self.timeout_ids[index] !== null) {
               window.clearTimeout(self.timeout_ids[index]);
             }
@@ -109,7 +111,7 @@ var multilookup = {
             var results = $.grep(self.results, function(n) {
               return (n !== null);
             });
-            if (results.length >= self.siteinfos.length) {
+            if (ready_result_length === self.siteinfos.length) {
               if (self.sync) {
                 multilookup.siteinfo.save();
                 multilookup.management.postSiteinfoMessage();
