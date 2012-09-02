@@ -316,17 +316,23 @@ var multilookup = {
    * Google Suggest API
    */
   suggest: {
-    url: "http://www.google.com/complete/search?callback=callback&q=%s",
+    url: "http://google.com/complete/search?q=%s&output=toolbar",
 
     getList: function(context, callback) {
-      var query = this.url.replace("%s", encodeURI(context));
-      var xhr = new XMLHttpRequest();
+      var query = this.url.replace("%s", encodeURI(context)),
+          xhr = new XMLHttpRequest(),
+          doc = null,
+          list = [];
       xhr.open("GET", query, true);
       xhr.send();
       xhr.onreadystatechange = function() {
         if (this.readyState === 4) {
           if ((200 <= this.status) && (this.status <= 226)) {
-            eval(this.responseText);
+            doc = createHTMLDocumentByString(this.responseText);
+            $.each($x('.//suggestion/@data', doc), function (i, attr) {
+                list.push(attr.nodeValue);
+            });
+            callback(list);
           }
         }
       };

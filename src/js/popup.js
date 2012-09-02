@@ -192,9 +192,7 @@
       var self = popup.lookup;
       multilookup.suggest.getList(context, function (list) {
         self.suggest.list = [];
-        $.each(list[1], function (i, v) {
-          self.suggest.list.push(v[0]);
-        });
+        self.suggest.list = list;
         if (callback) {
           callback.call(this, self.suggest.list);
         }
