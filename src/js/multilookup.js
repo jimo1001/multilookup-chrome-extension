@@ -1,4 +1,4 @@
-// -*- coding: utf-8; mode: js; -*-
+// -*- coding: utf-8; mode: js2; -*-
 /**
  * MultiLookup content script.
  * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
@@ -763,13 +763,18 @@ function isElementInDocument(node) {
     },
 
     removeAll: function () {
-      var self = this;
-      self._resultGroups.forEach(function (group, i) {
+      var self = ResultGroupFactory,
+          group = null;
+      if (!self._resultGroups) {
+          return;
+      }
+      for (var i = 0, len = self._resultGroups.length; i < len; i++) {
+        group = self._resultGroups[i];
         if (group) {
           group.removeElement();
           self._resultGroups[i] = null;
         }
-      });
+      }
     }
   };
 

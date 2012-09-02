@@ -361,4 +361,31 @@
     popup.cache.saveFormData();
   };
 
+    $(document).ready(function () {
+        $('[data-i18n]').each(function () {
+            var message = _(this.dataset.i18n),
+                lang = window.navigator.language,
+                type = this.type;
+            if (!message) {
+                return;
+            }
+            if ((this.tagName === 'INPUT') &&
+                (type === 'button' || type === 'reset' || type === 'submit')) {
+                $(this).val(message).attr('lang', lang).removeAttr('title');
+            } else {
+                $(this).html(message).attr('lang', lang).removeAttr('title');
+            }
+        });
+
+        popup.lookup.init();
+        popup.option.init();
+        popup.cache.setCachedDataToForm();
+        $('.content-title').click(function () {
+            var name = this.id.replace('-title', '');
+            popup.changeTab(name);
+        });
+        var cache = popup.cache.getCachedData(),
+            tabname = cache.active_tab_name || 'lookup';
+        popup.changeTab(tabname);
+    });
 }(jQuery));

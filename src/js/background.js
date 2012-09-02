@@ -1,4 +1,4 @@
-// -*- coding: utf-8; mode: js; -*-
+// -*- coding: utf-8 -*-
 
 /**
  * MultiLookup core script. background.js
@@ -1127,7 +1127,7 @@ var multilookup = {
         });
       }
       for (i = 0, len = self.ports.length; i<len; i++) {
-        if (self.ports[i].tab.id === tab.id) {
+        if (self.ports[i].sender.tab.id === tab.id) {
           port = self.ports[i]; break;
         }
       }
@@ -1135,7 +1135,7 @@ var multilookup = {
       self.lookup(context, ids, function(r) {
         var port = null, i, len;
         for (i = 0, len = self.ports.length; i < len; i++) {
-          if (self.ports[i].tab.id === tab.id) {
+          if (self.ports[i].sender.tab.id === tab.id) {
             port = self.ports[i]; break;
           }
         }
@@ -1180,6 +1180,7 @@ var multilookup = {
         var lookup_entries = multilookup.config.getValue("lookup_entries", []);
         self.contextmenus.push(sp);
         $.each(selected, function(i, v) {
+            console.log(i, v);
           var id = chrome.contextMenus.create({
             type: "checkbox",
             checked: ($.inArray(v.id, lookup_entries) !== -1),

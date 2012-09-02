@@ -1,7 +1,7 @@
 {
-  "id": "kploejngmljnhpofmejijjhegehhdfoa",
   "default_locale": "en",
   "name": "__MSG_ext_name__",
+  "manifest_version": 2,
   "version": "0.6.2.2",
   "description": "__MSG_ext_description__",
   "icons": {
@@ -11,9 +11,10 @@
     "32": "img/icon32.png",
     "16": "img/icon16.png"
   },
-  "permissions": [
+  "optional_permissions": [
     "contextMenus",
     "tabs",
+    "background",
     "http://*/*",
     "https://*/*"
   ],
@@ -34,10 +35,12 @@
     }
   ],
   "options_page": "html/options.html",
-  "background_page": "html/background.html",
+  "background": {
+    "page": "html/background.html"
+  },
   "browser_action": {
     "default_icon": "img/popup.png",
     "default_title": "MultiLookup",
-    "popup": "html/popup.html"
+    "default_popup": "html/popup.html"
   }
 }
