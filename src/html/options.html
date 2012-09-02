@@ -174,7 +174,7 @@
             </p>
             <input id="enable_dblclick_lookup" class="option" type="radio" value="1" name="enable_dblclick_lookup" />
             <label for="enable_dblclick_lookup" data-i18n="enable">有効にする</label><br>
-            <input id="disable_dblclick_lookup" class="option" type="radio" value="0" name="enable_dblclick_lookup"  checked /> 
+            <input id="disable_dblclick_lookup" class="option" type="radio" value="0" name="enable_dblclick_lookup"  checked />
             <label for="disable_dblclick_lookup" data-i18n="disable">無効にする</label>
         </td>
     </tr>
@@ -190,7 +190,7 @@
             <label for="enable_modifier_key" data-i18n="enable">有効にする</label>
             <label for="modifier_key"><span data-i18n="option_modifier_key">修飾キー</span>:</label>
             <input id="modifier_key" class="option" type="text" name="modifier_key" /><br>
-            <input id="disable_modifier_key" class="option" type="radio" value="0" name="enable_modifier_key" /> 
+            <input id="disable_modifier_key" class="option" type="radio" value="0" name="enable_modifier_key" />
             <label for="disable_modifier_key" data-i18n="disable">無効にする</label>
         </td>
     </tr>
@@ -302,7 +302,7 @@
                 <a href="http://wedata.net/databases/Lookup/items"  target="_blank">Wedata(データベース:Lookup)</a>からサイト情報を取得し更新します<br>
                 ※以前に変更したサイトも更新される可能性があります
             </p>
-            <input data-i18n="button_update" type="button" onclick="MLuOptions.site.updateSiteinfo();" value="更新する" />
+            <input id="update_site_info" data-i18n="button_update" type="button" value="更新する" />
         </td>
     </tr>
     <tr>
@@ -314,7 +314,7 @@
             <p class="notice" data-i18n="option_auto_update_siteinfo_description">ブラウザ起動時にサイトを更新します</p>
             <input type="radio" id="enable_auto_update" class="option" value="1" name="enable_auto_update" />
             <label for="enable_auto_update" data-i18n="enable">有効にする</label><br>
-            <input type="radio" id="disable_auto_update" class="option" value="0" name="enable_auto_update" /> 
+            <input type="radio" id="disable_auto_update" class="option" value="0" name="enable_auto_update" />
             <label for="disable_auto_update" data-i18n="disable">無効にする</label>
         </td>
     </tr>
@@ -394,13 +394,13 @@
             <label for="language_detect_regexp_select" data-i18n="language">言語</label>
             <select id="language_detect_regexp_select">
                 <option value=""> -- </option>
-            </select> 
+            </select>
             <label for="language_detect_regexp_input" data-i18n="regexp">正規表現</label>
             <input type="text" id="language_detect_regexp_input" value="" />
             <div style="text-align: right">
                 <input type="button" id="language_detect_regexp_add" data-i18n="button_add_language" value="言語を追加する" />
                 <input type="button" id="language_detect_regexp_del" data-i18n="button_delete_language" value="選択中の言語を削除する" />
-            </div> 
+            </div>
         </td>
     </tr>
     <tr>
@@ -415,17 +415,17 @@
             <label for="type_detect_regexp_language" data-i18n="language">言語</label>
             <select id="type_detect_regexp_language">
                 <option value=""> -- </option>
-            </select> 
+            </select>
             <label for="type_detect_regexp_type" data-i18n="type">種別</label>
             <select id="type_detect_regexp_type">
                 <option value=""> -- </option>
-            </select> 
+            </select>
             <label for="type_detect_regexp_input" data-i18n="regexp">正規表現</label>
             <input type="text" id="type_detect_regexp_input" value="" />
             <div style="text-align: right">
                 <input type="button" id="type_detect_regexp_add" data-i18n="button_add_type" value="選択中の言語の種別を追加する" />
                 <input type="button" id="type_detect_regexp_del" data-i18n="button_delete_type" value="選択中の種別を削除する" />
-            </div> 
+            </div>
         </td>
     </tr>
     <tr>
@@ -519,35 +519,36 @@
         <th class="option_th" data-i18n="option_report">報告</th>
         <td class="option_td">
         <p class="notice" data-i18n="option_report_description">
-            要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br>
-            報告頂いた内容は、<a target="_blank" href="http://www.simplivillage.com/trac/report/1">管理サイトのチケット</a>として登録されます<br>
+            要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br/>
+            <a target="_blank" href="http://www.simplivillage.com/trac/newticket">http://www.simplivillage.com/trac/newticket</a><br/>
+            報告頂いた内容は、<a target="_blank" href="http://www.simplivillage.com/trac/report/1">問題管理サイトのチケット</a>として登録されます<br/>
             この拡張に関する感想は <a href="https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja"
                                       target="_blank">MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします
         </p>
-        <div id="report_result"></div>
-        <div id="report_content">
-            <table>
-            <tr>
-                <th><label for="reporter" data-i18n="option_report_owner">報告者(任意):</label></th>
-                <td><input type="text" id="reporter" name="reporter" /></td>
-            </tr><tr>
-                <th><span data-i18n="option_report_type">種別: </span></th>
-                <td><select id="report_type" name="report_type">
-                    <option value="問題・バグ" data-i18n="option_report_type_issue">問題・バグ</option>
-                    <option value="要望" data-i18n="option_report_type_demand">要望</option>
-                </select></td>
-            </tr><tr>
-                <th><label for="report_summary" data-i18n="option_report_title">タイトル: </label></th>
-                <td><input type="text" id="report_summary" name="report_summary"/></td>
-            </tr><tr>
-                <th><label for="report_description" data-i18n="option_report_content_description">概要: </label></th>
-                <td><textarea id="report_description" name="report_content"></textarea></td>
-            </tr><tr>
-            <th></th>
-            <td><input type="button" onclick="MLuOptions.report.send();" data-i18n="button_send" value="送信" /></td>
-            </tr>
-            </table>
-        </div>
+        <!-- <div id="report_result"></div> -->
+        <!-- <div id="report_content"> -->
+        <!--     <table> -->
+        <!--     <tr> -->
+        <!--         <th><label for="reporter" data-i18n="option_report_owner">報告者(任意):</label></th> -->
+        <!--         <td><input type="text" id="reporter" name="reporter" /></td> -->
+        <!--     </tr><tr> -->
+        <!--         <th><span data-i18n="option_report_type">種別: </span></th> -->
+        <!--         <td><select id="report_type" name="report_type"> -->
+        <!--             <option value="問題・バグ" data-i18n="option_report_type_issue">問題・バグ</option> -->
+        <!--             <option value="要望" data-i18n="option_report_type_demand">要望</option> -->
+        <!--         </select></td> -->
+        <!--     </tr><tr> -->
+        <!--         <th><label for="report_summary" data-i18n="option_report_title">タイトル: </label></th> -->
+        <!--         <td><input type="text" id="report_summary" name="report_summary"/></td> -->
+        <!--     </tr><tr> -->
+        <!--         <th><label for="report_description" data-i18n="option_report_content_description">概要: </label></th> -->
+        <!--         <td><textarea id="report_description" name="report_content"></textarea></td> -->
+        <!--     </tr><tr> -->
+        <!--     <th></th> -->
+        <!--     <td><input type="button" onclick="MLuOptions.report.send();" data-i18n="button_send" value="送信" /></td> -->
+        <!--     </tr> -->
+        <!--     </table> -->
+        <!-- </div> -->
         </td>
     </tr>
 </table>

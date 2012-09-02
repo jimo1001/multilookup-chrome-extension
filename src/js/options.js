@@ -2,7 +2,7 @@
  * MultiLookup options.js
  * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
  *
- * (c) 2011, jimo1001
+ * (c) 2011,2012 jimo1001
  * Released under the New BSD License.
  */
 
@@ -852,4 +852,9 @@ $(document).ready(function() {
   });
   MLuOptions.init();
   keybinds.init();
+
+  // update siteinfo handler
+  $('#update_site_info').click(function () {
+      return MLuOptions.site.updateSiteinfo();
+  });
 });

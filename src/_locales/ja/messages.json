@@ -348,7 +348,7 @@
         "message": "報告"
     },
     "option_report_description": {
-        "message": "要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br>報告頂いた内容は、<a target='_blank' href='http://www.simplivillage.com/trac/report/1'>管理サイトのチケット</a>として登録されます。<br>この拡張に関する感想は <a target='_blank' href='https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja'>MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします"
+        "message": "要望や問題などがありましたら以下のフォームから内容・問題の再現方法など入力し、送信してください<br><a target='_blank' href='http://www.simplivillage.com/trac/newticket'>http://www.simplivillage.com/trac/newticket</a><br/>報告頂いた内容は、<a target='_blank' href='http://www.simplivillage.com/trac/report/1'>管理サイトのチケット</a>として登録されます。<br>この拡張に関する感想は <a target='_blank' href='https://chrome.google.com/extensions/detail/kploejngmljnhpofmejijjhegehhdfoa?hl=ja'>MultiLookup - Google Chrome 拡張機能ギャラリー</a> のコメントにお願いします"
     },
     "option_report_owner": {
         "message": "報告者(任意):"
