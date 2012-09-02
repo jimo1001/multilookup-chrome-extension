@@ -941,7 +941,12 @@ function isElementInDocument(node) {
       if (!port) {
         init();
       }
-      port.postMessage(data);
+      try {
+        port.postMessage(data);
+      } catch (e) {
+        console.warn('Could not post message.', e);
+        init();
+      }
     }
 
     function onClick(evt) {
