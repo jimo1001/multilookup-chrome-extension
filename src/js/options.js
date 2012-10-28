@@ -857,4 +857,17 @@ $(document).ready(function() {
   $('#update_site_info').click(function () {
       return MLuOptions.site.updateSiteinfo();
   });
+
+  // reset settings
+  $('#reset_config').click(function () {
+    return MLuOptions.initialize.resetConfig();
+  });
+
+  $('#reset_siteinfo').click(function () {
+    return MLuOptions.initialize.resetSiteinfo();
+  });
+
+  $('#reset_all').click(function () {
+    return MLuOptions.initialize.resetAll();
+  });
 });
