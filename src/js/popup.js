@@ -7,14 +7,19 @@
  * Released under the New BSD License.
  */
 
-(function ($) {
+(function (global, $) {
   // DOMWindow object
-  var root = this,
-    multilookup = root.chrome.extension.getBackgroundPage().multilookup,
-    popup = {};
+  var multilookup = global.chrome.extension.getBackgroundPage().multilookup,
+      JSON = global.JSON,
+      localStorage = global.localStorage,
+      keybinds = global.keybinds,
+      utils = global.multilookup.utils,
+      _ = utils.getLocalizedMessage,
+      popup = {};
+
   // global objects
-  root.popup = popup;
-  root.multilookup = multilookup;
+  global.popup = popup;
+  global.multilookup = multilookup;
   popup.lookup = {
     currentTab: null,
     siteinfo: null,
@@ -42,10 +47,10 @@
       var self = this;
       this.siteinfo = multilookup.siteinfo.getSiteinfo();
       this.entries = multilookup.config.getValue('entries', []);
-      root.keybinds.init();
+      keybinds.init();
       $.each(this.entries, function (i, id) {
         var v = self.siteinfo[id],
-          langs = v['src-lang'].split(' ');
+            langs = v['src-lang'].split(' ');
         $.each(langs, function (i, v) {
           if ($.inArray(v, self.langs) === -1) {
             self.langs.push(v);
@@ -143,10 +148,10 @@
 
     onSubmit: function () {
       var self = popup.lookup,
-        lang = self.getLangValue(),
-        type = self.getTypeValue(),
-        id = self.getSiteIdValue(),
-        text = self.getContext();
+          lang = self.getLangValue(),
+          type = self.getTypeValue(),
+          id = self.getSiteIdValue(),
+          text = self.getContext();
       if (!$.trim(text)) {
         return false;
       }
@@ -156,16 +161,16 @@
 
     onChange: function () {
       var self = popup.lookup,
-        lang = self.getLangValue(),
-        type = self.getTypeValue();
+          lang = self.getLangValue(),
+          type = self.getTypeValue();
       self.setSiteList(lang, type);
     },
 
     onKeydown: function (event) {
       var self = popup.lookup,
-        element = this,
-        context = $(element).val(),
-        key = root.keybinds.getKeyFromEvent(event);
+          element = this,
+          context = $(element).val(),
+          key = keybinds.getKeyFromEvent(event);
       if ((key === 'RET')) {
         $(self.selector.context).autocomplete('close');
         return;
@@ -176,10 +181,10 @@
       }
       self.context = context;
       if (self.timeoutID !== null) {
-        root.clearTimeout(self.timeoutID);
+        global.clearTimeout(self.timeoutID);
         self.timeoutID = null;
       }
-      self.timeoutID = root.setTimeout(function () {
+      self.timeoutID = global.setTimeout(function () {
         self.context = $(element).val();
         self.getSuggestList(self.context, function (list) {
           $(self.selector.context).autocomplete('option', 'source', list).autocomplete('search', self.context);
@@ -201,7 +206,7 @@
 
     setSiteList: function (lang, type) {
       var self = this,
-        sites = [];
+          sites = [];
       lang = lang || '';
       type = type || '';
 
@@ -221,11 +226,11 @@
 
     showHistories: function () {
       var self = this,
-        list = $('<ul></ul>'),
-        histories = multilookup.history.get(),
-        i = 0,
-        li = null,
-        history = null;
+          list = $('<ul></ul>'),
+          histories = multilookup.history.get(),
+          i = 0,
+          li = null,
+          history = null;
 
       if (!multilookup.history.enabled()) {
         return;
@@ -255,7 +260,7 @@
         return this.data;
       }
       var data = {},
-        cache = root.localStorage.popup;
+          cache = localStorage.popup;
       if (cache) {
         data = JSON.parse(cache);
         this.data = data;
@@ -265,8 +270,8 @@
 
     setCachedDataToForm: function () {
       var cache = this.getCachedData(),
-        lookup = popup.lookup,
-        form = null;
+          lookup = popup.lookup,
+          form = null;
       if (cache && cache.form) {
         form = cache.form;
         lookup.setLangValue(form.lang);
@@ -280,8 +285,8 @@
 
     saveFormData: function () {
       var data = this.getCachedData() || {},
-        lookup = popup.lookup,
-        form = null;
+          lookup = popup.lookup,
+          form = null;
       if (!data.form) {
         data.form = {};
       }
@@ -291,7 +296,7 @@
       form.site_id = lookup.getSiteIdValue();
       form.context = lookup.getContext();
       form.enable_suggest = lookup.enableSuggest();
-      root.localStorage.popup = JSON.stringify(data);
+      localStorage.popup = JSON.stringify(data);
     }
   };
 
@@ -308,7 +313,7 @@
         return self.config[this.name];
       }).bind('change', function () {
         var value = $(this).val(),
-          name = this.name;
+            name = this.name;
         if (/^[0-9]*$/.test(value)) {
           value = Number(value);
         }
@@ -323,7 +328,7 @@
         }
         $(this).bind('change', function () {
           var name = this.name,
-            value = $(this).val();
+              value = $(this).val();
           if ((value === '0') || (value === '1')) {
             value = (value === '1');
           }
@@ -348,7 +353,7 @@
       return;
     }
     var tid = name + '-title',
-      cache = popup.cache.getCachedData();
+        cache = popup.cache.getCachedData();
     $('.content-title').each(function () {
       $(this).removeClass('content-title-active');
     });
@@ -359,31 +364,31 @@
     popup.cache.saveFormData();
   };
 
-    $(document).ready(function () {
-        $('[data-i18n]').each(function () {
-            var message = _(this.dataset.i18n),
-                lang = window.navigator.language,
-                type = this.type;
-            if (!message) {
-                return;
-            }
-            if ((this.tagName === 'INPUT') &&
-                (type === 'button' || type === 'reset' || type === 'submit')) {
-                $(this).val(message).attr('lang', lang).removeAttr('title');
-            } else {
-                $(this).html(message).attr('lang', lang).removeAttr('title');
-            }
-        });
-
-        popup.lookup.init();
-        popup.option.init();
-        popup.cache.setCachedDataToForm();
-        $('.content-title').click(function () {
-            var name = this.id.replace('-title', '');
-            popup.changeTab(name);
-        });
-        var cache = popup.cache.getCachedData(),
-            tabname = cache.active_tab_name || 'lookup';
-        popup.changeTab(tabname);
+  $(document).ready(function () {
+    $('[data-i18n]').each(function () {
+      var message = _(this.dataset.i18n),
+          lang = window.navigator.language,
+          type = this.type;
+      if (!message) {
+        return;
+      }
+      if ((this.tagName === 'INPUT') &&
+          (type === 'button' || type === 'reset' || type === 'submit')) {
+        $(this).val(message).attr('lang', lang).removeAttr('title');
+      } else {
+        $(this).html(message).attr('lang', lang).removeAttr('title');
+      }
     });
-}(jQuery));
+
+    popup.lookup.init();
+    popup.option.init();
+    popup.cache.setCachedDataToForm();
+    $('.content-title').click(function () {
+      var name = this.id.replace('-title', '');
+      popup.changeTab(name);
+    });
+    var cache = popup.cache.getCachedData(),
+        tabname = cache.active_tab_name || 'lookup';
+    popup.changeTab(tabname);
+  });
+}(this, jQuery));
