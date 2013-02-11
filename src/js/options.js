@@ -1,3 +1,4 @@
+// -*- coding: utf-8 -*-
 /**
  * MultiLookup options.js
  * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
@@ -14,7 +15,17 @@
     'lookup-regexp', 'method', 'data', 'space', 'charset'];
   var SITEINFO_ATTRIBUTE = EDITABLE_SITEINFO_ATTRIBUTE.concat(['created_by', 'created_at', 'updated_at', 'resource_url']);
 
-  var multilookup = chrome.extension.getBackgroundPage().multilookup;
+  var multilookup = global.chrome.extension.getBackgroundPage().multilookup,
+      config = multilookup.config.getAll(),
+      siteinfo = multilookup.siteinfo.getSiteinfo(),
+      utils = global.multilookup.utils,
+      _ = utils.getLocalizedMessage,
+      language = utils.getLanguage(),
+      keybinds = global.keybinds,
+      console = global.console,
+      chrome = global.chrome,
+      JSON = global.JSON;
+
   /**
    * Options
    */
@@ -231,7 +242,7 @@
       }
       // initialize
       $('li', $('#siteinfo_selector')).remove();
-      
+
       var entries = [];
       $.each(config.entries, function (i, v) {
         entries.push(siteinfo[v]);
@@ -279,7 +290,7 @@
           self.save();
         });
       });
-      
+
       $('#site-filter').keyup(function (){
         var keyword = $(this).val();
         var re = new RegExp(keyword, 'i');
@@ -291,7 +302,7 @@
           }
         });
       });
-      
+
       // selected sortable
       $('ul', selected).sortable({
         revert: true,
@@ -463,7 +474,7 @@
         parent.saveConfig();
         console.info('Language regexp saved!!');
       });
-      
+
       add_button.click(function() {
         var lang = window.prompt(_('option_input_additional_language_notice'), '');
         if (!lang) {
@@ -588,7 +599,7 @@
       });
       self.siteinfoEvent();
     };
-    
+
     this.siteinfoEvent = function() {
       var config = parent.config;
       var siteinfo = parent.siteinfo;
@@ -642,7 +653,7 @@
           list.forEach(function(v, i) {
             data[v] = '';
           });
-          json = jsonFormatter(JSON.stringify(data));
+          json = JSON.stringify(data, null, 4);
           textarea.attr('id', 'create_siteinfo_text').text(json);
           button.val(_('button_add'));
           editor.append(textarea, '<br>', button);
@@ -715,7 +726,7 @@
         }
       }
     };
-    
+
     this.resetConfig = function(evt) {
       var result = window.confirm(_('option_reset_settings_confirm'));
       if (result) {
@@ -728,7 +739,7 @@
         }
       }
     };
-    
+
     this.resetSiteinfo = function(evt) {
       var result = window.confirm(_('option_reset_siteinfo_confirm'));
       if (result) {
@@ -743,14 +754,14 @@
         }
       }
     };
-    
+
     this.reload = function() {
       $('#option-form').submit();
     };
   };
 
   MLuOptions.report = new function () {
-    
+
     this.send = function() {
       var reporter = $('#reporter').val().trim() || 'anonymous';
       var summary = $('#report_summary').val().trim();
@@ -802,12 +813,11 @@
   $(document).ready(function() {
     $('[data-i18n]').each(function() {
       var message = _(this.dataset.i18n);
-      var lang = getLanguage();
       if (!message) { return; }
       if ((this.tagName === 'INPUT') && ($(this).attr('type') === 'button')) {
-        $(this).val(message).attr('lang', lang);
+        $(this).val(message).attr('lang', language);
       } else {
-        $(this).html(message).attr('lang', lang);
+        $(this).html(message).attr('lang', language);
       }
     });
     if ($('#translator_name').text) {
@@ -847,8 +857,7 @@
           configs.push(conf);
         });
         var conf_text = configs.join(', ');
-        var lang = getLanguage();
-        $(this).text('('+def+': '+(conf_text===''?'-':conf_text)+')').attr('lang', lang);
+        $(this).text('('+def+': '+(conf_text===''?'-':conf_text)+')').attr('lang', language);
       });
     });
     MLuOptions.init();

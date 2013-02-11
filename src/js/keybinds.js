@@ -1,4 +1,4 @@
-
+// -*- coding: utf-8 -*-
 /**
  * the script is a simple JavaScript library for keyboard shortcut.
  * the keybinds is a factory class of Keybind[s](shortcutkey[s])

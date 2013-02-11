@@ -1,5 +1,4 @@
 // -*- coding: utf-8 -*-
-
 /**
  * MultiLookup core script. background.js
  * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
@@ -9,6 +8,8 @@
  */
 
 (function (global, $) {
+  'use strict';
+
   var chrome = global.chrome,
       console = global.console,
       JSON = global.JSON,
@@ -203,7 +204,7 @@
             if (($(result_nodes).children().length < 1) && ($(result_nodes).text().length < 2)) {
               result_text = this.notice("Not Found");
             } else {
-              result_text = sanitize(result_nodes, "MLuResultArticle_"); // sanitize (white list)
+              result_text = utils.sanitize(result_nodes, "MLuResultArticle_"); // sanitize (white list)
             }
           } else {
             result_text = this.notice("Not Found");
@@ -353,80 +354,55 @@
      * Google Detect API
      */
     detector: {
-      url: "http://ajax.googleapis.com/ajax/services/language/detect?v=1.0&callback=callback&q=%s",
 
-      getLanguageByRegexp: function(context) {
-        context = $.trim(context);
-        if (!context) {
-          return [];
-        }
-        var langRegexp = multilookup.config.getValue("lang_regexp", []);
-        var lang =  [];
-        if (!isEmpty(langRegexp)) {
-          $.each(langRegexp, function(i, v) {
-            var re = new RegExp(v);
-            if (re.test(context)) {
-              lang.push(i);
+      getLanguage: function (text, callback) {
+        global.guessLanguage.detect(text, function (langs) {
+          var detected_langs = [],
+              detect_threshold = 0.1,
+              whole_threshold = 0.2,
+              max_score = 0;
+          $.each(langs, function (i, lang) {
+            var score = lang[1] || 0;
+            if (score > detect_threshold) {
+              detected_langs.push(lang[0]);
+            }
+            if (max_score > score) {
+              max_score = score;
             }
           });
-        }
-        return lang;
-      },
-
-      getLanguageByAPI: function(context, callback) {
-        var query = this.url.replace("%s", encodeURI(context));
-        this._xhr(query, function(data) {
-          var confidence = data.responseData.confidence;
-          var lang = data.responseData.language;
-          if (confidence > 0.05) {
-            lang = [lang];
-          } else {
-            var tmp = ["en"];
-            if ($.inArray(lang, tmp) === -1) {
-              tmp.push(lang);
-            }
-            lang = tmp;
+          console.log(langs, detected_langs);
+          if (max_score <= whole_threshold) {
+            chrome.i18n.getAcceptLanguages(function (accepted_langs) {
+              accepted_langs.reverse();
+              $.each(accepted_langs, function (i, _lang) {
+                if (($.inArray(_lang, detected_langs) === -1) && ($.inArray(_lang, langs) !== -1)) {
+                  detected_langs.unshift(_lang);
+                }
+              });
+            });
           }
-          callback.call(this, lang);
+          callback.call(undefined, detected_langs);
         });
       },
 
-      getLanguage: function(context, callback) {
-        var enable_api = false; //multilookup.config.getValue("enable_language_detect_api", false);
-        var langs = this.getLanguageByRegexp(context);
-        if (enable_api) {
-          this.getLanguageByAPI(context, function(languages) {
-            $.each(languages, function(i, v) {
-              if (!langs.some(function(vv) {
-                return vv === v;
-              })) {
-                langs.push(v);
-              }
-            });
-            callback.call(this, langs);
-          });
-        } else {
-          callback.call(this, langs);
-        }
-      },
-
-      getType: function(context, langs, callback) {
+      getType: function (context, langs, callback) {
         var self = this, types = {}, i, len;
-        var cexp = multilookup.config.getValue("content_regexp", {});
+        var regexps = multilookup.config.getValue("content_regexp", {});
         if ($.isFunction(langs)) {
           callback = langs;
           langs = null;
         }
         if (!langs) {
-          return this.getLanguage(context, function(langs) {
+          this.getLanguage(context, function (langs) {
             if (langs) {
               self.getType(context, langs, callback);
             }
           });
+          return;
         }
         langs.forEach(function (lang) {
-          if (cexp[lang]) {
-            $.each(cexp[lang], function(type, regexp) {
+          if (regexps[lang]) {
+            $.each(regexps[lang], function (type, regexp) {
               if (regexp && context.match(regexp)) {
                 if (!types[lang]) {
                   types[lang] = [];
@@ -439,7 +415,7 @@
         callback.call(this, types);
       },
 
-      getSiteinfo: function(context, args, callback) {
+      getSiteinfo: function (context, args, callback) {
         var langs, types = {}, siteinfo;
         if (!$.isFunction(callback) && $.isFunction(args)) {
           callback = args;
@@ -452,21 +428,25 @@
         var self = this;
         context = $.trim(context);
         if (!context) { return; }
-        var cexp = multilookup.config.getValue("content_regexp", {});
+        var regexps = multilookup.config.getValue("content_regexp", {});
 
         if (!langs) {
-          return this.getLanguage(context, function(lang) {
+          this.getLanguage(context, function(lang) {
             self.getSiteinfo(context, {lang: lang, siteinfo: siteinfo}, callback);
           });
+          return;
         }
         if (!siteinfo) {
           var entries = multilookup.config.getValue("lookup_entries", []);
-          if (isEmpty(entries)) { return callback.call(this, [], langs); }
+          if (isEmpty(entries)) {
+            callback.call(this, [], langs);
+            return;
+          }
           siteinfo = multilookup.siteinfo.getSiteinfoById(entries);
         }
         langs.forEach(function (lang) {
-          if (cexp[lang]) {
-            $.each(cexp[lang], function(type, regexp) {
+          if (regexps[lang]) {
+            $.each(regexps[lang], function(type, regexp) {
               if (regexp && context.match(regexp)) {
                 if (!types[lang]) {
                   types[lang] = [];
@@ -480,9 +460,9 @@
           if (v === undefined) {
             return false;
           }
-          var regexp = "";
+          var regexp = v["content-regexp"];
+
           // if content-regexp exist in siteinfo, using the regexp.
-          regexp = v["content-regexp"];
           if (regexp) {
             var re = new RegExp(regexp);
             return (re.test(context));
@@ -505,19 +485,6 @@
           return true;
         });
         callback.call(this, siteinfo, langs, types);
-      },
-
-      _xhr: function(query, callback) {
-        var xhr = new XMLHttpRequest();
-        xhr.open("GET", query, true);
-        xhr.send();
-        xhr.onreadystatechange = function() {
-          if (this.readyState === 4) {
-            if ((200 <= this.status) && (this.status <= 226)) {
-              eval(this.responseText);
-            }
-          }
-        };
       }
     },
 
@@ -1196,7 +1163,6 @@
           var lookup_entries = multilookup.config.getValue("lookup_entries", []);
           self.contextmenus.push(sp);
           $.each(selected, function(i, v) {
-            console.log(i, v);
             var id = chrome.contextMenus.create({
               type: "checkbox",
               checked: ($.inArray(v.id, lookup_entries) !== -1),

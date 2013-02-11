@@ -8,6 +8,8 @@
  */
 
 (function (global, $) {
+  'use strict';
+
   // DOMWindow object
   var multilookup = global.chrome.extension.getBackgroundPage().multilookup,
       JSON = global.JSON,
@@ -148,8 +150,6 @@
 
     onSubmit: function () {
       var self = popup.lookup,
-          lang = self.getLangValue(),
-          type = self.getTypeValue(),
           id = self.getSiteIdValue(),
           text = self.getContext();
       if (!$.trim(text)) {
@@ -213,7 +213,7 @@
       $('option:not([value=""])', $(self.selector.site)).remove();
       $.each(this.entries, function (i, id) {
         var v = self.siteinfo[id];
-        if ((v['src-lang'].match(lang) !== null) && (v.type.match(type) !== null)) {
+        if (v['src-lang'].match(lang) && v.type.match(type)) {
           sites.push(v);
         }
       });
@@ -226,9 +226,9 @@
 
     showHistories: function () {
       var self = this,
-          list = $('<ul></ul>'),
+          $history_list = $('#history-list'),
+          list = $('<ul/>'),
           histories = multilookup.history.get(),
-          i = 0,
           li = null,
           history = null;
 
@@ -238,15 +238,15 @@
       if (histories && (histories.length < 1)) {
         return;
       }
-      for (i = 0; i < histories.length; i += 1) {
+      for (var i = 0; i < histories.length; i += 1) {
         li = $('<li/>');
         history = histories[i];
         li.text(history).addClass('history-item');
         list.append(li);
       }
-      $('#history-list').append(list);
+      $history_list.append(list);
       $('#history').show();
-      $('#history-list li').bind('click', function () {
+      $history_list.find('li').bind('click', function () {
         $(self.selector.context).val($(this).text());
         $(this).submit();
       });
@@ -285,8 +285,7 @@
 
     saveFormData: function () {
       var data = this.getCachedData() || {},
-          lookup = popup.lookup,
-          form = null;
+          lookup = popup.lookup, form;
       if (!data.form) {
         data.form = {};
       }
@@ -308,8 +307,9 @@
     },
 
     load: function () {
-      var self = this;
-      $('#option select').attr('value', function () {
+      var self = this,
+          $option = $('#option');
+      $option.find('select').attr('value', function () {
         return self.config[this.name];
       }).bind('change', function () {
         var value = $(this).val(),
@@ -321,14 +321,15 @@
         self.save();
       });
 
-      $('#option input[type="radio"]').each(function () {
+      $option.find('input[type="radio"]').each(function () {
         var name = this.name;
         if (self.config[name] === $(this).val()) {
           $(this).attr('checked', true);
         }
         $(this).bind('change', function () {
-          var name = this.name,
-              value = $(this).val();
+          var $self = $(this),
+              name = $self.attr('name'),
+              value = $self.val();
           if ((value === '0') || (value === '1')) {
             value = (value === '1');
           }
@@ -391,4 +392,4 @@
         tabname = cache.active_tab_name || 'lookup';
     popup.changeTab(tabname);
   });
-}(this, jQuery));
+}(window, jQuery));
