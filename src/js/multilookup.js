@@ -12,6 +12,7 @@
  * ---------------------------------------------------------------------------*/
 
 (function () {
+  'use strict';
 
   var keybinds = {},
   // object DOMWindow
@@ -421,7 +422,7 @@ function isElementInDocument(node) {
 /* ----------------------------------------------------------------------------
  * Multilookup functions
  * ---------------------------------------------------------------------------*/
-(function () {
+(function (global) {
   //global variables
   var SITEINFO = [];
   var CONFIG = {};
@@ -819,23 +820,29 @@ function isElementInDocument(node) {
       entries = config.keybind.entries || entries;
       node.setAttribute('style', 'opacity: ' + opacity);
       node.setAttribute('class', theme);
-      setTimeout(function () {
-        var docs = [document], doc, i, j, iframes;
+      global.setTimeout(function () {
+        var docs = [document], doc, i, j, iframes, iframe;
         iframes = document.querySelectorAll('iframe');
         if (iframes && (iframes.length > 0)) {
           for (i = 0; i < iframes.length; i++) {
-            if (iframes[i].contentDocument) {
-              docs.push(iframes[i].contentDocument);
-            }
+            iframe = iframes[i];
+            try {
+              if (!iframe.hidden && iframe.isContentEditable && iframe.contentDocument) {
+                docs.push(iframe.contentDocument);
+              }
+            } catch (e) {}
           }
         }
         for (j = 0; j < docs.length; j++) {
           doc = docs[j];
           if (doc) {
-            doc.addEventListener('mouseup', onMouseup, true);
-            doc.addEventListener('click', onClick, false);
-            if (config.enable_dblclick_lookup) {
-              doc.addEventListener('dblclick', onDblClick, true);
+            try {
+              doc.addEventListener('mouseup', onMouseup, true);
+              doc.addEventListener('click', onClick, false);
+              if (config.enable_dblclick_lookup) {
+                doc.addEventListener('dblclick', onDblClick, true);
+              }
+            } catch (e) {
             }
           }
         }
@@ -1008,6 +1015,6 @@ function isElementInDocument(node) {
       init();
     }
   }());
-}());
+}(this));
 
 // ### EOF ###
