@@ -2,9 +2,10 @@
 /**
  * MultiLookup core script. background.js
  * http://www.simplivillage.com/trac/wiki/ChromeExtension/MultiLookup
- * 
- * (c) 2011, jimo1001
+ *
+ * (c) 2011 - 2013, jimo1001
  * Released under the New BSD License.
+ * http://www.freebsd.org/ja/copyright/freebsd-license.html
  */
 
 (function (global, $) {
@@ -30,7 +31,7 @@
      * @param siteinfos a list of SITEINFO
      * @returns Lookup Lookup Object
      */
-    Lookup: function(siteinfos) {
+    Lookup: function (siteinfos) {
       if (!$.isArray(siteinfos)) {
         siteinfos = [siteinfos];
       }
@@ -39,7 +40,7 @@
       this.timeout_ids = new Array(siteinfos.length);
       this.sync = false;
 
-      this.execute = function(context, lookupFinishedCallback) {
+      this.execute = function (context, lookupFinishedCallback) {
         if (!this.siteinfos || isEmpty(this.siteinfos)) {
           console.warn("Lookup error, siteinfo is empty");
           var message = _("background_error_not_such_siteinfo");
@@ -50,8 +51,8 @@
           lookupFinishedCallback.call(this, "error", { message: message }, context);
           return;
         }
-        multilookup.detector.getType(context, function(types) {
-          $.each(types, function(lang, type) {
+        multilookup.detector.getType(context, function (types) {
+          $.each(types, function (lang, type) {
             if ($.inArray("dictionary", type) !== -1) {
               multilookup.history.add(context);
               multilookup.history.save();
@@ -64,7 +65,7 @@
         var timeout_delay = multilookup.config.getValue("lookup_xhr_timeout", 5000);
         var ready_result_length = 0;
 
-        $.each(infos, function(index, info) {
+        $.each(infos, function (index, info) {
           if (!info) {
             return false;
           }
@@ -75,7 +76,7 @@
 
           // favicon of base64 text
           if ((info.icon === undefined) && multilookup.siteinfo.exist(info.id)) {
-            multilookup.favicon.getFaviconFromHatenaAPI(url.replace("%s", ""), function(data) {
+            multilookup.favicon.getFaviconFromHatenaAPI(url.replace("%s", ""), function (data) {
               var sm = multilookup.siteinfo.getSiteinfo();
               sm[info.id].icon = data;
               self.sync = true;
@@ -98,7 +99,7 @@
           // xhr.overrideMimeType("text/html; charset="+charset);
           xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
           xhr.send(data);
-          xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function () {
             if (this.readyState === 4) {
               ready_result_length++;
               if (self.timeout_ids[index] !== null) {
@@ -119,7 +120,7 @@
               } else {
                 self.errorCallback(this, info, url, index, self.error(this.statusText));
               }
-              var results = $.grep(self.results, function(n) {
+              var results = $.grep(self.results, function (n) {
                 return (n !== null);
               });
               if (ready_result_length === self.siteinfos.length) {
@@ -135,14 +136,14 @@
           };
 
           // set timeout
-          self.timeout_ids[index] = window.setTimeout(function() {
+          self.timeout_ids[index] = window.setTimeout(function () {
             self.timeout_ids[index] = null;
             xhr.abort();
           }, timeout_delay);
         });
       };
 
-      this.successJsonCallback = function(xhr, siteinfo, url, index) {
+      this.successJsonCallback = function (xhr, siteinfo, url, index) {
         var jsonpath = siteinfo["content-jsonpath"] || "$..*";
 
         var json = JSON.parse(xhr.jsonData);
@@ -153,7 +154,7 @@
             result = "<span class='json-result'>" + result[0] + "</span>";
           } else {
             var t = "<ul class='json-result'>";
-            $.each(result, function(i, v) {
+            $.each(result, function (i, v) {
               t += "<li>" + v + "</li>";
             });
             t += "</ul>";
@@ -167,7 +168,7 @@
         };
       };
 
-      this.successDefaultCallback = function(xhr, siteinfo, url, index) {
+      this.successDefaultCallback = function (xhr, siteinfo, url, index) {
         var html = xhr.responseText;
         var result_text;
         var result_nodes;
@@ -218,7 +219,7 @@
         };
       };
 
-      this.errorCallback = function(xhr, siteinfo, url, index, result) {
+      this.errorCallback = function (xhr, siteinfo, url, index, result) {
         var r = this.error(result);
         this.results[index] = {
           url: url,
@@ -227,16 +228,16 @@
         };
       };
 
-      this.error = function(msg) {
+      this.error = function (msg) {
         msg = msg || "Lookup Error";
-        return "<span class='error'>"+msg+"</span>";
+        return "<span class='error'>" + msg + "</span>";
       };
 
-      this.notice = function(msg) {
-        return "<span class='notice'>"+msg+"</span>";
+      this.notice = function (msg) {
+        return "<span class='notice'>" + msg + "</span>";
       };
 
-      this.isJson = function(content_type) {
+      this.isJson = function (content_type) {
         return (content_type && (content_type.match(/^text\/javascript|^application\/json/) !== null));
       };
     },
@@ -246,10 +247,10 @@
        * @param url
        * @returns boolean
        */
-      getFaviconFromHatenaAPI: function(url, callback) {
+      getFaviconFromHatenaAPI: function (url, callback) {
         var api = "http://favicon.hatena.ne.jp/?url=";
         url = api + url;
-        this.loadBase64TextImage(url, function(data) {
+        this.loadBase64TextImage(url, function (data) {
           var type = this.getResponseHeader("Content-Type");
           if (type === "text/html") {
             data = "";
@@ -269,14 +270,14 @@
        * @param url
        * @returns boolean
        */
-      getFaviconFromHTML: function(url, html_text, callback) {
+      getFaviconFromHTML: function (url, html_text, callback) {
         var icon_url = null;
         var links = html_text.match(/<link.*(\/?>|<\/link>)$/img);
         if (links === null) {
           return null;
         }
         links = $(links.join(""));
-        links.each(function() {
+        links.each(function () {
           var rel = $(this).attr("rel");
           if (rel !== undefined && /(?:icon)/.test(rel)) {
             icon_url = utils.completeURL($(this).attr("href"), url);
@@ -286,7 +287,7 @@
         if (!icon_url) {
           icon_url = utils.getURLtoHost(url) + "/favicon.ico";
         }
-        this.loadBase64TextImage(icon_url, function(data) {
+        this.loadBase64TextImage(icon_url, function (data) {
           var type = this.getResponseHeader("Content-Type");
           if (data !== "") {
             data = "data:" + type + ";base64," + data;
@@ -302,12 +303,12 @@
        * @param url
        * @param callback
        */
-      loadBase64TextImage: function(url, callback) {
+      loadBase64TextImage: function (url, callback) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', url, true);
         xhr.overrideMimeType('text/plain;charset=x-user-defined');
         xhr.send(null);
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           if (this.readyState === 4) {
             if ((200 <= this.status) && (this.status <= 226)) {
               var data = this.responseText, bytes = [], i, len;
@@ -329,14 +330,14 @@
     suggest: {
       url: "http://google.com/complete/search?q=%s&output=toolbar",
 
-      getList: function(context, callback) {
+      getList: function (context, callback) {
         var query = this.url.replace("%s", encodeURI(context)),
             xhr = new XMLHttpRequest(),
             doc = null,
             list = [];
         xhr.open("GET", query, true);
         xhr.send();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           if (this.readyState === 4) {
             if ((200 <= this.status) && (this.status <= 226)) {
               doc = createHTMLDocumentByString(this.responseText);
@@ -351,26 +352,36 @@
     },
 
     /**
-     * Google Detect API
+     * Detect languages and text type from any text.
      */
     detector: {
 
+      /**
+       * Detect languages from any text.
+       *
+       * @param text
+       * @param callback
+       */
       getLanguage: function (text, callback) {
+        var self = this;
         global.guessLanguage.detect(text, function (langs) {
           var detected_langs = [],
-              detect_threshold = 0.1,
+              detect_threshold = 0.125,
               whole_threshold = 0.2,
               max_score = 0;
+          $.each(self.getLanguageByRegexp(text), function (i, _lang) {
+            langs.push([_lang, 1.0]); // language name, score
+          });
           $.each(langs, function (i, lang) {
             var score = lang[1] || 0;
             if (score > detect_threshold) {
               detected_langs.push(lang[0]);
+              console.log(lang);
             }
             if (max_score > score) {
               max_score = score;
             }
           });
-          console.log(langs, detected_langs);
           if (max_score <= whole_threshold) {
             chrome.i18n.getAcceptLanguages(function (accepted_langs) {
               accepted_langs.reverse();
@@ -385,6 +396,31 @@
         });
       },
 
+      getLanguageByRegexp: function (text) {
+        text = $.trim(text);
+        if (!text) {
+          return [];
+        }
+        var langRegexp = multilookup.config.getValue("lang_regexp", []);
+        var langs = [];
+        if (!isEmpty(langRegexp)) {
+          $.each(langRegexp, function (i, v) {
+            var re = new RegExp(v);
+            if (re.test(text)) {
+              langs.push(i);
+            }
+          });
+        }
+        return langs;
+      },
+
+      /**
+       * Detect text type from any text.
+       *
+       * @param context
+       * @param langs
+       * @param callback
+       */
       getType: function (context, langs, callback) {
         var self = this, types = {}, i, len;
         var regexps = multilookup.config.getValue("content_regexp", {});
@@ -420,18 +456,22 @@
         if (!$.isFunction(callback) && $.isFunction(args)) {
           callback = args;
         }
-        if (!callback) { return; }
+        if (!callback) {
+          return;
+        }
         if (args) {
           langs = args.lang;
           siteinfo = args.siteinfo;
         }
         var self = this;
         context = $.trim(context);
-        if (!context) { return; }
+        if (!context) {
+          return;
+        }
         var regexps = multilookup.config.getValue("content_regexp", {});
 
         if (!langs) {
-          this.getLanguage(context, function(lang) {
+          this.getLanguage(context, function (lang) {
             self.getSiteinfo(context, {lang: lang, siteinfo: siteinfo}, callback);
           });
           return;
@@ -446,7 +486,7 @@
         }
         langs.forEach(function (lang) {
           if (regexps[lang]) {
-            $.each(regexps[lang], function(type, regexp) {
+            $.each(regexps[lang], function (type, regexp) {
               if (regexp && context.match(regexp)) {
                 if (!types[lang]) {
                   types[lang] = [];
@@ -456,7 +496,7 @@
             });
           }
         });
-        siteinfo = $.grep(siteinfo, function(v) {
+        siteinfo = $.grep(siteinfo, function (v) {
           if (v === undefined) {
             return false;
           }
@@ -498,11 +538,12 @@
       manifest_uri: "/manifest.json",
       option_uri: "html/options.html",
 
-      init: function(callback) {
+      init: function (callback) {
         var self = this;
         var isDefault = false;
+
         function _initExtension(callback) {
-          self.getExtVersion(function(version) {
+          self.getExtVersion(function (version) {
             var current = self._data.version || "0.0.1";
             if (version > current) {
               self._data.version = version;
@@ -514,8 +555,9 @@
             }
           });
         }
+
         if (!this.load()) {
-          return this.getDefaultConfig(function(config) {
+          return this.getDefaultConfig(function (config) {
             self._data = config;
             self._default_data = JSON.parse(JSON.stringify(config));
             isDefault = true;
@@ -523,19 +565,19 @@
             return _initExtension(callback);
           });
         }
-        this.getDefaultConfig(function(config) {
+        this.getDefaultConfig(function (config) {
           self._default_data = config;
         });
         return _initExtension(callback);
       },
 
-      getValue: function(name, defvalue, confdata) {
+      getValue: function (name, defvalue, confdata) {
         var data = confdata || this._data;
         if (!data) {
           return defvalue;
         }
         var attrs = name.split(".");
-        attrs.forEach(function(v) {
+        attrs.forEach(function (v) {
           if (!data) {
             return;
           }
@@ -551,21 +593,21 @@
         }
       },
 
-      setValue: function(name, value) {
+      setValue: function (name, value) {
         this._data[name] = value;
         this.save();
       },
 
-      getAll: function() {
+      getAll: function () {
         return this._data;
       },
 
-      save: function(config) {
+      save: function (config) {
         this._data = config || this._data;
         localStorage.config = JSON.stringify(this._data);
       },
 
-      load: function() {
+      load: function () {
         var config = localStorage.config;
         if (config && config !== "null") {
           this._data = JSON.parse(config);
@@ -575,10 +617,10 @@
         }
       },
 
-      updateBatch: function(old_version) {
+      updateBatch: function (old_version) {
         var self = this;
         if (old_version < "0.3.1") {
-          this.getDefaultConfig(function(config) {
+          this.getDefaultConfig(function (config) {
             self._data.lang_regexp = config.lang_regexp;
             self._data.lookup_entries = [];
             self.save();
@@ -586,17 +628,17 @@
         }
       },
 
-      removeCache: function() {
+      removeCache: function () {
         delete localStorage.config;
         this.config = null;
       },
 
-      getExtVersion: function(callback) {
+      getExtVersion: function (callback) {
         var uri = this.manifest_uri;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', uri, true);
         xhr.send();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             var manifest = JSON.parse(xhr.responseText);
             callback.call(this, manifest.version);
@@ -604,12 +646,12 @@
         };
       },
 
-      getDefaultConfig: function(callback) {
+      getDefaultConfig: function (callback) {
         var uri = this.default_config_uri;
         var xhr = new XMLHttpRequest();
         xhr.open('GET', uri, true);
         xhr.send();
-        xhr.onreadystatechange = function() {
+        xhr.onreadystatechange = function () {
           if (xhr.readyState === 4) {
             var config = JSON.parse(xhr.responseText);
             callback.call(this, config);
@@ -617,17 +659,17 @@
         };
       },
 
-      getOptionURL: function(uri) {
+      getOptionURL: function (uri) {
         if (!uri) {
           uri = this.option_uri;
         }
         return chrome.extension.getURL(uri);
       },
 
-      openOptionPage: function() {
+      openOptionPage: function () {
         var self = this;
 
-        chrome.tabs.getAllInWindow(null, function(tabs) {
+        chrome.tabs.getAllInWindow(null, function (tabs) {
           var exist = false, i, len;
           if (tabs && tabs.length > 0) {
             for (i = 0, len = tabs.length; i < len; i++) {
@@ -660,7 +702,7 @@
     siteinfo: {
       _infos: null,
       required_param: ["id", "name", "url", "type", "src-lang"],
-      init: function(callback) {
+      init: function (callback) {
         this.loadSiteinfo();
         var lang = "en", url = "";
         var list = multilookup.config.getValue("available_siteinfo_url_list", []);
@@ -683,12 +725,12 @@
         }
       },
 
-      removeCache: function() {
+      removeCache: function () {
         localStorage.siteinfo = [];
         this._infos = null;
       },
 
-      loadSiteinfo: function() {
+      loadSiteinfo: function () {
         var cacheinfo = localStorage.siteinfo;
         if (cacheinfo) {
           this._infos = JSON.parse(cacheinfo);
@@ -696,11 +738,11 @@
         return this._infos;
       },
 
-      getSiteinfo: function() {
+      getSiteinfo: function () {
         return this._infos;
       },
 
-      getSiteinfoById: function(ids) {
+      getSiteinfoById: function (ids) {
         var self = this, siteinfo = [], i, len;
         if (!$.isArray(ids)) {
           ids = [ids];
@@ -711,11 +753,11 @@
         return siteinfo;
       },
 
-      exist: function(id) {
+      exist: function (id) {
         return !!(this._infos[id]);
       },
 
-      setSiteinfo: function(aSiteinfo) {
+      setSiteinfo: function (aSiteinfo) {
         if (!this._infos) {
           this._infos = {};
         }
@@ -723,7 +765,7 @@
         var s = (typeof aSiteinfo === "string") ? JSON.parse(aSiteinfo) : aSiteinfo;
         if ((s.data !== undefined) && (typeof(s.data) !== "string")) {
           var t_s = s.data;
-          $.each(s, function(k) {
+          $.each(s, function (k) {
             if (k !== "data") {
               t_s[k] = s[k];
             }
@@ -738,7 +780,7 @@
         // set id. the id is encoded base64.
         id = (!this._infos[id]) ? global.btoa(encodeURI(id)) : id;
         s.id = id;
-        s.updated_at = (function(){
+        s.updated_at = (function () {
           var d = s.updated_at || new Date();
           var date = (d instanceof Date) ? d : new Date(d);
           if (date.toString() === "Invalid Date") {
@@ -753,7 +795,7 @@
         }());
         var cached_siteinfo = this._infos[id];
         if (cached_siteinfo && cached_siteinfo.updated_at) {
-          var updated_at = (function() {
+          var updated_at = (function () {
             var u = cached_siteinfo.updated_at;
             return (u instanceof Date) ? u : new Date(u);
           }());
@@ -764,10 +806,10 @@
         }
 
         var has_required = true;
-        $.each(this.required_param, function(i, v) {
+        $.each(this.required_param, function (i, v) {
           if (!s[v]) {
             has_required = false;
-            console.warn(v+" is undefined in siteinfo");
+            console.warn(v + " is undefined in siteinfo");
           }
         });
         if (has_required) {
@@ -778,25 +820,25 @@
         }
       },
 
-      setSiteinfoList: function(siteinfos) {
+      setSiteinfoList: function (siteinfos) {
         if (!$.isArray(siteinfos)) {
           console.warn("the argument is not supported", siteinfos);
           return false;
         }
         var self = this;
         var result = false;
-        $.each(siteinfos, function(i, siteinfo) {
+        $.each(siteinfos, function (i, siteinfo) {
           result = self.setSiteinfo(siteinfo) || result;
         });
         return result;
       },
 
-      importSiteinfoFromRemote: function(callback) {
+      importSiteinfoFromRemote: function (callback) {
         var list = multilookup.config.getValue("available_siteinfo_url_list", []);
         this._importSiteinfo(list, callback);
       },
 
-      importSiteinfoFromLocal: function(callback) {
+      importSiteinfoFromLocal: function (callback) {
         var url = "";
         var urls = multilookup.config.getValue("default_local_siteinfo_url", {});
         var lang = utils.getLanguage();
@@ -807,20 +849,20 @@
         this._importSiteinfo([url], callback);
       },
 
-      _importSiteinfo: function(urls, callback) {
+      _importSiteinfo: function (urls, callback) {
         var self = this;
         if (!$.isArray(urls) || (urls.length < 1)) {
           return;
         }
         var count = 0;
-        urls.forEach(function(url) {
+        urls.forEach(function (url) {
           if (!url) {
             return;
           }
           var xhr = new XMLHttpRequest();
           xhr.open('GET', url, true);
           xhr.send();
-          xhr.onreadystatechange = function() {
+          xhr.onreadystatechange = function () {
             var status = this.status, result = false, data = null;
             if (this.readyState === 4) {
               count += 1;
@@ -854,7 +896,7 @@
         });
       },
 
-      save: function() {
+      save: function () {
         var s = '';
         if (this._infos === null) {
           return false;
@@ -873,13 +915,15 @@
       _enabled: null,
       _histories: [],
 
-      enabled: function() {
+      enabled: function () {
         this._enabled = multilookup.config.getValue("enable_history", true);
         return this._enabled;
       },
 
-      add: function(text) {
-        if (!this.enabled()) { return; }
+      add: function (text) {
+        if (!this.enabled()) {
+          return;
+        }
         var histories = this._histories;
         var limit = multilookup.config.getValue("history_limit", 30);
         var length = histories.length;
@@ -888,7 +932,7 @@
           length--;
         }
         if ($.inArray(text, histories) !== -1) {
-          histories = $.grep(histories, function(n) {
+          histories = $.grep(histories, function (n) {
             return (text !== n);
           });
         }
@@ -899,17 +943,21 @@
         this._histories = histories;
       },
 
-      get: function() {
+      get: function () {
         return this._histories;
       },
 
-      save: function() {
-        if (!this.enabled()) { return; }
+      save: function () {
+        if (!this.enabled()) {
+          return;
+        }
         localStorage.histories = JSON.stringify(this._histories);
       },
 
-      load: function() {
-        if (!this.enabled()) { return; }
+      load: function () {
+        if (!this.enabled()) {
+          return;
+        }
         var h = localStorage.histories;
         if (h) {
           this._histories = JSON.parse(h) || [];
@@ -924,15 +972,15 @@
       ports: [],
       contextmenus: [],
 
-      init: function() {
+      init: function () {
         var self = this;
-        multilookup.config.init(function(config, isDefault) {
+        multilookup.config.init(function (config, isDefault) {
           if (multilookup.config.getValue("enable_auto_update", false)) {
-            multilookup.siteinfo.init(function() {
+            multilookup.siteinfo.init(function () {
               multilookup.siteinfo.importSiteinfoFromRemote(self._loadedSiteinfoCallback);
             });
           } else {
-            multilookup.siteinfo.init(function() {
+            multilookup.siteinfo.init(function () {
               self._loadedSiteinfoCallback();
               // Open the OptionPage automatically when launch the extension at first.
               if (isDefault) {
@@ -947,32 +995,32 @@
         chrome.extension.onRequest.addListener(self._onRequest);
       },
 
-      _loadedSiteinfoCallback: function() {
+      _loadedSiteinfoCallback: function () {
         var enableContextMenus = multilookup.config.getValue("enable_context_menus", true);
         if (enableContextMenus) {
           multilookup.management.updateDefaultContextMenu();
         }
       },
 
-      _onConnect: function(port) {
+      _onConnect: function (port) {
         var self = multilookup.management;
         self.ports.push(port);
         port.onMessage.addListener(self._onMessage);
-        port.onDisconnect.addListener(function(port) {
-          self.ports = $.grep(self.ports, function(n) {
+        port.onDisconnect.addListener(function (port) {
+          self.ports = $.grep(self.ports, function (n) {
             return (n !== port);
           });
         });
       },
 
-      _onRequest: function(request, sender, callback) {
+      _onRequest: function (request, sender, callback) {
         var self = multilookup.management;
-        self.lookup(request.context, null, function(results) {
+        self.lookup(request.context, null, function (results) {
           callback.call(this, results);
         });
       },
 
-      _onMessage: function(message, port) {
+      _onMessage: function (message, port) {
         var self = multilookup.management;
         console.assert(port.name === "MultiLookup");
 
@@ -981,32 +1029,32 @@
         }
 
         switch (message.id) {
-        case 'lookup':
-          self.postLookupMessage(message, port);
-          break;
-        case 'siteinfo':
-          self.postSiteinfoMessage(port);
-          break;
-        case 'config':
-          self.postConfigMessage(port);
-          break;
-        case 'contextmenu-update':
-          self.updateContextMenuForKeyword(message.value);
-          break;
-        default:
-          console.warn(message.id, "is unkown id");
-          break;
+          case 'lookup':
+            self.postLookupMessage(message, port);
+            break;
+          case 'siteinfo':
+            self.postSiteinfoMessage(port);
+            break;
+          case 'config':
+            self.postConfigMessage(port);
+            break;
+          case 'contextmenu-update':
+            self.updateContextMenuForKeyword(message.value);
+            break;
+          default:
+            console.warn(message.id, "is unkown id");
+            break;
         }
         return true;
       },
 
-      postLookupMessage: function(message, port) {
+      postLookupMessage: function (message, port) {
         if (!message || !port) {
           return;
         }
         var context = message.context;
         var id = message.siteinfo_id || null;
-        this.lookup(context, id, function(results) {
+        this.lookup(context, id, function (results) {
           if (message.result_id !== undefined) {
             results.value.result_id = message.result_id;
           }
@@ -1014,7 +1062,7 @@
         });
       },
 
-      postConfigMessage: function(port) {
+      postConfigMessage: function (port) {
         var self = multilookup.management;
         // sync max count
         var max = 5;
@@ -1029,7 +1077,7 @@
         }
         var value = multilookup.config.getAll();
         var count = 0, i;
-        for(i = 1; i <= max; i++) {
+        for (i = 1; i <= max; i++) {
           var n = ports.length - i;
           if (ports[n] === undefined) {
             break;
@@ -1040,7 +1088,7 @@
         // console.info("synchronized configuration. count:", count);
       },
 
-      postSiteinfoMessage: function(port) {
+      postSiteinfoMessage: function (port) {
         var self = multilookup.management;
         // sync max count
         var max = 5;
@@ -1066,7 +1114,7 @@
         // console.info("synchronized siteinfo. count:", count);
       },
 
-      lookup: function(context, ids, callback) {
+      lookup: function (context, ids, callback) {
         var siteinfo = null;
         var message;
         var limit = multilookup.config.getValue("lookup_limit_length", 1200);
@@ -1075,9 +1123,9 @@
           callback.call(this, {id: "lookup", value: {status: "error", results: { message: message }, context: context}});
           return;
         }
-        var exec = function(siteinfo) {
+        var exec = function (siteinfo) {
           var lookup = new multilookup.Lookup(siteinfo);
-          lookup.execute(context, function(status, results, context) {
+          lookup.execute(context, function (status, results, context) {
             var d = {
               id: "lookup",
               value: {
@@ -1093,33 +1141,35 @@
           siteinfo = multilookup.siteinfo.getSiteinfoById(ids);
           exec(siteinfo);
         } else {
-          multilookup.detector.getSiteinfo(context, function(siteinfo) {
+          multilookup.detector.getSiteinfo(context, function (siteinfo) {
             exec(siteinfo);
           });
         }
       },
 
-      lookupShowResult: function(context, ids, tab) {
+      lookupShowResult: function (context, ids, tab) {
         var self = multilookup.management;
         var port = null, i, len;
         if (!tab) {
-          return chrome.tabs.getSelected(null, function(currentTab) {
+          return chrome.tabs.getSelected(null, function (currentTab) {
             if (currentTab) {
               self.lookupShowResult(context, ids, currentTab);
             }
           });
         }
-        for (i = 0, len = self.ports.length; i<len; i++) {
+        for (i = 0, len = self.ports.length; i < len; i++) {
           if (self.ports[i].sender.tab.id === tab.id) {
-            port = self.ports[i]; break;
+            port = self.ports[i];
+            break;
           }
         }
-        port.postMessage( { id: "lookup-begin", value: { context: context } } );
-        self.lookup(context, ids, function(r) {
+        port.postMessage({ id: "lookup-begin", value: { context: context } });
+        self.lookup(context, ids, function (r) {
           var port = null, i, len;
           for (i = 0, len = self.ports.length; i < len; i++) {
             if (self.ports[i].sender.tab.id === tab.id) {
-              port = self.ports[i]; break;
+              port = self.ports[i];
+              break;
             }
           }
           if (port) {
@@ -1128,9 +1178,9 @@
         });
       },
 
-      updateContextMenuForKeyword: function(text) {
+      updateContextMenuForKeyword: function (text) {
         if (this.contextmenus.length > 0) {
-          $.each(this.contextmenus, function(i, v) {
+          $.each(this.contextmenus, function (i, v) {
             chrome.contextMenus.remove(v);
           });
           this.contextmenus = [];
@@ -1141,7 +1191,7 @@
         }
       },
 
-      createContextMenuForKeyword: function(text) {
+      createContextMenuForKeyword: function (text) {
         var self = this;
         if (!text) {
           return;
@@ -1155,20 +1205,20 @@
         }
 
         var siteinfo = multilookup.siteinfo.getSiteinfoById(entries);
-        multilookup.detector.getSiteinfo(text, {siteinfo: siteinfo}, function(selected, lang) {
+        multilookup.detector.getSiteinfo(text, {siteinfo: siteinfo}, function (selected, lang) {
           if (!selected) {
             return;
           }
-          var sp = chrome.contextMenus.create( {type: "separator", contexts: ["selection"] });
+          var sp = chrome.contextMenus.create({type: "separator", contexts: ["selection"] });
           var lookup_entries = multilookup.config.getValue("lookup_entries", []);
           self.contextmenus.push(sp);
-          $.each(selected, function(i, v) {
+          $.each(selected, function (i, v) {
             var id = chrome.contextMenus.create({
               type: "checkbox",
               checked: ($.inArray(v.id, lookup_entries) !== -1),
               title: v.name,
               contexts: ["selection"],
-              onclick: function(info, tab) {
+              onclick: function (info, tab) {
                 self.lookupShowResult(info.selectionText, v.id, tab);
               }
             });
@@ -1177,7 +1227,7 @@
         });
       },
 
-      updateDefaultContextMenu: function() {
+      updateDefaultContextMenu: function () {
         chrome.contextMenus.removeAll();
         this.contextmenus = [];
         var enabled = multilookup.config.getValue("enable_context_menus", true);
@@ -1186,7 +1236,7 @@
         }
       },
 
-      createDefaultContextMenu: function() {
+      createDefaultContextMenu: function () {
         var self = multilookup.management;
         if (!chrome.contextMenus) {
           return;
@@ -1195,7 +1245,7 @@
         var preference = chrome.contextMenus.create({
           title: _("option_page_title"),
           contexts: ["page"],
-          onclick: function(info, tab) {
+          onclick: function (info, tab) {
             multilookup.config.openOptionPage();
           }
         });
@@ -1212,12 +1262,12 @@
         chrome.contextMenus.create({
           title: _("auto_detect") || "Auto Detection",
           contexts: ["selection"],
-          onclick: function(info, tab) {
+          onclick: function (info, tab) {
             self.lookupShowResult(info.selectionText, null, tab);
           }
         });
         var menus = {};
-        $.each(entries, function(i, id) {
+        $.each(entries, function (i, id) {
           var site = multilookup.siteinfo.getSiteinfoById(id)[0];
           if (site === undefined) {
             return;
@@ -1238,14 +1288,14 @@
             title: site.name + "\t( " + site["src-lang"] + (site["res-lang"] ? (" -> " + site["res-lang"]) : "") + " )",
             contexts: ["selection"],
             parentId: menus[type],
-            onclick: function(info, tab) {
+            onclick: function (info, tab) {
               self.lookupShowResult(info.selectionText, id, tab);
             }
           });
         });
       },
 
-      setBrowserAction: function() {
+      setBrowserAction: function () {
         chrome.browserAction.setIcon({path: "/img/popup.png"});
         chrome.browserAction.setPopup({popup: "/html/popup.html"});
         chrome.browserAction.setTitle({title: "MultiLookup"});
@@ -1253,7 +1303,7 @@
     }
   };
 
-  $(document).ready(function() {
+  $(document).ready(function () {
     multilookup.management.init();
   });
 
