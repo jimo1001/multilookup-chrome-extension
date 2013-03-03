@@ -376,7 +376,6 @@
             var score = lang[1] || 0;
             if (score > detect_threshold) {
               detected_langs.push(lang[0]);
-              console.log(lang);
             }
             if (max_score > score) {
               max_score = score;

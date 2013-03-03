@@ -61,33 +61,33 @@
 
   MLuOptions.common = new function () {
     var self = this, parent = MLuOptions;
-    this.init = function() {
+    this.init = function () {
       this.toggleOptions();
-      $('input.option[type="range"]').attr('value', function() {
+      $('input.option[type="range"]').attr('value',function () {
         return parent.config[this.name];
-      }).bind('mouseup', function() {
-        self.save(this, function(name, value) {
-          $('#text_'+name).val(value);
-        }, true);
-      });
+      }).bind('mouseup', function () {
+            self.save(this, function (name, value) {
+              $('#text_' + name).val(value);
+            }, true);
+          });
 
-      $('input.option[type="number"], input.option[type="text"]').attr('value', function() {
+      $('input.option[type="number"], input.option[type="text"]').attr('value',function () {
         return parent.config[this.name];
-      }).bind('input', function() {
-        self.save(this, function(name, value) {
-          $('#range_'+name).val(value);
-        }, false);
-      }).bind('change', function() {
-        parent.saveConfig(true);
-      });
+      }).bind('input',function () {
+            self.save(this, function (name, value) {
+              $('#range_' + name).val(value);
+            }, false);
+          }).bind('change', function () {
+            parent.saveConfig(true);
+          });
 
-      $('select.option').attr('value', function() {
+      $('select.option').attr('value',function () {
         return parent.config[this.name];
-      }).bind('change', function() {
-        self.save(this, null, true);
-      });
+      }).bind('change', function () {
+            self.save(this, null, true);
+          });
 
-      $('input[type="radio"].option').each(function() {
+      $('input[type="radio"].option').each(function () {
         var name = this.name, val = parent.config[name];
         if (typeof val === 'boolean') {
           val = val ? '1' : '0';
@@ -95,7 +95,7 @@
         if (val === $(this).val()) {
           $(this).attr('checked', true);
         }
-        $(this).bind('change', function() {
+        $(this).bind('change', function () {
           var name = this.name;
           var value = $(this).val();
           if ((value === '0') || (value === '1')) {
@@ -173,10 +173,10 @@
     var self = this;
     var parent = MLuOptions;
 
-    this.init = function() {
+    this.init = function () {
       this.generateSiteSelectBox();
       this.generateSiteinfoUrlSelectbox();
-      $('#add_siteinfo_db_url').bind('click', function() {
+      $('#add_siteinfo_db_url').bind('click', function () {
         var input = $('#siteinfo_db_url');
         var url = input.val();
         var list = parent.config.available_siteinfo_url_list;
@@ -190,10 +190,10 @@
         }
       });
     };
-    this.updateSiteinfo = function(evt) {
+    this.updateSiteinfo = function (evt) {
       var result = window.confirm(_('option_update_confirm'));
       if (result) {
-        multilookup.siteinfo.importSiteinfoFromRemote(function(res) {
+        multilookup.siteinfo.importSiteinfoFromRemote(function (res) {
           if (res) {
             parent.saveSiteinfo(true);
             window.confirm(_('option_update_succeeded'));
@@ -205,23 +205,23 @@
       }
     };
 
-    this.cleanup = function() {
+    this.cleanup = function () {
       var kbs = parent.config.keybind.entries;
       var siteinfo = parent.siteinfo;
-      $.each(kbs, function(id, key) {
+      $.each(kbs, function (id, key) {
         if (siteinfo[id] === undefined) {
           delete kbs[id];
         }
       });
     };
 
-    this.save = function() {
+    this.save = function () {
       var ids = [], lookup_ids = [];
 
-      $('#selected_siteinfo input[type="hidden"]').each(function() {
+      $('#selected_siteinfo input[type="hidden"]').each(function () {
         ids.push($(this).val());
       });
-      $('#selected_siteinfo input.lookup-entry:checked').each(function() {
+      $('#selected_siteinfo input.lookup-entry:checked').each(function () {
         lookup_ids.push($(this).val());
       });
       parent.config.entries = ids;
@@ -247,12 +247,12 @@
       $.each(config.entries, function (i, v) {
         entries.push(siteinfo[v]);
       });
-      $.each(siteinfo, function(id, info) {
+      $.each(siteinfo, function (id, info) {
         if ($.inArray(id, config.entries) === -1) {
           entries.push(info);
         }
       });
-      $.each(entries, function(i, info) {
+      $.each(entries, function (i, info) {
         if (info === undefined) {
           return;
         }
@@ -261,10 +261,10 @@
         var li = $('<li class="ui-state-default" />');
         var checkbox = $('<input class="lookup-entry" type="checkbox" />').val(info.id);
 
-        li.attr('title', (info.name + (info.description ? (' : '+info.description) : '')));
+        li.attr('title', (info.name + (info.description ? (' : ' + info.description) : '')));
         li.append(checkbox);
-        li.append($('<span>'+info.name+'</span><br>'));
-        li.append($('<span/>').addClass('info').text('('+_('type')+': '+info.type+', '+_('language')+': '+src+' -> '+res+')'));
+        li.append($('<span>' + info.name + '</span><br>'));
+        li.append($('<span/>').addClass('info').text('(' + _('type') + ': ' + info.type + ', ' + _('language') + ': ' + src + ' -> ' + res + ')'));
         li.append($('<input type="hidden"/>').val(info.id));
         var keybind = config.keybind.entries;
         if ((keybind !== undefined) && (keybind[info.id] !== undefined) && (keybind[info.id] !== '')) {
@@ -281,7 +281,7 @@
           li.addClass('checked');
         }
         li.dblclick(self.showDetail);
-        checkbox.click(function() {
+        checkbox.click(function () {
           if ($(this).is(':checked')) {
             $(this).parent('li').addClass('checked');
           } else {
@@ -291,10 +291,10 @@
         });
       });
 
-      $('#site-filter').keyup(function (){
+      $('#site-filter').keyup(function () {
         var keyword = $(this).val();
         var re = new RegExp(keyword, 'i');
-        $('li', unselected).each(function() {
+        $('li', unselected).each(function () {
           if ($(this).attr('title').search(re) === -1) {
             $(this).hide();
           } else {
@@ -308,7 +308,7 @@
         revert: true,
         connectWith: 'ul',
         containment: '#siteinfo_selector',
-        stop: function(evt, ui) {
+        stop: function (evt, ui) {
           if ($(ui.item).parent('ul')[0] !== $('#selected_siteinfo ul')[0]) {
             $('input.lookup-entry', ui.item).hide();
           }
@@ -321,7 +321,7 @@
         revert: true,
         connectWith: 'ul',
         containment: '#siteinfo_selector',
-        stop: function(evt, ui) {
+        stop: function (evt, ui) {
           if ($(ui.item).parent('ul')[0] !== $('#unselected_siteinfo ul')[0]) {
             $('input.lookup-entry', ui.item).show();
           }
@@ -334,7 +334,7 @@
       $('ul', unselected).disableSelection();
     };
 
-    this.showDetail = function(evt) {
+    this.showDetail = function (evt) {
       var config = parent.config;
       var tnode = evt.target;
       if (tnode.tagName !== 'LI') {
@@ -343,9 +343,9 @@
       var sid = $('input[type="hidden"]', tnode).val();
       var siteinfo = parent.siteinfo[sid];
       var node = $('#siteinfo_detail');
-      var table = $('<table><thead><tr><th>'+_('table_key')+'</th><td>'+_('table_value')+'</td></tr></thead><tbody></tbody></table>');
+      var table = $('<table><thead><tr><th>' + _('table_key') + '</th><td>' + _('table_value') + '</td></tr></thead><tbody></tbody></table>');
       var tbody = $('tbody', table);
-      $.each(SITEINFO_ATTRIBUTE, function(i, v) {
+      $.each(SITEINFO_ATTRIBUTE, function (i, v) {
         if (v in siteinfo) {
           var value = siteinfo[v] || '';
           var row = $('<tr></tr>');
@@ -362,7 +362,7 @@
       if (!config.keybind.entries[sid]) {
         config.keybind.entries[sid] = '';
       }
-      $(input).val(config.keybind.entries[sid]).bind('keydown', function(evt) {
+      $(input).val(config.keybind.entries[sid]).bind('keydown', function (evt) {
         var keyname = keybinds.getKeyFromEvent(evt);
         if (keyname) {
           $(this).val(keyname);
@@ -377,7 +377,7 @@
         $(this).effect('highlight');
         evt.preventDefault();
       });
-      $(input).change(function(evt) {
+      $(input).change(function (evt) {
         var keyname = $(this).val();
         config.keybind.entries[sid] = keyname;
         if (!keyname) {
@@ -398,20 +398,20 @@
       });
     };
 
-    this.generateSiteinfoUrlSelectbox = function() {
+    this.generateSiteinfoUrlSelectbox = function () {
       var self = this;
       var config = parent.config;
       var select = $('#siteinfo_db_url_list');
       var button = $('#delete_siteinfo_db_url');
       var list = config.available_siteinfo_url_list || [];
       $('option', select).remove();
-      $.each(list, function(i, v) {
+      $.each(list, function (i, v) {
         var o = $('<option></option>').val(v).text(v);
         select.append(o);
       });
-      button.unbind().bind('click', function() {
+      button.unbind().bind('click', function () {
         var url = $(select).val();
-        list = list.filter(function(v) {
+        list = list.filter(function (v) {
           return url !== v;
         });
         config.available_siteinfo_url_list = list;
@@ -425,22 +425,22 @@
     var self = this;
     var parent = MLuOptions;
 
-    this.init = function() {
+    this.init = function () {
       this.initLangRegexpField();
       this.initContentRegexpField();
       this.generateSelectList();
 
-      $('#lookup_limit_length').attr('value', function() {
+      $('#lookup_limit_length').attr('value',function () {
         return MLuOptions.config[$(this).attr('name')];
-      }).bind('change', function() {
-        var value = $(this).val();
-        var name = $(this).attr('name');
-        MLuOptions.config[name] = value;
-        MLuOptions.saveConfig(true);
-      });
+      }).bind('change', function () {
+            var value = $(this).val();
+            var name = $(this).attr('name');
+            MLuOptions.config[name] = value;
+            MLuOptions.saveConfig(true);
+          });
     };
 
-    this.initLangRegexpField = function() {
+    this.initLangRegexpField = function () {
       var regexps = parent.config.lang_regexp;
       var selectbox = $('#language_detect_regexp_select');
       var input = $('#language_detect_regexp_input');
@@ -449,7 +449,7 @@
 
       function create() {
         $('*:not(:first)', selectbox).remove();
-        $.each(regexps, function(k, v) {
+        $.each(regexps, function (k, v) {
           var option = $('<option></option>');
           option.text(k).val(k);
           selectbox.append(option);
@@ -457,7 +457,7 @@
       }
 
       create();
-      selectbox.change(function() {
+      selectbox.change(function () {
         var lang = $(this).val();
         if (!lang) {
           return;
@@ -475,7 +475,7 @@
         console.info('Language regexp saved!!');
       });
 
-      add_button.click(function() {
+      add_button.click(function () {
         var lang = window.prompt(_('option_input_additional_language_notice'), '');
         if (!lang) {
           return;
@@ -488,7 +488,7 @@
         create();
         parent.saveConfig();
       });
-      del_button.click(function() {
+      del_button.click(function () {
         var lang = selectbox.val();
         if (!lang) {
           return;
@@ -506,7 +506,7 @@
       });
     };
 
-    this.initContentRegexpField = function() {
+    this.initContentRegexpField = function () {
       var regexps = parent.config.content_regexp;
       var lang_selectbox = $('#type_detect_regexp_language');
       var type_selectbox = $('#type_detect_regexp_type');
@@ -514,24 +514,24 @@
       var add_button = $('#type_detect_regexp_add');
       var del_button = $('#type_detect_regexp_del');
 
-      $.each(regexps, function(lang, v) {
+      $.each(regexps, function (lang, v) {
         var option = $('<option></option>');
         option.text(lang).val(lang);
         lang_selectbox.append(option);
       });
-      lang_selectbox.change(function() {
+      lang_selectbox.change(function () {
         var lang = $(this).val();
         if (!lang) {
           return;
         }
         $('*:not(:first)', type_selectbox).remove();
-        $.each(regexps[lang], function(type, v) {
+        $.each(regexps[lang], function (type, v) {
           var option = $('<option></option>');
           option.text(type).val(type);
           type_selectbox.append(option);
         });
       });
-      type_selectbox.change(function() {
+      type_selectbox.change(function () {
         var lang = lang_selectbox.val();
         var type = $(this).val();
         if (!lang || !type) {
@@ -551,7 +551,7 @@
         console.info('Type regexp saved!!');
       });
 
-      add_button.click(function() {
+      add_button.click(function () {
         var lang = lang_selectbox.val();
         if (!lang) {
           return;
@@ -567,7 +567,7 @@
         lang_selectbox.change();
         parent.saveConfig();
       });
-      del_button.click(function() {
+      del_button.click(function () {
         var lang = lang_selectbox.val();
         var type = type_selectbox.val();
         if (!lang || !type) {
@@ -586,26 +586,26 @@
       });
     };
 
-    this.generateSelectList = function() {
+    this.generateSelectList = function () {
       var list = $('#editable_siteinfo_list');
       var siteinfo = parent.siteinfo;
       if (!siteinfo || (siteinfo.length === 0)) {
         return;
       }
       $('*', list).remove();
-      $.each(siteinfo, function(id, info) {
+      $.each(siteinfo, function (id, info) {
         var option = $('<option/>').val(id).text(info.name);
         list.append(option);
       });
       self.siteinfoEvent();
     };
 
-    this.siteinfoEvent = function() {
+    this.siteinfoEvent = function () {
       var config = parent.config;
       var siteinfo = parent.siteinfo;
       var editor = $('#ad_siteinfo_edit_area');
 
-      $('#ad_siteinfo_selector input[type="button"]').bind('click', function() {
+      $('#ad_siteinfo_selector input[type="button"]').bind('click', function () {
         $('*', editor).remove();
         var attention = $('#create_attention');
         var name = $(this).attr('name');
@@ -616,7 +616,7 @@
         var data = {}, json = '';
         if (name === 'edit') {
           attention.show();
-          $.each(siteinfo[id], function(k, v) {
+          $.each(siteinfo[id], function (k, v) {
             if ($.inArray(k, EDITABLE_SITEINFO_ATTRIBUTE) !== -1) {
               data[k] = v;
             }
@@ -628,7 +628,7 @@
           if (notice.length < 1) {
             notice = $('<div class="notification"></div>').insertBefore(textarea);
           }
-          button.click(function() {
+          button.click(function () {
             try {
               self.addSiteinfo(textarea.val());
               notice.html(_('option_update_siteinfo_succeeded'));
@@ -647,10 +647,10 @@
           }
         } else if (name === 'create') {
           attention.show();
-          var list = $.grep(EDITABLE_SITEINFO_ATTRIBUTE, function(n, i) {
+          var list = $.grep(EDITABLE_SITEINFO_ATTRIBUTE, function (n, i) {
             return (n !== 'id');
           });
-          list.forEach(function(v, i) {
+          list.forEach(function (v, i) {
             data[v] = '';
           });
           json = JSON.stringify(data, null, 4);
@@ -660,7 +660,7 @@
           if (notice.length < 1) {
             notice = $('<div class="notification"></div>').insertBefore(textarea);
           }
-          button.bind('click', function() {
+          button.bind('click', function () {
             try {
               self.addSiteinfo(textarea.val());
               $(notice).html(_('option_add_siteinfo_succeeded'));
@@ -674,14 +674,14 @@
       });
     };
 
-    this.addSiteinfo = function(text) {
+    this.addSiteinfo = function (text) {
       var data = null;
       try {
         data = JSON.parse(text);
       } catch (e) {
         throw _('option_json_syntax_error');
       }
-      data = $.each(data, function(i, v) {
+      data = $.each(data, function (i, v) {
         if (v === '') {
           delete data[i];
         }
@@ -704,19 +704,19 @@
     var siteinfoManager = null;
     var configManager = null;
 
-    this.init = function() {
+    this.init = function () {
       siteinfoManager = multilookup.siteinfo;
       configManager = multilookup.config;
     };
 
-    this.resetAll = function(evt) {
+    this.resetAll = function (evt) {
       var result = window.confirm(_('option_reset_all_confirm'));
       if (result) {
         configManager.removeCache();
-        configManager.init(function() {
+        configManager.init(function () {
           parent.saveConfig(true);
           siteinfoManager.removeCache();
-          siteinfoManager.init(function() {
+          siteinfoManager.init(function () {
             self.saveSiteinfo(true);
             self.site.init();
           });
@@ -727,11 +727,11 @@
       }
     };
 
-    this.resetConfig = function(evt) {
+    this.resetConfig = function (evt) {
       var result = window.confirm(_('option_reset_settings_confirm'));
       if (result) {
         configManager.removeCache();
-        configManager.init(function() {
+        configManager.init(function () {
           parent.saveConfig(true);
         });
         if (window.confirm(_('option_reset_settings_succeeded'))) {
@@ -740,12 +740,12 @@
       }
     };
 
-    this.resetSiteinfo = function(evt) {
+    this.resetSiteinfo = function (evt) {
       var result = window.confirm(_('option_reset_siteinfo_confirm'));
       if (result) {
         configManager.setValue('entries', []);
         siteinfoManager.removeCache();
-        siteinfoManager.init(function() {
+        siteinfoManager.init(function () {
           parent.saveSiteinfo(true);
           parent.site.init();
         });
@@ -755,21 +755,21 @@
       }
     };
 
-    this.reload = function() {
+    this.reload = function () {
       $('#option-form').submit();
     };
   };
 
   MLuOptions.report = new function () {
 
-    this.send = function() {
+    this.send = function () {
       var reporter = $('#reporter').val().trim() || 'anonymous';
       var summary = $('#report_summary').val().trim();
       var description = $('#report_description').val().trim();
       var type = $('#report_type').val().trim();
 
       if (!summary || !description) {
-        $('#report_result').html('<span class="error">'+_('option_missing_required_arguments')+'</span>');
+        $('#report_result').html('<span class="error">' + _('option_missing_required_arguments') + '</span>');
         return;
       }
 
@@ -794,14 +794,14 @@
       };
 
       xhr.send(JSON.stringify(data));
-      xhr.onreadystatechange = function() {
+      xhr.onreadystatechange = function () {
         if (this.readyState === 4) {
           if (this.status === 200) {
             var res = JSON.parse(this.responseText);
-            var href = 'http://www.simplivillage.com/trac/ticket/'+res.result;
+            var href = 'http://www.simplivillage.com/trac/ticket/' + res.result;
             var link = $('<a/>').attr('href', href).attr('target', '_blank').text(href);
             $('#report_result')
-              .html(_('option_send_report_succeeded')).append(link);
+                .html(_('option_send_report_succeeded')).append(link);
           } else {
             $('#report_result').text(_('option_send_report_failed'));
           }
@@ -810,10 +810,12 @@
     };
   };
 
-  $(document).ready(function() {
-    $('[data-i18n]').each(function() {
+  $(document).ready(function () {
+    $('[data-i18n]').each(function () {
       var message = _(this.dataset.i18n);
-      if (!message) { return; }
+      if (!message) {
+        return;
+      }
       if ((this.tagName === 'INPUT') && ($(this).attr('type') === 'button')) {
         $(this).val(message).attr('lang', language);
       } else {
@@ -823,22 +825,24 @@
     if ($('#translator_name').text) {
       $('#contributor').show();
     }
-    multilookup.config.getDefaultConfig(function(config) {
+    multilookup.config.getDefaultConfig(function (config) {
       var def = _('default');
       var enable = _('enable');
       var disable = _('disable');
       var re = RegExp('-');
-      $('[data-default]').each(function() {
+      $('[data-default]').each(function () {
         var contexts = this.dataset['default'];
-        if (!contexts) { return; }
+        if (!contexts) {
+          return;
+        }
         contexts = contexts.split(' ');
         var configs = [];
-        contexts.forEach(function(context) {
+        contexts.forEach(function (context) {
           if (!context) {
             return;
           }
           var contexts = [];
-          var conf = '', i=0;
+          var conf = '', i = 0;
           if (re.test(context)) {
             var ctxs = context.split('-');
             for (i = 0; i < ctxs.length; i++) {
@@ -857,7 +861,7 @@
           configs.push(conf);
         });
         var conf_text = configs.join(', ');
-        $(this).text('('+def+': '+(conf_text===''?'-':conf_text)+')').attr('lang', language);
+        $(this).text('(' + def + ': ' + (conf_text === '' ? '-' : conf_text) + ')').attr('lang', language);
       });
     });
     MLuOptions.init();

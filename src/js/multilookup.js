@@ -16,50 +16,50 @@
 
   var keybinds = {},
   // object DOMWindow
-  root = this,
-  previous_keybinds = null,
+      root = this,
+      previous_keybinds = null,
   // keybinds variables
-  binding_elements = [],
-  pool = [],
-  key_event = 'keydown',
-  key_codes = {
-    9 : 'TAB',
-    27 : 'ESC',
-    33 : 'PageUp',
-    34 : 'PageDown',
-    35 : 'End',
-    36 : 'Home',
-    37 : 'Left',
-    38 : 'Up',
-    39 : 'Right',
-    40 : 'Down',
-    45 : 'Insert',
-    46 : 'Delete',
-    112 : 'F1',
-    113 : 'F2',
-    114 : 'F3',
-    115 : 'F4',
-    116 : 'F5',
-    117 : 'F6',
-    118 : 'F7',
-    119 : 'F8',
-    120 : 'F9',
-    121 : 'F10',
-    122 : 'F11',
-    123 : 'F12'
-  },
-  skey_codes = {
-    8 : 'BS',
-    10 : 'RET',
-    13 : 'RET',
-    32 : 'SPC'
-  },
-  modifier_keys = {
-    'altKey' : 'A',
-    'ctrlKey' : 'C',
-    'metaKey' : 'M',
-    'shiftKey' : 'S'
-  };
+      binding_elements = [],
+      pool = [],
+      key_event = 'keydown',
+      key_codes = {
+        9: 'TAB',
+        27: 'ESC',
+        33: 'PageUp',
+        34: 'PageDown',
+        35: 'End',
+        36: 'Home',
+        37: 'Left',
+        38: 'Up',
+        39: 'Right',
+        40: 'Down',
+        45: 'Insert',
+        46: 'Delete',
+        112: 'F1',
+        113: 'F2',
+        114: 'F3',
+        115: 'F4',
+        116: 'F5',
+        117: 'F6',
+        118: 'F7',
+        119: 'F8',
+        120: 'F9',
+        121: 'F10',
+        122: 'F11',
+        123: 'F12'
+      },
+      skey_codes = {
+        8: 'BS',
+        10: 'RET',
+        13: 'RET',
+        32: 'SPC'
+      },
+      modifier_keys = {
+        'altKey': 'A',
+        'ctrlKey': 'C',
+        'metaKey': 'M',
+        'shiftKey': 'S'
+      };
   if (!root && typeof window) {
     root = window;
   }
@@ -79,6 +79,7 @@
   function isInputable(node) {
     return !!node.nodeName.toLowerCase().match(/^(?:input|textarea)$/);
   }
+
   keybinds.isInputable = isInputable;
 
   /**
@@ -97,7 +98,9 @@
 
     this.execute = function (evt) {
       if (!this.force) {
-        if (isInputable(evt.target)) { return; }
+        if (isInputable(evt.target)) {
+          return;
+        }
       }
       this.callback.call(this.element, evt, this);
     };
@@ -105,6 +108,7 @@
       return '[object Keybind]';
     };
   }
+
   keybinds.Keybind = Keybind;
 
   /**
@@ -121,6 +125,7 @@
     }
     return keybinds;
   }
+
   keybinds.add = add;
 
   /**
@@ -146,6 +151,7 @@
     }
     return binds;
   }
+
   keybinds.getKeybinds = getKeybinds;
 
   /**
@@ -182,6 +188,7 @@
       return undefined;
     }
   }
+
   keybinds.getKeyFromEvent = getKeyFromEvent;
 
   /**
@@ -207,6 +214,7 @@
       callback.call(element, key, evt);
     }, false);
   }
+
   keybinds.getKey = getKey;
 
   /**
@@ -220,6 +228,7 @@
       });
     }
   }
+
   keybinds.remove = remove;
 
   /**
@@ -232,6 +241,7 @@
       return (!((!element || kb.element === element) && kb.key === key));
     });
   }
+
   keybinds.removeByKey = removeByKey;
 
   /**
@@ -246,6 +256,7 @@
       delete pool[i];
     }
   }
+
   keybinds.removeAll = removeAll;
 
   function listener(evt) {
@@ -256,7 +267,7 @@
     for (i = 0; i < pool.length; i += 1) {
       if ((pool[i].key === key) &&
           ((pool[i].element === evt.target) ||
-           (pool[i].element.toString().match(/^(?:\[object (DOM)?Window\]|\[object (HTML)?Document\])$/)))) {
+              (pool[i].element.toString().match(/^(?:\[object (DOM)?Window\]|\[object (HTML)?Document\])$/)))) {
         pool[i].execute(evt);
       }
     }
@@ -283,6 +294,7 @@
     binding_elements.push(element);
     return keybinds;
   }
+
   keybinds.bind = bind;
 
   /**
@@ -301,6 +313,7 @@
     }
     return keybinds;
   }
+
   keybinds.unbind = unbind;
 
   /**
@@ -313,6 +326,7 @@
     bind();
     return keybinds;
   }
+
   keybinds.init = init;
 
   init();
@@ -340,7 +354,7 @@ function isArray(obj) {
 function hasSelection(evt) {
   var doc = window;
   if (evt) {
-      doc = evt.target.ownerDocument || window;
+    doc = evt.target.ownerDocument || window;
   }
   return doc.getSelection().type === 'Range';
 }
@@ -374,19 +388,19 @@ function $n(name, attr, children) {
   }
   if (children) {
     switch (typeof children) {
-    case 'string':
-      ret.appendChild(document.createTextNode(children));
-      break;
-    case 'object':
-      for (i = 0, len = children.length; i < len; i++) {
-        var child = children[i];
-        if (typeof child === 'string') {
-          ret.appendChild(document.createTextNode(child));
-        } else {
-          ret.appendChild(child);
+      case 'string':
+        ret.appendChild(document.createTextNode(children));
+        break;
+      case 'object':
+        for (i = 0, len = children.length; i < len; i++) {
+          var child = children[i];
+          if (typeof child === 'string') {
+            ret.appendChild(document.createTextNode(child));
+          } else {
+            ret.appendChild(child);
+          }
         }
-      }
-      break;
+        break;
     }
   }
   return ret;
@@ -542,6 +556,7 @@ function isElementInDocument(node) {
       this.showIndicator();
     }
   }
+
   ResultGroup.prototype.getElement = function () {
     return this.element;
   };
@@ -554,9 +569,9 @@ function isElementInDocument(node) {
       evt.stopPropagation();
     }, true);
     var title = $n('div', { 'class': 'MLu_group_title' },
-                   [ $n('div', { 'class': 'title' }, 'Search Text: '),
-                     $n('div', { 'class': 'content' }, this.context),
-                     close ]);
+        [ $n('div', { 'class': 'title' }, 'Search Text: '),
+          $n('div', { 'class': 'content' }, this.context),
+          close ]);
     title.addEventListener('click', function (evt) {
       self.toggle();
       evt.stopPropagation();
@@ -587,16 +602,16 @@ function isElementInDocument(node) {
       style += ' font-family: \"' + font_family + '\";';
     }
     switch (position) {
-    case 'top':
-      return style + ' top: 0; right: 0; left: 0; max-height: ' + size + '%;';
-    case 'right':
-      return style + ' top: 0; right: 0; bottom: 0; max-width: ' + size + '%;';
-    case 'bottom':
-      return style + ' right: 0; bottom: 0; left: 0; max-height: ' + size + '%;';
-    case 'left':
-      return style + ' top: 0; bottom: 0; left: 0; max-width: ' + size + '%;';
-    default:
-      return style + ' right: 0; bottom: 0; left: 0; max-height: ' + size + '%;';
+      case 'top':
+        return style + ' top: 0; right: 0; left: 0; max-height: ' + size + '%;';
+      case 'right':
+        return style + ' top: 0; right: 0; bottom: 0; max-width: ' + size + '%;';
+      case 'bottom':
+        return style + ' right: 0; bottom: 0; left: 0; max-height: ' + size + '%;';
+      case 'left':
+        return style + ' top: 0; bottom: 0; left: 0; max-width: ' + size + '%;';
+      default:
+        return style + ' right: 0; bottom: 0; left: 0; max-height: ' + size + '%;';
     }
   };
 
@@ -767,7 +782,7 @@ function isElementInDocument(node) {
       var self = ResultGroupFactory,
           group = null;
       if (!self._resultGroups) {
-          return;
+        return;
       }
       for (var i = 0, len = self._resultGroups.length; i < len; i++) {
         group = self._resultGroups[i];
@@ -789,9 +804,9 @@ function isElementInDocument(node) {
       // create HTML Element
       initElement();
       // connect to backgound (key: MultiLookup)
-      port = chrome.extension.connect({name:'MultiLookup'});
-      port.postMessage({id:'siteinfo'});
-      port.postMessage({id:'config'});
+      port = chrome.extension.connect({name: 'MultiLookup'});
+      port.postMessage({id: 'siteinfo'});
+      port.postMessage({id: 'config'});
       port.onMessage.addListener(onMessage);
       port.onDisconnect.addListener(function () {
         port = null;
@@ -830,7 +845,8 @@ function isElementInDocument(node) {
               if (!iframe.hidden && iframe.isContentEditable && iframe.contentDocument) {
                 docs.push(iframe.contentDocument);
               }
-            } catch (e) {}
+            } catch (e) {
+            }
           }
         }
         for (j = 0; j < docs.length; j++) {
@@ -972,40 +988,40 @@ function isElementInDocument(node) {
         return false;
       }
       switch (id) {
-      case 'siteinfo':
-        if (value) {
-          SITEINFO = value;
-        }
-        break;
-      case 'config':
-        if (value) {
-          CONFIG = value;
-        }
-        loadedConfigCallback(value);
-        break;
-      case 'lookup':
-        if (value) {
-          var status = value.status || 'success';
-          var context = value.context;
-          var group = ResultGroupFactory.getGroup(value.result_id);
-          if (group) {
-            if (status === 'success') {
-              var results = isArray(value.results) ? value.results : [value.results];
-              group.addResultList(results);
-            } else {
-              group.addMessage(value.results.message, 'error');
+        case 'siteinfo':
+          if (value) {
+            SITEINFO = value;
+          }
+          break;
+        case 'config':
+          if (value) {
+            CONFIG = value;
+          }
+          loadedConfigCallback(value);
+          break;
+        case 'lookup':
+          if (value) {
+            var status = value.status || 'success';
+            var context = value.context;
+            var group = ResultGroupFactory.getGroup(value.result_id);
+            if (group) {
+              if (status === 'success') {
+                var results = isArray(value.results) ? value.results : [value.results];
+                group.addResultList(results);
+              } else {
+                group.addMessage(value.results.message, 'error');
+              }
             }
           }
-        }
-        break;
-      case 'lookup-begin':
-        if (value) {
-          ResultGroupFactory.add(value.context);
-        }
-        break;
-      default:
-        console.error('unkown message id', msg);
-        break;
+          break;
+        case 'lookup-begin':
+          if (value) {
+            ResultGroupFactory.add(value.context);
+          }
+          break;
+        default:
+          console.error('unkown message id', msg);
+          break;
       }
       return true;
     }

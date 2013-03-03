@@ -309,17 +309,17 @@
     load: function () {
       var self = this,
           $option = $('#option');
-      $option.find('select').attr('value', function () {
+      $option.find('select').attr('value',function () {
         return self.config[this.name];
       }).bind('change', function () {
-        var value = $(this).val(),
-            name = this.name;
-        if (/^[0-9]*$/.test(value)) {
-          value = Number(value);
-        }
-        self.config[name] = value;
-        self.save();
-      });
+            var value = $(this).val(),
+                name = this.name;
+            if (/^[0-9]*$/.test(value)) {
+              value = Number(value);
+            }
+            self.config[name] = value;
+            self.save();
+          });
 
       $option.find('input[type="radio"]').each(function () {
         var name = this.name;

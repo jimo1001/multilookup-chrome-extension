@@ -30,51 +30,51 @@
 (function () {
 
   var keybinds = {},
-    // object DOMWindow
-    root = this,
-    previous_keybinds = null,
-    // keybinds variables
-    binding_elements = null,
-    pool = [],
-    key_event = 'keydown',
-    key_codes = {
-      9 : 'TAB',
-      27 : 'ESC',
-      33 : 'PageUp',
-      34 : 'PageDown',
-      35 : 'End',
-      36 : 'Home',
-      37 : 'Left',
-      38 : 'Up',
-      39 : 'Right',
-      40 : 'Down',
-      45 : 'Insert',
-      46 : 'Delete',
-      112 : 'F1',
-      113 : 'F2',
-      114 : 'F3',
-      115 : 'F4',
-      116 : 'F5',
-      117 : 'F6',
-      118 : 'F7',
-      119 : 'F8',
-      120 : 'F9',
-      121 : 'F10',
-      122 : 'F11',
-      123 : 'F12'
-    },
-    skey_codes = {
-      8 : 'BS',
-      10 : 'RET',
-      13 : 'RET',
-      32 : 'SPC'
-    },
-    modifier_keys = {
-      'altKey' : 'A',
-      'ctrlKey' : 'C',
-      'metaKey' : 'M',
-      'shiftKey' : 'S'
-    };
+  // object DOMWindow
+      root = this,
+      previous_keybinds = null,
+  // keybinds variables
+      binding_elements = null,
+      pool = [],
+      key_event = 'keydown',
+      key_codes = {
+        9: 'TAB',
+        27: 'ESC',
+        33: 'PageUp',
+        34: 'PageDown',
+        35: 'End',
+        36: 'Home',
+        37: 'Left',
+        38: 'Up',
+        39: 'Right',
+        40: 'Down',
+        45: 'Insert',
+        46: 'Delete',
+        112: 'F1',
+        113: 'F2',
+        114: 'F3',
+        115: 'F4',
+        116: 'F5',
+        117: 'F6',
+        118: 'F7',
+        119: 'F8',
+        120: 'F9',
+        121: 'F10',
+        122: 'F11',
+        123: 'F12'
+      },
+      skey_codes = {
+        8: 'BS',
+        10: 'RET',
+        13: 'RET',
+        32: 'SPC'
+      },
+      modifier_keys = {
+        'altKey': 'A',
+        'ctrlKey': 'C',
+        'metaKey': 'M',
+        'shiftKey': 'S'
+      };
   if (!root && typeof window) {
     root = window;
   }
@@ -94,6 +94,7 @@
   function isInputable(node) {
     return !!node.nodeName.match(/^(?:input|textarea)$/i);
   }
+
   keybinds.isInputable = isInputable;
 
   /**
@@ -112,7 +113,9 @@
 
     this.execute = function (evt) {
       if (!this.force) {
-        if (isInputable(evt.target)) { return; }
+        if (isInputable(evt.target)) {
+          return;
+        }
       }
       this.callback.call(this.element, evt, this);
     };
@@ -120,6 +123,7 @@
       return '[object Keybind]';
     };
   }
+
   keybinds.Keybind = Keybind;
 
   /**
@@ -136,6 +140,7 @@
     }
     return keybinds;
   }
+
   keybinds.add = add;
 
   /**
@@ -161,6 +166,7 @@
     }
     return binds;
   }
+
   keybinds.getKeybinds = getKeybinds;
 
   /**
@@ -197,6 +203,7 @@
       return undefined;
     }
   }
+
   keybinds.getKeyFromEvent = getKeyFromEvent;
 
   /**
@@ -222,6 +229,7 @@
       callback.call(element, key, evt);
     }, false);
   }
+
   keybinds.getKey = getKey;
 
   /**
@@ -235,6 +243,7 @@
       });
     }
   }
+
   keybinds.remove = remove;
 
   /**
@@ -247,6 +256,7 @@
       return (!((!element || kb.element === element) && kb.key === key));
     });
   }
+
   keybinds.removeByKey = removeByKey;
 
   /**
@@ -261,6 +271,7 @@
       delete pool[i];
     }
   }
+
   keybinds.removeAll = removeAll;
 
   function listener(evt) {
@@ -271,7 +282,7 @@
     for (i = 0; i < pool.length; i += 1) {
       if ((pool[i].key === key) &&
           ((pool[i].element === evt.target) ||
-           (pool[i].element.toString().match(/^(?:\[object (DOM)?Window\]|\[object (HTML)?Document\])$/)))) {
+              (pool[i].element.toString().match(/^(?:\[object (DOM)?Window\]|\[object (HTML)?Document\])$/)))) {
         pool[i].execute(evt);
       }
     }
@@ -298,6 +309,7 @@
     binding_elements.push(element);
     return keybinds;
   }
+
   keybinds.bind = bind;
 
   /**
@@ -316,6 +328,7 @@
     }
     return keybinds;
   }
+
   keybinds.unbind = unbind;
 
   /**
@@ -328,6 +341,7 @@
     bind();
     return keybinds;
   }
+
   keybinds.init = init;
 
   if (binding_elements === null) {
