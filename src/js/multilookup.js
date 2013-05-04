@@ -15,10 +15,10 @@
   'use strict';
 
   var keybinds = {},
-  // object DOMWindow
+      // object DOMWindow
       root = this,
       previous_keybinds = null,
-  // keybinds variables
+      // keybinds variables
       binding_elements = [],
       pool = [],
       key_event = 'keydown',
@@ -434,7 +434,7 @@ function isElementInDocument(node) {
 }
 
 /* ----------------------------------------------------------------------------
- * Multilookup functions
+ * MultiLookup functions
  * ---------------------------------------------------------------------------*/
 (function (global) {
   //global variables
@@ -548,6 +548,7 @@ function isElementInDocument(node) {
     this.hidden = false;
     this.indicator = null;
     this._hidden_indicator = false;
+    this._close_interceptors = [];
 
     this.createElement();
     if (resultList) {
@@ -566,6 +567,9 @@ function isElementInDocument(node) {
     var close = $n('div', { 'class': 'MLu_group_close' }, void(0));
     close.addEventListener('click', function (evt) {
       ResultGroupFactory.remove(self.id);
+      self._close_interceptors.forEach(function (handler) {
+        handler.call(this, evt);
+      });
       evt.stopPropagation();
     }, true);
     var title = $n('div', { 'class': 'MLu_group_title' },
@@ -580,14 +584,20 @@ function isElementInDocument(node) {
     return this.element;
   };
 
+  ResultGroup.prototype.addCloseInterceptor = function (func) {
+    this._close_interceptors.push(func);
+  };
+
   ResultGroup.prototype.createCellElement = function () {
     var table = $n('div', { 'class': 'MLu_table' }, void(0)), i;
     var result_cell_length = CONFIG.result_cell_length || 1;
     result_cell_length = (result_cell_length < this.results_length) ? result_cell_length : this.results_length;
     for (i = 0; i < result_cell_length; i++) {
-      var cell = $n('div', { 'class': 'MLu_cell', style: 'width: ' + (100 / result_cell_length).toFixed(1) + '%' }, void(0));
+      var cell = $n('div', { 'class': 'MLu_cell', style: 'width: ' + (100 / result_cell_length).toFixed(1) + '%' }, null);
+      var content = $n('div', null, null);
+      cell.appendChild(content);
       table.appendChild(cell);
-      this.cells.push({element: cell, results: [], height: 0});
+      this.cells.push({element: content, results: [], height: 0});
     }
     this.element.appendChild(table);
   };
@@ -655,6 +665,45 @@ function isElementInDocument(node) {
     this.hideIndicator();
   };
 
+  ResultGroup.prototype.postAddResultHandler = function () {
+    var self = this,
+        g_height = this.element.clientHeight,
+        scroll_disabled = false,
+        cancelScrollHandler = function (event) {
+          event.preventDefault();
+          return true;
+        },
+        disableScroll = function () {
+          window.addEventListener('mousewheel', cancelScrollHandler, false);
+          scroll_disabled = true;
+        },
+        enableScroll = function () {
+          window.removeEventListener('mousewheel', cancelScrollHandler, false);
+          scroll_disabled = false;
+        };
+    this.cells.forEach(function (v) {
+      var e = v.element;
+      if (v.height > g_height) {
+        e.setAttribute('style', 'overflow-y: auto; height: ' + g_height + 'px');
+        e.addEventListener('mousewheel', function (event) {
+          if ((event.wheelDeltaY < 0) && ((e.scrollTop + e.offsetHeight + 2) > e.scrollHeight)) {
+            disableScroll();
+          } else if ((event.wheelDeltaY > 0) && (e.scrollTop === 0)) {
+            disableScroll();
+          } else {
+            enableScroll();
+          }
+        }, false);
+        e.addEventListener('mouseout', function (event) {
+          if (scroll_disabled) {
+            enableScroll();
+          }
+        }, false);
+        self.addCloseInterceptor(enableScroll);
+      }
+    });
+  };
+
   ResultGroup.prototype.addResultList = function (results) {
     var self = this, i;
     if (this.cells.length === 0) {
@@ -668,6 +717,7 @@ function isElementInDocument(node) {
     for (i = 0; i < results.length; i++) {
       self.addResult(results[i]);
     }
+    this.postAddResultHandler();
   };
 
   ResultGroup.prototype.addMessage = function (message, type) {
@@ -779,7 +829,7 @@ function isElementInDocument(node) {
     },
 
     removeAll: function () {
-      var self = ResultGroupFactory,
+      var self = this,
           group = null;
       if (!self._resultGroups) {
         return;
@@ -803,7 +853,7 @@ function isElementInDocument(node) {
     function init() {
       // create HTML Element
       initElement();
-      // connect to backgound (key: MultiLookup)
+      // connect to background (key: MultiLookup)
       port = chrome.extension.connect({name: 'MultiLookup'});
       port.postMessage({id: 'siteinfo'});
       port.postMessage({id: 'config'});
@@ -814,9 +864,9 @@ function isElementInDocument(node) {
     }
 
     function initElement() {
-      // initialize MultiLokup Element.
+      // initialize MultiLookup Element.
       if (!node) {
-        node = $n('div', {id: 'MultiLookup'}, void(0));
+        node = $n('div', {id: 'MultiLookup'}, null);
         ResultGroupFactory.init(node);
       }
       if (!isElementInDocument(node)) {
@@ -967,7 +1017,7 @@ function isElementInDocument(node) {
       try {
         port.postMessage(data);
       } catch (e) {
-        console.warn('Could not post message.', e);
+        console.warn('Failed to post a message to background page.', e);
         init();
       }
     }
@@ -1000,6 +1050,9 @@ function isElementInDocument(node) {
           loadedConfigCallback(value);
           break;
         case 'lookup':
+          if (node == null) {
+            initElement();
+          }
           if (value) {
             var status = value.status || 'success';
             var context = value.context;
@@ -1020,7 +1073,7 @@ function isElementInDocument(node) {
           }
           break;
         default:
-          console.error('unkown message id', msg);
+          console.error('unknown message id', msg);
           break;
       }
       return true;
