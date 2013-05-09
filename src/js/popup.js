@@ -322,8 +322,13 @@
           });
 
       $option.find('input[type="radio"]').each(function () {
-        var name = this.name;
-        if (self.config[name] === $(this).val()) {
+        var name = this.name,
+            expected = self.config[name],
+            actual = $(this).val() === "1";
+        if (/^[0,1]$/.test(expected)) {
+          expected = !!Number(expected);
+        }
+        if (expected == actual) {
           $(this).attr('checked', true);
         }
         $(this).bind('change', function () {

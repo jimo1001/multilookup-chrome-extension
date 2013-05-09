@@ -194,7 +194,7 @@
     "option_modifier_key": {
         "message": "修飾キー"
     },
-    "option_disable_modifir_key": {
+    "option_disable_modifier_key": {
         "message": "修飾キーなし"
     },
     "option_modifier_key_description": {
@@ -273,7 +273,7 @@
         "message": "タイムアウト"
     },
     "option_xhr_timeout_description": {
-        "message": "XmlHttpReqestで結果を取得する際のタイムアウト時間(ミリ秒)を指定します"
+        "message": "XmlHttpRequestで結果を取得する際のタイムアウト時間(ミリ秒)を指定します"
     },
     "option_lookup_limit_result_length": {
         "message": "結果文字数の上限値"
