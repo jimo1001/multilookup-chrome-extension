@@ -683,7 +683,7 @@
           if (exist) {
             return;
           }
-          chrome.tabs.getSelected(null, function (tab) {
+          chrome.tabs.getSelected(function (tab) {
             var properties = {};
             properties.url = self.option_uri;
             if (tab !== undefined) {
@@ -1150,7 +1150,7 @@
         var self = multilookup.management;
         var port = null, i, len;
         if (!tab) {
-          return chrome.tabs.getSelected(null, function (currentTab) {
+          return chrome.tabs.getSelected(function (currentTab) {
             if (currentTab) {
               self.lookupShowResult(context, ids, currentTab);
             }
