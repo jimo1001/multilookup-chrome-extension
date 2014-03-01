@@ -437,7 +437,40 @@
             var name = $(this).attr('name');
             MLuOptions.config[name] = value;
             MLuOptions.saveConfig(true);
-          });
+          }
+      );
+      // settings
+      var $context = $('#editable_text_setting_contexts'),
+          $edit_area = $('#editable_text_setting');
+      $context.bind('change', function () {
+          var context = $(this).val(),
+              json = "";
+          if (context === "siteinfo") {
+              json = JSON.stringify(siteinfo, null, 4);
+          } else if (context === "config") {
+              json = JSON.stringify(config, null, 4);
+          }
+          $edit_area.val(json);
+      });
+      $context.change();
+      $('#apply_text_setting').bind('click', function () {
+          var context = $context.val(),
+              data = null;
+          try {
+              data = JSON.parse($edit_area.val());
+          } catch (e) {
+              global.alert("invalid format");
+          }
+          if (context === "siteinfo") {
+              multilookup.siteinfo._infos = data;
+              multilookup.siteinfo.save();
+          }
+          if (context === "config") {
+              multilookup.config._data = data;
+              multilookup.config.save();
+          }
+          global.alert("Update settings successfully.");
+      });
     };
 
     this.initLangRegexpField = function () {
@@ -829,7 +862,7 @@
       var def = _('default');
       var enable = _('enable');
       var disable = _('disable');
-      var re = RegExp('-');
+      var re = new RegExp('-');
       $('[data-default]').each(function () {
         var contexts = this.dataset['default'];
         if (!contexts) {

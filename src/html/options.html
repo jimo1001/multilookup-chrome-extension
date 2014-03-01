@@ -443,12 +443,33 @@
                 <input name="create" type="button" data-i18n="button_addnew" value="新規追加" />
             </div>
             <div id="create_attention" style="display: none" data-i18n="option_edit_siteinfo_attention">
-                ※サイトを追加する場合は、そのサイトの規約をご確認上追加してください<br>
+                ※サイトを追加する場合は事前にそのサイトの規約をご確認ください。<br>
                 name, url, type, src-lang は必須項目です
             </div>
             <div id="ad_siteinfo_edit_area">
                 <div class="notification"></div>
             </div>
+        </td>
+    </tr>
+    <tr>
+        <th class="option_th">
+            <span>設定詳細</span><br>
+        </th>
+        <td class="option_td">
+            <p class="notice">
+                MultiLookupの設定内容を確認・変更することができます。<br/>
+                不正な設定が登録された場合に動作しなくなる可能性がありますのでご注意ください。
+            </p>
+            <div>
+                <select id="editable_text_setting_contexts">
+                    <option value="config">設定情報</option>
+                    <option value="siteinfo">サイト情報</option>
+                </select>
+            </div>
+            <div>
+                <textarea id="editable_text_setting"></textarea>
+            </div>
+            <input type="button" id="apply_text_setting" value="変更を反映する"/>
         </td>
     </tr>
 </table>

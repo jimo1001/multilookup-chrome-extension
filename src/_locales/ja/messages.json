@@ -237,7 +237,7 @@
         "message": "データベースの追加・削除"
     },
     "option_manage_siteinfo_db_description": {
-        "message": "新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加します。<br>現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>Ja: http://wedata.net/databases/Lookup/items.json<br>En: http://wedata.net/databases/Lookup_en/items.json<br>追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。"
+        "message": "新たにサイト情報(SITEINFO)のデータベースを、URLを指定して追加します。<br>現在、以下のデータベースが用意されており、インストール時にはブラウザの設定に対応する言語が登録されます。<br>Ja: http://wedata.net/databases/Lookup/items.json<br>En: http://wedata.net/databases/Lookup_en/items.json<br>追加後は<strong>サイト情報の更新</strong>を行ってください。追加したデータベースのサイト情報が<strong>サイトの選択</strong>に反映されます。<br>※ データベースは、JSON形式の決められたフォーマットであれば Wedata 以外のものも追加することができます。<br/>問題が発生する場合はキャッシュデータの http://www.simplivillage.com/multilookup/siteinfo.json をご利用ください。"
     },
     "option_warning_add_siteinfo_db_duplicate_url": {
         "message": "指定されたデータベースは既に登録されています"
@@ -312,7 +312,7 @@
         "message": "サイト情報の新規追加と現在登録されているサイト情報の変更・削除を行うことができます"
     },
     "option_edit_siteinfo_attention": {
-        "message": "※サイトを追加する場合は、そのサイトの規約をご確認上追加してください<br>name, url, type, src-lang は必須項目です"
+        "message": "※サイトを追加する場合は事前にそのサイトの利用規約をご確認ください。<br>name, url, type, src-lang は必須項目です"
     },
     "option_initialize": {
         "message": "初期化"
