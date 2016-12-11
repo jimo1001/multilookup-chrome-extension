@@ -181,12 +181,15 @@
         if (!result_text) {
           var doc = createHTMLDocumentByString(html); // sanitize (simple)
           removeXSSRisk(doc);
-          doc.documentURI = url; // set baseURI
           var content_xpath = siteinfo["content-xpath"] || "//*";
           var content_selector = siteinfo["content-selector"];
           var exclude_xpath = siteinfo["exclude-xpath"];
           var exclude_selector = siteinfo["exclude-selector"];
           if (doc) {
+            // set baseURI
+            var base = doc.createElement('base');
+            base.href = url;
+            doc.head.appendChild(base);
             result_nodes = doc.createElement("div");
             // exclude(xpath)
             if (exclude_xpath) {
