@@ -213,7 +213,7 @@
           if (node.id) {
             res.push('id=' + JSON.stringify(prefix + node.id));
           }
-          if (node.className) {
+          if (node.className && typeof node.className === 'string') {
             res.push((function () {
               var classes = node.className.split(" "),
                   i = 0;
